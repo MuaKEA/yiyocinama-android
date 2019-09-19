@@ -1,12 +1,12 @@
 package dk.nodes.template.presentation.ui.main
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
 import dk.nodes.template.presentation.R
-import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
-import net.hockeyapp.android.UpdateManager
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
 
@@ -15,28 +15,30 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        viewModel.viewState.observeNonNull(this) { state ->
-            handleNStack(state)
-        }
-        viewModel.checkNStack()
+
+        viewModel.moviefun()
+
+        input_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {}
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+
+
+            }
+        })
+
     }
 
-    private fun handleNStack(viewState: MainActivityViewState) {
-        viewState.nstackMessage?.let { showMessageDialog(it) }
-        viewState.nstackRateReminder?.let { showRateReminderDialog(it) }
-        viewState.nstackUpdate?.let { showChangelogDialog(it) }
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        // If we checked for hockey updates, unregister
-        UpdateManager.unregister()
-    }
 
-    companion object {
-        fun createIntent(context: Context) = Intent(context, MainActivity::class.java)
-                .apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                }
-    }
+
+
+
 }

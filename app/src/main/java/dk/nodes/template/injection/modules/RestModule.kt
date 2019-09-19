@@ -7,6 +7,7 @@ import dagger.Provides
 import dk.nodes.nstack.kotlin.providers.NMetaInterceptor
 import dk.nodes.template.BuildConfig
 import dk.nodes.template.network.Api
+import dk.nodes.template.network.MovieService
 import dk.nodes.template.network.util.BufferedSourceConverterFactory
 import dk.nodes.template.network.util.DateDeserializer
 import dk.nodes.template.network.util.ItemTypeAdapterFactory
@@ -45,7 +46,7 @@ class RestModule {
     @Provides
     @Named("NAME_BASE_URL")
     fun provideBaseUrlString(): String {
-        return BuildConfig.API_URL
+        return "https://api.themoviedb.org/3/"
     }
 
     @Provides
@@ -93,4 +94,11 @@ class RestModule {
     fun provideApi(retrofit: Retrofit): Api {
         return retrofit.create<Api>(Api::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideMovieService(retrofit: Retrofit): MovieService {
+        return retrofit.create<MovieService>(MovieService::class.java)
+    }
+
 }

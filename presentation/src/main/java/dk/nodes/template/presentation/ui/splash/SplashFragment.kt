@@ -50,8 +50,8 @@ class SplashFragment : BaseFragment() {
     }
 
     private fun showApp() {
-        startActivity(MainActivity.createIntent(requireContext()))
-        activity?.overridePendingTransition(0, 0)
+        //startActivity(MainActivity.createIntent(requireContext()))
+        //activity?.overridePendingTransition(0, 0)
     }
 
     private fun startPlayStore() {

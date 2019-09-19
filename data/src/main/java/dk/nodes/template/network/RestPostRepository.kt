@@ -6,6 +6,7 @@ import dk.nodes.template.repositories.RepositoryException
 import javax.inject.Inject
 
 class RestPostRepository @Inject constructor(private val api: Api) : PostRepository {
+
     @Throws(RepositoryException::class)
     override suspend fun getPosts(cached: Boolean): List<Post> {
         val response = api.getPosts()

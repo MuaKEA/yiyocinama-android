@@ -1,6 +1,9 @@
 package dk.nodes.template.presentation.ui.main
 
+import android.widget.Adapter
 import androidx.lifecycle.viewModelScope
+import dk.nodes.template.models.Movie
+import dk.nodes.template.network.MovieRepository
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
 import kotlinx.coroutines.Dispatchers
@@ -10,20 +13,22 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
-    private val nStackPresenter: NStackPresenter
+    private val nStackPresenter: NStackPresenter,
+    private val movieRepository: MovieRepository
 ) : BaseViewModel<MainActivityViewState>() {
     override val initState: MainActivityViewState = MainActivityViewState()
 
-    fun checkNStack() = viewModelScope.launch {
-        // Delay popup a bit so it's not super intrusive
-        withContext(Dispatchers.IO) { delay(1000) }
-        nStackPresenter
-                .whenChangelog {
-                    state = state.copy(nstackUpdate = it)
-                }.whenMessage {
-                    state = state.copy(nstackMessage = it)
-                }.whenRateReminder {
-                    state = state.copy(nstackRateReminder = it)
-                }
+
+    fun moviefun() = viewModelScope.launch {
+        state = state.copy(isLoading = true)
+
+        val list = withContext(Dispatchers.IO){
+            movieRepository.getCurrentData()
+
+
+        }
+
+        state = state.copy(isLoading = false, movies = list)
     }
+
 }
