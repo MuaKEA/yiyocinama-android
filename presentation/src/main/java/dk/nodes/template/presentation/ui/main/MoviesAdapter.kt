@@ -1,7 +1,6 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,9 +11,9 @@ import kotlinx.android.synthetic.main.recyclerview.view.*
 
 
 class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
-    
+
     val movies: ArrayList<Movie> = ArrayList()
-    
+
     // Gets the number of movies in the list
     override fun getItemCount(): Int {
         return movies.size
@@ -34,11 +33,13 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
         holder.popularity?.text = movies.get(position).popularity
     }
 
-    fun addMovies(list : ArrayList<Movie>) {
+    fun addMovies(list: ArrayList<Movie>) {
 
-        movies.addAll(list)
+
+            movies.addAll(list)
+        }
     }
-}
+
 
 
 
