@@ -10,10 +10,10 @@ class MovieRepository @Inject constructor(
 ) {
 
 
-    suspend fun getCurrentData(): ArrayList<Movie> {
+    suspend fun getCurrentData(moviename : String): ArrayList<Movie> {
         var movieslisto: ArrayList<Movie> = ArrayList()
 
-        val response = api.getCurrentMovieData().execute()
+        val response = api.getCurrentMovieData(moviename).execute()
 
 
         if (response.isSuccessful) {

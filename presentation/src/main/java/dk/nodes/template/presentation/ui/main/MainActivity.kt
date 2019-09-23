@@ -3,6 +3,8 @@ package dk.nodes.template.presentation.ui.main
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.recyclerview.widget.LinearLayoutManager
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
@@ -22,10 +24,43 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         setupRecyclerview()
 
+
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
+
+
+
+
         }
-        viewModel.moviefun()
+
+
+
+
+        input_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+
+            }
+
+            override fun beforeTextChanged(s: CharSequence, start: Int,
+                                           count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence, start: Int,
+                                       before: Int, count: Int) {
+
+                viewModel.moviefun(s.toString())
+                setupRecyclerview()
+
+
+
+            }
+        })
+
+
+
+
+
 
     }
 

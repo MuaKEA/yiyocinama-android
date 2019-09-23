@@ -29,25 +29,21 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
         holder.moviename?.text = movies.get(position).name
         //  holder.genre?.text = movies.get(position).genre
-        holder.releaseDate?.text = movies.get(position).releaseDate
-        holder.popularity?.text = movies.get(position).popularity
+      //  holder.releaseDate?.text = movies.get(position).releaseDate
+       // holder.popularity?.text = movies.get(position).popularity
     }
 
     fun addMovies(list: ArrayList<Movie>) {
-
-
-            movies.addAll(list)
-        }
+        movies.clear()
+        movies.addAll(list)
     }
-
-
-
+}
 
 
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each movies to
     val moviename = view.movieName
     //val genre = view.genre
-    val releaseDate = view.relasedate
-    val popularity = view.popularity
+  //  val releaseDate = view.relasedate
+   // val popularity = view.popularity
 }

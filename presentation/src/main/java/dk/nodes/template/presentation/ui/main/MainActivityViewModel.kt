@@ -19,11 +19,11 @@ class MainActivityViewModel @Inject constructor(
     override val initState: MainActivityViewState = MainActivityViewState()
 
 
-    fun moviefun() = viewModelScope.launch {
+    fun moviefun(movieName : String) = viewModelScope.launch {
         state = state.copy(isLoading = true)
 
         val list = withContext(Dispatchers.IO){
-            movieRepository.getCurrentData()
+            movieRepository.getCurrentData(movieName)
 
 
         }
