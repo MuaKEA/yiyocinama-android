@@ -17,10 +17,11 @@ import timber.log.Timber
 
 
 class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+    var onclikposition  : Int = 0
+    var onItemClickedListener: ((movie: Movie) ->Unit?)? = null
 
 
     val movies: ArrayList<Movie> = ArrayList()
-
     // Gets the number of movies in the list
     override fun getItemCount(): Int {
         return movies.size
@@ -35,8 +36,11 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.moviename?.text = movies.get(position).name
-        Picasso.get().load("https://www.shutterstock.com/da/image-photo/this-piture-path-park-autumn-1232109808").into(holder.moviePhoto)
-
+        val picasso = Picasso.get()
+        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
+        holder.root.setOnClickListener {
+            onItemClickedListener?.invoke(movies.get(position))
+        }
 
     }
 
@@ -51,9 +55,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListene
     // Holds the TextView that will add each movies to
     val moviename = view.movieName
     val moviePhoto = itemView.movieImage
-
-
-
+    val root = view.movie_item
 
     init {
         view.setOnClickListener(this)
@@ -61,10 +63,9 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListene
 
     //4
     override fun onClick(v: View) {
-        val pos =layoutPosition
+        val pos = layoutPosition
 
 
-        Timber.e(pos.toString())
     }
 
 

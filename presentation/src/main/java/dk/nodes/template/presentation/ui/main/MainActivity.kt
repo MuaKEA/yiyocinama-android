@@ -3,6 +3,7 @@ package dk.nodes.template.presentation.ui.main
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import dk.nodes.template.presentation.R
@@ -23,12 +24,10 @@ class MainActivity : BaseActivity()   {
 
 
 
-
         setupRecyclerview()
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
         }
-
 
 
         input_search.addTextChangedListener(object : TextWatcher {
@@ -43,6 +42,7 @@ class MainActivity : BaseActivity()   {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
+
 
                 viewModel.moviefun(s.toString())
                 setupRecyclerview()
@@ -65,9 +65,12 @@ class MainActivity : BaseActivity()   {
 
 
         // Access the RecyclerView Adapter and load the data into it
+        adapter.onItemClickedListener = {movie ->
+            println("test123 $movie")
+        }
+
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-
     }
 
 
