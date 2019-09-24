@@ -51,22 +51,13 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 }
 
 
-class ViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener {
+class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each movies to
     val moviename = view.movieName
     val moviePhoto = itemView.movieImage
     val root = view.movie_item
 
-    init {
-        view.setOnClickListener(this)
-    }
 
-    //4
-    override fun onClick(v: View) {
-        val pos = layoutPosition
-
-
-    }
 
 
 }
