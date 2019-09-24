@@ -67,4 +67,5 @@ dependencies {
         exclude module: "retrofit:${versions.retrofit}"
 
     }
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

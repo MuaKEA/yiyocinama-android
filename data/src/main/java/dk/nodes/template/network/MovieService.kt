@@ -1,6 +1,7 @@
 package dk.nodes.template.network
 
 import dk.nodes.template.models.JsonResultMovies
+import dk.nodes.template.models.Photo
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
