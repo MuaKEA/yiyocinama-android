@@ -1,25 +1,21 @@
 package dk.nodes.template.presentation.ui.main
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
-import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
+
 
 class MainActivity : BaseActivity() {
 
@@ -98,25 +94,65 @@ class MainActivity : BaseActivity() {
                  adapter.onItemClickedListener = { movie ->
                      println("test123 $movie")
 
-                     val dialog = Dialog(this)
-                     dialog.requestWindowFeature(Window.DECOR_CAPTION_SHADE_DARK)
+                     val dialog = Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen)
                      dialog.setCancelable(false)
                      dialog.setContentView(R.layout.movieinfodiaglogview)
                      val moveName= dialog.findViewById<TextView>(R.id.moviename_txt)
                      moveName.setText(movie.name)
 
                      val photo = dialog.movie_image
-                     Picasso.get().load("https://image.tmdb.org/t/p/w185/"+ movie.poster_path).into(photo)
-                     // val yesBtn = dialog.findViewById(R.id.yesBtn) as Button
-                     // val noBtn = dialog.findViewById(R.id.noBtn) as TextView
-                     //yesBtn.setOnClickListener {
-                     //   dialog.dismiss()
-                     //}
-                     //noBtn.setOnClickListener { dialog.dismiss() }
+                     Picasso.get().load("https://image.tmdb.org/t/p/w185/"+ movie.poster_path).fit().into(photo)
+                     val language = dialog.language_txt
+                     language.setText(movie.original_language)
+                     val release_date = dialog.release_txt
+                     release_date.setText(movie.releaseDate)
+                     val vote_average = dialog.vote_average_txt
+                     vote_average.setText(movie.vote_average)
+                     val description = dialog.overview_txt
+                     description.setText(movie.overview)
+                     val popularity = dialog.popularity
+                     popularity.setText(movie.popularity)
+
+                     val backbtn = dialog .findViewById(R.id.back_btn) as Button
                      dialog.show()
+
+
+                     backbtn.setOnClickListener {
+                         dialog .dismiss()
+                     }
+
+//                     ratingbar.setOnClickListener{
+//
+//                        if(ratingbar.numStars ==1){
+//                            val set = HashSet<String>()
+//
+//                            val sharedpref = getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
+//                            var editor = sharedpref.edit()
+//                           val savedobjects = sharedpref.getStringSet("moviesList",set)
+//
+//                                if(savedobjects.size ==0){
+//                                    val gson =Gson()
+//
+//                                    set.add(gson.toJson(movie))
+//
+//                                    editor.putStringSet("moviesList",set)
+//
+//                                }
+//
+//
+//
+//
+//
+//                            editor.commit()
+//
+//                        }
+
+                     }
+
+
                  }
             }
-        }
+
 
 
 

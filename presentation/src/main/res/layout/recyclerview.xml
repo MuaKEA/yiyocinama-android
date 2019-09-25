@@ -33,10 +33,11 @@
 
         <ImageView
             android:id="@+id/movieImage"
-            android:layout_width="405dp"
-            android:layout_height="349dp"
+            android:layout_width="411dp"
+            android:layout_height="303dp"
             android:layout_marginTop="10dp"
             android:contentDescription="this is the image for movie"
+            android:src="@drawable/images"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

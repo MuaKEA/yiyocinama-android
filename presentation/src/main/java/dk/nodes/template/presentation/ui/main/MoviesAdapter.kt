@@ -8,6 +8,7 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import kotlinx.android.synthetic.main.recyclerview.view.*
@@ -38,8 +39,10 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
         holder.moviename?.text = movies.get(position).name
         val picasso = Picasso.get()
         picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
+
         holder.root.setOnClickListener {
             onItemClickedListener?.invoke(movies.get(position))
+
         }
 
     }

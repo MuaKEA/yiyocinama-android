@@ -12,4 +12,9 @@ interface MovieService {
 
 
 
+    // here we need pojo and http interceptor
+    //@GET("https://api.themoviedb.org/3/movie/324552?api_key=4cb1eeab94f45affe2536f2c684a5c9e&query=john%20wick")
+      //  fun getSavedMovies() : Call <>
+
+
 }
