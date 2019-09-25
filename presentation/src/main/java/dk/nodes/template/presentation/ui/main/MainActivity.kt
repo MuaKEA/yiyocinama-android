@@ -1,6 +1,7 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -15,6 +16,11 @@ import dk.nodes.template.presentation.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
+import android.widget.Toast
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.google.gson.Gson
 
 
 class MainActivity : BaseActivity() {
@@ -73,7 +79,7 @@ class MainActivity : BaseActivity() {
 
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        showDialog("titel")
+        showDialog()
     }
 
 
@@ -84,74 +90,77 @@ class MainActivity : BaseActivity() {
     }
 
 
+    fun showDialog() {
 
 
+        adapter.onItemClickedListener = { movie ->
+            println("test123 $movie")
+            val setmovies = HashSet<String>()
+
+            val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.movieinfodiaglogview)
+            val moveName = dialog.findViewById<TextView>(R.id.moviename_txt)
+            moveName.setText(movie.name)
+
+            val photo = dialog.movie_image
+            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).fit().into(photo)
+            val language = dialog.language_txt
+            language.setText(movie.original_language)
+            val release_date = dialog.release_txt
+            release_date.setText(movie.releaseDate)
+            val vote_average = dialog.vote_average_txt
+            vote_average.setText(movie.vote_average)
+            val description = dialog.overview_txt
+            description.setText(movie.overview)
+            val popularity = dialog.popularity
+            popularity.setText(movie.popularity)
+            val savemovieswitch = dialog.svae_movie_switch
 
 
-            fun showDialog(title: String) {
+            val backbtn = dialog.findViewById(R.id.back_btn) as Button
+            dialog.show()
 
 
-                 adapter.onItemClickedListener = { movie ->
-                     println("test123 $movie")
+            savemovieswitch.setOnClickListener {
 
-                     val dialog = Dialog(this,android.R.style.Theme_Black_NoTitleBar_Fullscreen)
-                     dialog.setCancelable(false)
-                     dialog.setContentView(R.layout.movieinfodiaglogview)
-                     val moveName= dialog.findViewById<TextView>(R.id.moviename_txt)
-                     moveName.setText(movie.name)
-
-                     val photo = dialog.movie_image
-                     Picasso.get().load("https://image.tmdb.org/t/p/w185/"+ movie.poster_path).fit().into(photo)
-                     val language = dialog.language_txt
-                     language.setText(movie.original_language)
-                     val release_date = dialog.release_txt
-                     release_date.setText(movie.releaseDate)
-                     val vote_average = dialog.vote_average_txt
-                     vote_average.setText(movie.vote_average)
-                     val description = dialog.overview_txt
-                     description.setText(movie.overview)
-                     val popularity = dialog.popularity
-                     popularity.setText(movie.popularity)
-
-                     val backbtn = dialog .findViewById(R.id.back_btn) as Button
-                     dialog.show()
-
-
-                     backbtn.setOnClickListener {
-                         dialog .dismiss()
-                     }
-
-//                     ratingbar.setOnClickListener{
-//
-//                        if(ratingbar.numStars ==1){
-//                            val set = HashSet<String>()
-//
-//                            val sharedpref = getSharedPreferences("PREFERENCE_NAME",Context.MODE_PRIVATE)
-//                            var editor = sharedpref.edit()
-//                           val savedobjects = sharedpref.getStringSet("moviesList",set)
-//
-//                                if(savedobjects.size ==0){
-//                                    val gson =Gson()
-//
-//                                    set.add(gson.toJson(movie))
-//
-//                                    editor.putStringSet("moviesList",set)
-//
-//                                }
-//
-//
-//
-//
-//
-//                            editor.commit()
-//
-//                        }
-
-                     }
-
-
-                 }
+                if (savemovieswitch.isChecked) {
+                    Toast.makeText(applicationContext, "this is toast message", Toast.LENGTH_SHORT).show()
+                }
             }
+
+            backbtn.setOnClickListener {
+
+                if (savemovieswitch.isChecked){
+
+
+                            val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
+                            val editor = sharedpref.edit()
+
+
+                           val savedobjects = sharedpref.getStringSet("moviesList",HashSet<String>())
+
+                                if(savedobjects.size == 0 ){
+                                    setmovies.add(movie.id)
+                                    editor.putStringSet("movielist", setmovies)
+                                    editor.apply()
+                                }else {
+
+                                    savedobjects.add(movie.id)
+                                    editor.clear()
+                                    editor.putStringSet("movielist", setmovies)
+
+                                }
+                }
+
+                    dialog.dismiss()
+            }
+
+        }
+
+
+    }
+}
 
 
 

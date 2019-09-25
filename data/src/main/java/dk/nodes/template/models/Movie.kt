@@ -16,7 +16,9 @@ data class Movie(
         @SerializedName("vote_average")
         var vote_average: String,
         @SerializedName("overview")
-        var overview: String
+        var overview: String,
+        @SerializedName("id")
+        var id: String
 
 
 
