@@ -2,6 +2,7 @@ package dk.nodes.template.presentation.ui.main
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,13 +18,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import com.google.gson.Gson
+import android.view.View
+import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), View.OnClickListener {
+
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
+        see_saved_movie_btn.setOnClickListener(this)
 
         setupRecyclerview()
         viewModel.viewState.observeNonNull(this) { state ->
@@ -125,7 +125,13 @@ class MainActivity : BaseActivity() {
             savemovieswitch.setOnClickListener {
 
                 if (savemovieswitch.isChecked) {
-                    Toast.makeText(applicationContext, "this is toast message", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
+
+                }else{
+                    Toast.makeText(applicationContext, "movie is unsaved", Toast.LENGTH_SHORT).show()
+
+
+
                 }
             }
 
@@ -157,9 +163,15 @@ class MainActivity : BaseActivity() {
             }
 
         }
+    }
 
+
+    override fun onClick(v: View?) {
+     var intent = Intent(this, ShowSavedMovieActivity::class.java)
+            startActivity(intent)
 
     }
+
 }
 
 
