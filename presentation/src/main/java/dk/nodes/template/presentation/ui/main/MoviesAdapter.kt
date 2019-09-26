@@ -18,7 +18,6 @@ import timber.log.Timber
 
 
 class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
-    var onclikposition  : Int = 0
     var onItemClickedListener: ((movie: Movie) ->Unit?)? = null
 
 

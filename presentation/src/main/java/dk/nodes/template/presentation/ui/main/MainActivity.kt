@@ -99,7 +99,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
         adapter.onItemClickedListener = { movie ->
-            println("test123 $movie")
 
 
             val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
@@ -121,7 +120,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             val popularity = dialog.popularity
             popularity.setText(movie.popularity)
             val savemovieswitch = dialog.svae_movie_switch
-            Timber.e(savemovieswitch.isChecked.toString())
 
 
             val backbtn = dialog.findViewById(R.id.back_btn) as Button
@@ -129,6 +127,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
             savemovieswitch.setOnClickListener {
+                Timber.e(savemovieswitch.isChecked.toString())
 
                 if (savemovieswitch.isChecked) {
                     Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
