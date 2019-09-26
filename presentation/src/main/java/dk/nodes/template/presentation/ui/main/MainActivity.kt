@@ -1,5 +1,6 @@
 package dk.nodes.template.presentation.ui.main
 
+import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -20,10 +21,11 @@ import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
+import timber.log.Timber
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
-
+    val setmovies = HashSet<String>()
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -38,6 +40,9 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
         }
+
+
+
 
 
         input_search.addTextChangedListener(object : TextWatcher {
@@ -95,7 +100,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         adapter.onItemClickedListener = { movie ->
             println("test123 $movie")
-            val setmovies = HashSet<String>()
+
 
             val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
             dialog.setCancelable(false)
@@ -116,6 +121,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             val popularity = dialog.popularity
             popularity.setText(movie.popularity)
             val savemovieswitch = dialog.svae_movie_switch
+            Timber.e(savemovieswitch.isChecked.toString())
 
 
             val backbtn = dialog.findViewById(R.id.back_btn) as Button
@@ -127,9 +133,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 if (savemovieswitch.isChecked) {
                     Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
 
-                }else{
+                } else {
                     Toast.makeText(applicationContext, "movie is unsaved", Toast.LENGTH_SHORT).show()
-
 
 
                 }
@@ -137,29 +142,30 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
             backbtn.setOnClickListener {
 
-                if (savemovieswitch.isChecked){
+                if (savemovieswitch.isChecked) {
+
+                    val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
+                    val editor = sharedpref.edit()
 
 
-                            val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
-                            val editor = sharedpref.edit()
+                    val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
 
+                    if (savedobjects.size == 0) {
+                        setmovies.add(movie.id)
+                        editor.putStringSet("movielist", setmovies)
+                        editor.apply()
 
-                           val savedobjects = sharedpref.getStringSet("moviesList",HashSet<String>())
+                    } else {
 
-                                if(savedobjects.size == 0 ){
-                                    setmovies.add(movie.id)
-                                    editor.putStringSet("movielist", setmovies)
-                                    editor.apply()
-                                }else {
+                        savedobjects.add(movie.id)
+                        editor.clear()
+                        editor.putStringSet("movielist", setmovies)
+                        editor.apply()
 
-                                    savedobjects.add(movie.id)
-                                    editor.clear()
-                                    editor.putStringSet("movielist", setmovies)
-
-                                }
+                    }
                 }
 
-                    dialog.dismiss()
+                dialog.dismiss()
             }
 
         }
@@ -167,8 +173,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
 
     override fun onClick(v: View?) {
-     var intent = Intent(this, ShowSavedMovieActivity::class.java)
-            startActivity(intent)
+        var intent = Intent(this, ShowSavedMovieActivity::class.java)
+        startActivity(intent)
 
     }
 

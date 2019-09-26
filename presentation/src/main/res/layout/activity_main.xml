@@ -10,7 +10,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_moviesList"
         android:layout_width="409dp"
-        android:layout_height="676dp"
+        android:layout_height="563dp"
         app:layout_constraintBottom_toTopOf="@+id/see_saved_movie_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

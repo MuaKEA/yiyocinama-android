@@ -3,7 +3,7 @@ package dk.nodes.template.models
 import com.google.gson.annotations.SerializedName
 
 class SavedMovie (
-        @SerializedName("belongs_to_collection")
+        @SerializedName("adult")
         var jsonreponse : String
 
 
