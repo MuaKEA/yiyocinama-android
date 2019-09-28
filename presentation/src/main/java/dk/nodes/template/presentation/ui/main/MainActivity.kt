@@ -19,12 +19,16 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
@@ -112,10 +116,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             val language = dialog.language_txt
             language.setText(movie.original_language)
             val releaseDate = dialog.release_txt
-            var simpledatetimeformatter = SimpleDateFormat("dd-MM-yyyy")
-            releaseDate.setText(simpledatetimeformatter.format(movie.releaseDate))
+            Timber.e(movie.releaseDate!!.substring(5,7))
+            if (movie.releaseDate ==""){
+                releaseDate.setText("Unknown")
+            }else{
+                //1959-06-27
+              val localdate = LocalDate.of(movie.releaseDate!!.substring(0,4).toInt(),movie.releaseDate!!.substring(5,7).toInt(),movie.releaseDate!!.substring(8,10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+                releaseDate.setText(localdate.toString())
+
+            }
             val voteAverage = dialog.vote_average_txt
-            voteAverage.setText(movie.vote_average)
+            voteAverage.setText(movie.vote_average +"/10")
             val description = dialog.overview_txt
             description.setText(movie.overview)
             val popularity = dialog.popularity
@@ -136,6 +147,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 }
             }
 
+
             backbtn.setOnClickListener {
                 var gson = Gson()
 
@@ -144,7 +156,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     val editor = sharedpref.edit()
                     val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
 
-                    Timber.e(savedobjects.size.toString())
+                    Timber.e(savedobjects!!.size.toString())
 
                     if (savedobjects.size == 0) {
                         saveMovies.add(gson.toJson(movie))

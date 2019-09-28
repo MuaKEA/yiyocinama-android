@@ -15,6 +15,12 @@ import dk.nodes.template.presentation.ui.main.MoviesAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_show_saved_movie_activity.*
 import timber.log.Timber
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.app.AlertDialog
+import android.widget.Toast
+
 
 class ShowSavedMovieActivity : BaseActivity() {
     private val viewModel by viewModel<ShowSavedMovieViewModel>()
@@ -58,13 +64,48 @@ class ShowSavedMovieActivity : BaseActivity() {
 
         adapter.onItemClickedListener = { movie ->
 
+                Timber.e(movie.toString() + " index")
+            val ab = AlertDialog.Builder(this)
+
+            // Initialize a new instance of
+            val builder = AlertDialog.Builder(this)
+
+            // Set the alert dialog title
+            builder.setTitle("delete movie")
+
+            // Display a message on alert dialog
+            builder.setMessage("Are you sure, you want to delete " + movieArrayList.get(movie).name)
+
+            // Set a positive button and its click listener on alert dialog
+            builder.setPositiveButton("YES"){dialog, which ->
+                // Do something when user press the positive button
+
+           Timber.e(storedMovies.remove(gson.toJson(movieArrayList[movie])).toString())
+                movieArrayList.removeAt(movie)
+
+                sharedpref.edit().putStringSet("movielist",storedMovies).apply()
+                adapter.addMovies(movieArrayList)
+
+                adapter.notifyDataSetChanged()
+            }
 
 
+            // Display a negative button on alert dialog
+            builder.setNegativeButton("No"){dialog,which ->
+               dialog.dismiss()
+            }
 
-        }
+            // Finally, make the alert dialog using builder
+            val dialog: AlertDialog = builder.create()
 
+            // Display the alert dialog on app interface
+            dialog.show()
         }
     }
+        }
+
+
+
 
 
 

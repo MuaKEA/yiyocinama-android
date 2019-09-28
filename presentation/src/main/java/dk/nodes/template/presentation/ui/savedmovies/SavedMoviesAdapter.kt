@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.savedmovie_recyclerview.view.*
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 
 class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
@@ -34,13 +35,12 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
 
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        var simpledatetimeformatter = SimpleDateFormat("dd-MM-yyyy")
-
-
+        var releaseDate = movies.get(position).releaseDate
+        LocalDate.of(releaseDate!!.substring(0,4).toInt(),releaseDate.substring(5,7).toInt(),releaseDate.substring(8,10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 
 
-        holder.moviename?.text = movies.get(position).name + " (" + simpledatetimeformatter.format(movies.get(position).releaseDate) + ")"
+
+        holder.moviename?.text = movies.get(position).name + " (" + releaseDate.toString() + ")"
         holder.overview?.text = movies.get(position).overview
 
         val picasso = Picasso.get()
@@ -53,6 +53,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     }
 
     fun addMovies(list: ArrayList<Movie>) {
+        movies.clear()
         movies.addAll(list)
     }
 }
@@ -65,25 +66,10 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val moviePhoto = itemView.movie_images
     val overview = view.overview_txt
     val binview = view.binview
-    // val root = view.movie_item
+     val root = view.movie_item
 
 }
-//    @SerializedName("original_title")
-//    var name: String,
-//    @SerializedName("original_language")
-//    var original_language: String,
-//    @SerializedName("release_date")
-//    var releaseDate: String,
-//    @SerializedName("popularity")
-//    var popularity: String,
-//    @SerializedName("poster_path")
-//    var poster_path: String,
-//    @SerializedName("vote_average")
-//    var vote_average: String,
-//    @SerializedName("overview")
-//    var overview: String,
-//    @SerializedName("id")
-//    var id: String
+
 
 
 
