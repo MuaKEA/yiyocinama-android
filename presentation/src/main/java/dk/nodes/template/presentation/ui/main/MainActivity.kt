@@ -156,7 +156,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                     val editor = sharedpref.edit()
                     val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
 
-                    Timber.e(savedobjects!!.size.toString())
+                    Timber.e(savedobjects.size.toString())
 
                     if (savedobjects.size == 0) {
                         saveMovies.add(gson.toJson(movie))
