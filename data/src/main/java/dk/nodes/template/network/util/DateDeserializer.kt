@@ -44,6 +44,7 @@ class DateDeserializer : JsonDeserializer<Date> {
                 "yyyy-MM-dd'T'HH:mm:ssZ",
                 "yyyy-MM-dd",
                 "MMM dd, yyyy hh:mm:ss aaa"
+
         )
     }
 }

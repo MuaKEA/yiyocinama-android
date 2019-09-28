@@ -1,6 +1,5 @@
 package dk.nodes.template.presentation.ui.savedmovies
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dk.nodes.template.network.MovieRepository
 import dk.nodes.template.presentation.nstack.NStackPresenter
@@ -22,11 +21,10 @@ class ShowSavedMovieViewModel @Inject constructor(
         state = state.copy(isLoading = true)
 
         val savedmovieinfo = withContext(Dispatchers.IO) {
-            movieRepository.getsavedmovies(movieId)
 
         }
 
-        state = state.copy(isLoading = false, SavedMovie =savedmovieinfo )
+    //    state = state.copy(isLoading = false, moviedetails =savedmovieinfo )
 
 
     }

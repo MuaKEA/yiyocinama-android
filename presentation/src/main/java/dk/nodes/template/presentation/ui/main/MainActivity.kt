@@ -1,6 +1,5 @@
 package dk.nodes.template.presentation.ui.main
 
-import android.app.Application
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -20,12 +19,16 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
+import java.text.SimpleDateFormat
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
-    val setmovies = HashSet<String>()
+    val saveMovies = HashSet<String>()
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -97,70 +100,68 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     fun showDialog() {
 
-
         adapter.onItemClickedListener = { movie ->
-
 
             val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
             dialog.setCancelable(false)
             dialog.setContentView(R.layout.movieinfodiaglogview)
             val moveName = dialog.findViewById<TextView>(R.id.moviename_txt)
             moveName.setText(movie.name)
-
-            val photo = dialog.movie_image
+            val photo = dialog.movie_images
             Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).fit().into(photo)
             val language = dialog.language_txt
             language.setText(movie.original_language)
-            val release_date = dialog.release_txt
-            release_date.setText(movie.releaseDate)
-            val vote_average = dialog.vote_average_txt
-            vote_average.setText(movie.vote_average)
+            val releaseDate = dialog.release_txt
+            var simpledatetimeformatter = SimpleDateFormat("dd-MM-yyyy")
+            releaseDate.setText(simpledatetimeformatter.format(movie.releaseDate))
+            val voteAverage = dialog.vote_average_txt
+            voteAverage.setText(movie.vote_average)
             val description = dialog.overview_txt
             description.setText(movie.overview)
             val popularity = dialog.popularity
             popularity.setText(movie.popularity)
             val savemovieswitch = dialog.svae_movie_switch
 
-
             val backbtn = dialog.findViewById(R.id.back_btn) as Button
-            dialog.show()
 
+            dialog.show()
 
             savemovieswitch.setOnClickListener {
                 Timber.e(savemovieswitch.isChecked.toString())
 
                 if (savemovieswitch.isChecked) {
                     Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
-
                 } else {
                     Toast.makeText(applicationContext, "movie is unsaved", Toast.LENGTH_SHORT).show()
-
-
                 }
             }
 
             backbtn.setOnClickListener {
+                var gson = Gson()
 
                 if (savemovieswitch.isChecked) {
-
                     val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
                     val editor = sharedpref.edit()
-
-
                     val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
 
-                    if (savedobjects.size == 0) {
-                        setmovies.add(movie.id)
-                        editor.putStringSet("movielist", setmovies)
-                        editor.apply()
+                    Timber.e(savedobjects.size.toString())
 
+                    if (savedobjects.size == 0) {
+                        saveMovies.add(gson.toJson(movie))
+                        editor.putStringSet("movielist", saveMovies)
+                        editor.apply()
                     } else {
 
-                        savedobjects.add(movie.id)
-                        editor.clear()
-                        editor.putStringSet("movielist", setmovies)
-                        editor.apply()
+                        val itemType = object : TypeToken<Movie>() {}.type
 
+                        for (element in savedobjects) {
+                            var movie = gson.fromJson<Movie>(element, itemType)
+                            saveMovies.add(gson.toJson(movie))
+
+                        }
+                        editor.clear()
+                        editor.putStringSet("movielist", saveMovies)
+                        editor.apply()
                     }
                 }
 
@@ -169,7 +170,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         }
     }
-
 
     override fun onClick(v: View?) {
         var intent = Intent(this, ShowSavedMovieActivity::class.java)

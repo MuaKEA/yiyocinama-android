@@ -1,6 +1,7 @@
 package dk.nodes.template.models
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 data class Movie(
         @SerializedName("original_title")
@@ -8,7 +9,7 @@ data class Movie(
         @SerializedName("original_language")
          var original_language: String,
         @SerializedName("release_date")
-        var releaseDate: String,
+        var releaseDate: String?,
         @SerializedName("popularity")
         var popularity: String,
         @SerializedName("poster_path")
@@ -24,9 +25,11 @@ data class Movie(
 
 ) {
         override fun toString(): String {
-                return "Movie(name='$name', releaseDate='$releaseDate', popularity='$popularity', poster_path='$poster_path')"
+                return "Movie(name='$name', original_language='$original_language', releaseDate='$releaseDate', popularity='$popularity', poster_path='$poster_path', vote_average='$vote_average', overview='$overview', id='$id')"
         }
 }
+
+
 
 
 

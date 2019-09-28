@@ -14,8 +14,8 @@ interface MovieService {
 
 
 
-    @GET("movie/{movieId}?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-       fun getSavedMovies(@Path("movieId") movieId: String) : Call<SavedMovie>
+//    @GET("movie/{movieId}?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
+//       fun getSavedMovies(@Path("movieId") movieId: String) : Call<SavedMovie>
 
 
 }

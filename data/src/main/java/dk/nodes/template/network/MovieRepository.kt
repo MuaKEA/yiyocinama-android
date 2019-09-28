@@ -28,20 +28,7 @@ class MovieRepository @Inject constructor(
         return movieslisto
     }
 
- suspend fun getsavedmovies(movieid : String) :SavedMovie {
-        var reponseJson :SavedMovie
 
-
-     val response = api.getSavedMovies(movieid).execute()
-
-     if (response.isSuccessful){
-         reponseJson = response.body()!!
-
-         return reponseJson
-     }
-
-    return SavedMovie("")
- }
 }
 
 

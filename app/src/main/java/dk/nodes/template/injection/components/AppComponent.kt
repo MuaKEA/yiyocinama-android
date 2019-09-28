@@ -10,6 +10,7 @@ import dk.nodes.template.injection.modules.InteractorModule
 import dk.nodes.template.injection.modules.RestModule
 import dk.nodes.template.injection.modules.RestRepositoryBinding
 import dk.nodes.template.injection.modules.StorageBindingModule
+import dk.nodes.template.models.SavedMovie
 import dk.nodes.template.presentation.injection.PresentationModule
 import dk.nodes.template.presentation.injection.ViewModelBuilder
 import javax.inject.Singleton

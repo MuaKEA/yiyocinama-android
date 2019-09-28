@@ -4,23 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan|adjustResize">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_moviesList"
-        android:layout_width="409dp"
-        android:layout_height="563dp"
-        app:layout_constraintBottom_toTopOf="@+id/see_saved_movie_btn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         android:layout_width="406dp"
         android:layout_height="68dp"
-        android:layout_marginTop="10dp"
         android:layout_marginEnd="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,16 +39,16 @@
 
     <Button
         android:id="@+id/see_saved_movie_btn"
-        android:layout_width="404dp"
-        android:layout_height="67dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/circlebuttons"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#008000"
         android:text="My saved movies"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rv_moviesList"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

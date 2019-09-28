@@ -13,6 +13,5 @@ data class MainActivityViewState(
     val nstackMessage: Message? = null,
     val nstackRateReminder: RateReminder? = null,
     val nstackUpdate: AppUpdate? = null,
-    val movies: ArrayList<Movie>? = null,
-    val SavedMovie : SavedMovie? =null
+    val movies: ArrayList<Movie>? = null
 )
