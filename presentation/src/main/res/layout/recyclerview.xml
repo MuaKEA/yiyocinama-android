@@ -5,46 +5,38 @@
     android:id="@+id/movie_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/customborder"
+    android:background="@android:color/black"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="371dp"
-        android:focusable="auto"
-        android:focusableInTouchMode="true">
+        android:layout_height="match_parent"
+        android:background="@drawable/customborder"
+        app:cardBackgroundColor="@android:color/black">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/whiteborder">
 
 
-        <TextView
-            android:id="@+id/movieName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="8dp"
-            android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/movieImage"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.437"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/movieImage"
-            android:layout_width="411dp"
-            android:layout_height="303dp"
-            android:layout_marginTop="10dp"
-            android:contentDescription="this is the image for movie"
-            android:src="@drawable/images"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/movieName" />
+            <ImageView
+                android:id="@+id/movieImage"
+                android:layout_width="466dp"
+                android:layout_height="341dp"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="this is the image for movie"
+                android:src="@drawable/images"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 
 </LinearLayout>

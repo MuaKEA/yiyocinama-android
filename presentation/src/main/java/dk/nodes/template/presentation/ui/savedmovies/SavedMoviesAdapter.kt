@@ -36,7 +36,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var releaseDate = movies.get(position).releaseDate
-        LocalDate.of(releaseDate!!.substring(0,4).toInt(),releaseDate.substring(5,7).toInt(),releaseDate.substring(8,10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+        LocalDate.of(releaseDate!!.substring(0, 4).toInt(), releaseDate.substring(5, 7).toInt(), releaseDate.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 
 
 
@@ -58,15 +58,12 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     }
 }
 
-
-
 class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each movies to
     val moviename = view.moviename_txt
     val moviePhoto = itemView.movie_images
     val overview = view.overview_txt
     val binview = view.binview
-     val root = view.movie_item
 
 }
 

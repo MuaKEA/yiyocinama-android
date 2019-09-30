@@ -43,7 +43,7 @@ class ShowSavedMovieActivity : BaseActivity() {
         val itemType = object : TypeToken<Movie>() {}.type
 
         if (!storedMovies.isEmpty()) {
-
+            Timber.e("storedmovies is not empty")
 
             for (element in storedMovies) {
                 var movie = gson.fromJson<Movie>(element, itemType)
@@ -64,7 +64,7 @@ class ShowSavedMovieActivity : BaseActivity() {
 
         adapter.onItemClickedListener = { movie ->
 
-                Timber.e(movie.toString() + " index")
+            Timber.e(movie.toString() + " index")
             val ab = AlertDialog.Builder(this)
 
             // Initialize a new instance of
@@ -77,22 +77,21 @@ class ShowSavedMovieActivity : BaseActivity() {
             builder.setMessage("Are you sure, you want to delete " + movieArrayList.get(movie).name)
 
             // Set a positive button and its click listener on alert dialog
-            builder.setPositiveButton("YES"){dialog, which ->
+            builder.setPositiveButton("YES") { dialog, which ->
                 // Do something when user press the positive button
-
-           Timber.e(storedMovies.remove(gson.toJson(movieArrayList[movie])).toString())
+                storedMovies?.remove(gson.toJson(movieArrayList[movie]))
                 movieArrayList.removeAt(movie)
-                sharedpref.edit().remove("movielist")
-                sharedpref.edit().putStringSet("movielist",storedMovies).apply()
+                sharedpref.edit().remove("movielist").apply()
+                sharedpref.edit().apply()
+                sharedpref.edit().putStringSet("movielist", storedMovies).apply()
                 adapter.addMovies(movieArrayList)
-
                 adapter.notifyDataSetChanged()
             }
 
 
             // Display a negative button on alert dialog
-            builder.setNegativeButton("No"){dialog,which ->
-               dialog.dismiss()
+            builder.setNegativeButton("No") { dialog, which ->
+                dialog.dismiss()
             }
 
             // Finally, make the alert dialog using builder
@@ -102,7 +101,7 @@ class ShowSavedMovieActivity : BaseActivity() {
             dialog.show()
         }
     }
-        }
+}
 
 
 

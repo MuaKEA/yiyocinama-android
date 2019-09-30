@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
+import android.widget.Switch
+import androidx.recyclerview.widget.GridLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
@@ -31,7 +33,7 @@ import java.time.format.FormatStyle
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
-    val saveMovies = HashSet<String>()
+    private val saveMovies = HashSet<String>()
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -41,15 +43,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
 
         see_saved_movie_btn.setOnClickListener(this)
-
         setupRecyclerview()
+
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
         }
-
-
-
-
 
         input_search.addTextChangedListener(object : TextWatcher {
 
@@ -63,7 +61,6 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
-
 
                 viewModel.moviefun(s.toString())
                 setupRecyclerview()
@@ -82,12 +79,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     private fun setupRecyclerview() {
         // Creates a vertical Layout Manager
-        rv_moviesList.layoutManager = LinearLayoutManager(this)
-
-
+        rv_moviesList.layoutManager = GridLayoutManager(this,2)
         // Access the RecyclerView Adapter and load the data into it
-
-
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         showDialog()
@@ -96,12 +89,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        // If we checked for hockey updates, unregister
+        // If we checked for hockey updates, unregisterak
         UpdateManager.unregister()
     }
 
 
-    fun showDialog() {
+    private fun showDialog() {
 
         adapter.onItemClickedListener = { movie ->
 
@@ -115,17 +108,17 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             val language = dialog.language_txt
             language.setText(movie.original_language)
             val releaseDate = dialog.release_txt
-            Timber.e(movie.releaseDate!!.substring(5,7))
-            if (movie.releaseDate ==""){
+            Timber.e(movie.releaseDate!!.substring(5, 7))
+            if (movie.releaseDate == "") {
                 releaseDate.setText("Unknown")
-            }else{
-                //1959-06-27
-              val localdate = LocalDate.of(movie.releaseDate!!.substring(0,4).toInt(),movie.releaseDate!!.substring(5,7).toInt(),movie.releaseDate!!.substring(8,10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                releaseDate.setText(localdate.toString())
 
+            } else {
+                val localdate = LocalDate.of(movie.releaseDate!!.substring(0, 4).toInt(), movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+                releaseDate.setText(localdate.toString())
             }
+
             val voteAverage = dialog.vote_average_txt
-            voteAverage.setText(movie.vote_average +"/10")
+            voteAverage.setText(movie.vote_average + "/10")
             val description = dialog.overview_txt
             description.setText(movie.overview)
             val popularity = dialog.popularity
@@ -138,44 +131,11 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
             savemovieswitch.setOnClickListener {
                 Timber.e(savemovieswitch.isChecked.toString())
+                showMessage(savemovieswitch)
 
-                if (savemovieswitch.isChecked) {
-                    Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(applicationContext, "movie is unsaved", Toast.LENGTH_SHORT).show()
-                }
             }
-
-
             backbtn.setOnClickListener {
-                var gson = Gson()
-
-                if (savemovieswitch.isChecked) {
-                    val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
-                    val editor = sharedpref.edit()
-                    val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
-
-                    Timber.e(savedobjects.size.toString())
-
-                    if (savedobjects.size == 0) {
-                        saveMovies.add(gson.toJson(movie))
-                        editor.putStringSet("movielist", saveMovies)
-                        editor.apply()
-                    } else {
-
-                        val itemType = object : TypeToken<Movie>() {}.type
-
-                        for (element in savedobjects) {
-                            var movie = gson.fromJson<Movie>(element, itemType)
-                            saveMovies.add(gson.toJson(movie))
-
-                        }
-                        editor.clear()
-                        editor.putStringSet("movielist", saveMovies)
-                        editor.apply()
-                    }
-                }
-
+                saveObject(savemovieswitch,movie)
                 dialog.dismiss()
             }
 
@@ -188,6 +148,45 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+   private fun saveObject(savemovieswitch : Switch,movie :Movie){
+         var gson = Gson()
+
+         if (savemovieswitch.isChecked) {
+             val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
+             val editor = sharedpref.edit()
+             val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
+
+             Timber.e(savedobjects!!.size.toString())
+
+             if (savedobjects.size == 0) {
+                 saveMovies.add(gson.toJson(movie))
+                 editor.putStringSet("movielist", saveMovies)
+                 editor.apply()
+             } else {
+
+                 val itemType = object : TypeToken<Movie>() {}.type
+
+                 for (element in savedobjects) {
+                     var movie = gson.fromJson<Movie>(element, itemType)
+                     saveMovies.add(gson.toJson(movie))
+
+                 }
+                 editor.clear()
+                 editor.putStringSet("movielist", saveMovies)
+                 editor.apply()
+             }
+         }
+
+     }
+fun showMessage(savemovieswitch : Switch){
+    if (savemovieswitch.isChecked) {
+        Toast.makeText(applicationContext, "movie is saved", Toast.LENGTH_SHORT).show()
+    } else {
+        Toast.makeText(applicationContext, "movie is unsaved", Toast.LENGTH_SHORT).show()
+    }
+
+
+}
 }
 
 
