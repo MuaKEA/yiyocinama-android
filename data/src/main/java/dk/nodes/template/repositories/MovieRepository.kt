@@ -1,7 +1,7 @@
-package dk.nodes.template.network
+package dk.nodes.template.repositories
 
 import dk.nodes.template.models.Movie
-import dk.nodes.template.models.SavedMovie
+import dk.nodes.template.network.MovieService
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
