@@ -82,7 +82,7 @@ class ShowSavedMovieActivity : BaseActivity() {
 
            Timber.e(storedMovies.remove(gson.toJson(movieArrayList[movie])).toString())
                 movieArrayList.removeAt(movie)
-
+                sharedpref.edit().remove("movielist")
                 sharedpref.edit().putStringSet("movielist",storedMovies).apply()
                 adapter.addMovies(movieArrayList)
 

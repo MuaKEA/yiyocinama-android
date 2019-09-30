@@ -3,6 +3,7 @@ package dk.nodes.template.presentation.ui.main
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -19,13 +20,11 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
-import androidx.activity.OnBackPressedCallback
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
