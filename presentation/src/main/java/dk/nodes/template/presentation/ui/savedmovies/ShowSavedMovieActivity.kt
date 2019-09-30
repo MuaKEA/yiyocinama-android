@@ -37,7 +37,7 @@ class ShowSavedMovieActivity : BaseActivity() {
         }
 
 
-        var sharedpref = application.getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
+        var sharedPref = application.getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
         var storedMovies = sharedpref.getStringSet("movielist", HashSet<String>())
 
         val itemType = object : TypeToken<Movie>() {}.type
