@@ -1,7 +1,5 @@
 package dk.nodes.template.presentation.ui.savedmovies
 
-import android.app.Application
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
@@ -10,12 +8,10 @@ import dk.nodes.template.models.Movie
 import dk.nodes.template.network.MovieRepository
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
-import dk.nodes.template.presentation.ui.main.MainActivityViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.HashMap
 import javax.inject.Inject
 
 class ShowSavedMovieViewModel @Inject constructor(
@@ -25,15 +21,15 @@ class ShowSavedMovieViewModel @Inject constructor(
     ) : BaseViewModel<SavedMoviesViewState>() {
     override val initState: SavedMoviesViewState = SavedMoviesViewState()
 
-    fun fetchSavedMovies(movieHashSet: HashSet<String>,context : Context ) = viewModelScope.launch {
+    fun fetchSavedMovies(sharedPreferences: SharedPreferences) = viewModelScope.launch {
 
-        var sharedPref =SharedPreferences(context)
+
 
         state = state.copy(isLoading = true)
 
         val savedmovieinfo = withContext(Dispatchers.IO) {
 
-            getMovie(movieHashSet)
+            getMovie(sharedPreferences.getStringSet("movielist",HashSet<String>()))
         }
 
            state = state.copy(isLoading = false, movies = savedmovieinfo )
@@ -42,12 +38,12 @@ class ShowSavedMovieViewModel @Inject constructor(
     }
 
 
-    fun getMovie(movieHashSet: HashSet<String>): ArrayList<Movie> {
+    fun getMovie(movieHashSet: MutableSet<String>?): ArrayList<Movie> {
         var movieArrayList = ArrayList<Movie>()
         val gson = Gson()
         val itemType = object : TypeToken<Movie>() {}.type
 
-        if (!movieHashSet.isEmpty()) {
+        if (!movieHashSet!!.isEmpty()) {
             Timber.e("storedmovies is not empty")
 
             for (element in movieHashSet) {
