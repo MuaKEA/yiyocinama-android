@@ -7,7 +7,8 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion sdks.compileSdkVersion
-    buildToolsVersion sdks.buildToolsVersion
+
+
     flavorDimensions "default"
 
     defaultConfig {

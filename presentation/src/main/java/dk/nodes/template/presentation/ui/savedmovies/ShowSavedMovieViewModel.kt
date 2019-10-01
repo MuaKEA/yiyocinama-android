@@ -2,20 +2,16 @@ package dk.nodes.template.presentation.ui.savedmovies
 
 import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
-import dk.nodes.template.domain.interactors.FetchMoviesInteractor
-import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
-import dk.nodes.template.repositories.FetchMovieRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.invoke
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class ShowSavedMovieViewModel @Inject constructor(
     private val nStackPresenter: NStackPresenter,
-    private val fetchMoviesInteractor: FetchMoviesInteractor
+    private val fetchMovieRepository: FetchMovieRepository
 
     ) : BaseViewModel<SavedMoviesViewState>() {
     override val initState: SavedMoviesViewState = SavedMoviesViewState()
@@ -26,8 +22,7 @@ class ShowSavedMovieViewModel @Inject constructor(
 
         val list = withContext(Dispatchers.IO){
 
-            fetchMoviesInteractor.
-            // fetchMoviesInteractor.g(sharedPreferences.getStringSet("movielist",HashSet<String>()))
+            fetchMovieRepository.getMovies(sharedPreferences.getStringSet("movielist",HashSet<String>()) as HashSet<String>)
 
         }
 

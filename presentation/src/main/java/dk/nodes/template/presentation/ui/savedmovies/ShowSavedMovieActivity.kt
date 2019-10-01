@@ -53,40 +53,39 @@ class ShowSavedMovieActivity : BaseActivity() {
 
 
 
-            adapter.onItemClickedListener = { movie ->
-
-                Timber.e(movie.toString() + " index")
-                val ab = AlertDialog.Builder(this)
-
-                // Initialize a new instance of
-                val builder = AlertDialog.Builder(this)
-
-                // Set the alert dialog title
-                builder.setTitle("delete movie")
-
-                // Display a message on alert dialog
-                builder.setMessage("Are you sure, you want to delete " + movieList.get(movie).name)
-
-                // Set a positive button and its click listener on alert dialog
-                builder.setPositiveButton("YES") { dialog, which ->
-
-
-
-
-                }
-
-
-                // Display a negative button on alert dialog
-                builder.setNegativeButton("No") { dialog, which ->
-                    dialog.dismiss()
-                }
-
-                // Finally, make the alert dialog using builder
-                val dialog: AlertDialog = builder.create()
-
-                // Display the alert dialog on app interface
-                dialog.show()
-            }
+//            adapter.onItemClickedListener = { movie ->
+//
+//                Timber.e(movie.toString() + " index")
+//
+//                // Initialize a new instance of
+//                val builder = AlertDialog.Builder(this)
+//
+//                // Set the alert dialog title
+//                builder.setTitle("delete movie")
+//
+//                // Display a message on alert dialog
+//                builder.setMessage("Are you sure, you want to delete " + movieList.get(movie).name)
+//
+//                // Set a positive button and its click listener on alert dialog
+//                builder.setPositiveButton("YES") { dialog, which ->
+//
+//                    Timber.e(dialog.toString() +  which.toString())
+//
+//
+//                }
+//
+//
+//                // Display a negative button on alert dialog
+//                builder.setNegativeButton("No") { dialog, which ->
+//                    dialog.dismiss()
+//                }
+//
+//                // Finally, make the alert dialog using builder
+//                val dialog: AlertDialog = builder.create()
+//
+//                // Display the alert dialog on app interface
+//                dialog.show()
+//            }
 
 
 
