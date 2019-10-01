@@ -1,6 +1,7 @@
 package dk.nodes.template.presentation.ui.main
 
 import androidx.lifecycle.viewModelScope
+import dk.nodes.template.models.Movie
 import dk.nodes.template.repositories.MovieRepository
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
@@ -27,7 +28,23 @@ class MainActivityViewModel @Inject constructor(
 
         state = state.copy(isLoading = false, movies = list)
     }
+    fun saveMovieToSharedprefences(movieArrayList: ArrayList<Movie>) = viewModelScope.launch {
 
+        state = state.copy(isLoading = true)
+
+        val list = withContext(Dispatchers.IO) {
+
+            movieRepository.saveMovies(movieArrayList)
+
+
+        }
+        state = state.copy(isLoading = false)
+
+
+
+
+
+    }
 
 
 

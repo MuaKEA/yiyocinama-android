@@ -14,7 +14,10 @@ class MoviesInteractor  @Inject constructor(
     suspend fun getMovies(): ArrayList<Movie> {
         return movieRepository.getSavedMovies()
     }
+    suspend fun saveMovieToSharedpref(movieArrayList: ArrayList<Movie>){
 
+        return movieRepository.saveMovies(movieArrayList)
+    }
 }
 
 

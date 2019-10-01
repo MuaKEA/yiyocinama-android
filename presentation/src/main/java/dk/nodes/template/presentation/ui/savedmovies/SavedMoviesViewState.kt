@@ -12,5 +12,6 @@ data class SavedMoviesViewState(
         val nstackMessage: Message? = null,
         val nstackRateReminder: RateReminder? = null,
         val nstackUpdate: AppUpdate? = null,
-        val movies: ArrayList<Movie>? = null
+        val savedMoviesArrayList : ArrayList<Movie>? = null
+
 )

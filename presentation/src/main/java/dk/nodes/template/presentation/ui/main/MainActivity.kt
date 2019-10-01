@@ -33,7 +33,7 @@ import java.time.format.FormatStyle
 
 
 class MainActivity : BaseActivity(), View.OnClickListener {
-    private val saveMovies = HashSet<String>()
+    private val saveMoviesArrayList = ArrayList<Movie>()
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -47,6 +47,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
+
         }
 
         input_search.addTextChangedListener(object : TextWatcher {
@@ -75,6 +76,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             adapter.notifyDataSetChanged()
 
         }
+
+
     }
 
     private fun setupRecyclerview() {
@@ -148,33 +151,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-   private fun saveObject(savemovieswitch : Switch,movie :Movie){
-         var gson = Gson()
+   private fun saveObject(savemovieswitch : Switch,movie : Movie){
 
          if (savemovieswitch.isChecked) {
-             val sharedpref = getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
-             val editor = sharedpref.edit()
-             val savedobjects = sharedpref.getStringSet("movieslist", HashSet<String>())
+             saveMoviesArrayList.add(movie)
+             viewModel.saveMovieToSharedprefences(saveMoviesArrayList)
 
-             Timber.e(savedobjects!!.size.toString())
-
-             if (savedobjects.size == 0) {
-                 saveMovies.add(gson.toJson(movie))
-                 editor.putStringSet("movielist", saveMovies)
-                 editor.apply()
-             } else {
-
-                 val itemType = object : TypeToken<Movie>() {}.type
-
-                 for (element in savedobjects) {
-                     var movie = gson.fromJson<Movie>(element, itemType)
-                     saveMovies.add(gson.toJson(movie))
-
-                 }
-                 editor.clear()
-                 editor.putStringSet("movielist", saveMovies)
-                 editor.apply()
-             }
          }
 
      }

@@ -25,67 +25,58 @@ import android.widget.Toast
 class ShowSavedMovieActivity : BaseActivity() {
     private val viewModel by viewModel<ShowSavedMovieViewModel>()
     private val adapter = SavedMoviesAdapter(this)
+    private var movieArrayList =  ArrayList<Movie>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_saved_movie_activity)
+
+        viewModel.fetchSavedMovies()
+
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleNStack(state)
         }
 
 
-        var sharedpref = application.getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
-            viewModel.fetchSavedMovies()
 
 
 
 
 
+            adapter.onItemClickedListener = { movie ->
+
+                Timber.e(movie.toString() + " index")
+
+                // Initialize a new instance of
+                val builder = AlertDialog.Builder(this)
+
+                // Set the alert dialog title
+                builder.setTitle("delete movie")
+
+                // Display a message on alert dialog
+                builder.setMessage("Are you sure, you want to delete " + movieArrayList!!.get(movie).name)
+
+                // Set a positive button and its click listener on alert dialog
+                builder.setPositiveButton("YES") { dialog, which ->
+                    movieArrayList.removeAt(movie)
+                    viewModel.saveMovieToSharedprefences(movieArrayList)
 
 
-    }
-
-    private fun handleNStack(viewState: SavedMoviesViewState) {
-        viewState.movies?.let { movieList ->
-        adapterSetup(movieList)
+                }
 
 
+                // Display a negative button on alert dialog
+                builder.setNegativeButton("No") { dialog, which ->
+                    dialog.dismiss()
+                }
 
+                // Finally, make the alert dialog using builder
+                val dialog: AlertDialog = builder.create()
 
-//            adapter.onItemClickedListener = { movie ->
-//
-//                Timber.e(movie.toString() + " index")
-//
-//                // Initialize a new instance of
-//                val builder = AlertDialog.Builder(this)
-//
-//                // Set the alert dialog title
-//                builder.setTitle("delete movie")
-//
-//                // Display a message on alert dialog
-//                builder.setMessage("Are you sure, you want to delete " + movieList.get(movie).name)
-//
-//                // Set a positive button and its click listener on alert dialog
-//                builder.setPositiveButton("YES") { dialog, which ->
-//
-//                    Timber.e(dialog.toString() +  which.toString())
-//
-//
-//                }
-//
-//
-//                // Display a negative button on alert dialog
-//                builder.setNegativeButton("No") { dialog, which ->
-//                    dialog.dismiss()
-//                }
-//
-//                // Finally, make the alert dialog using builder
-//                val dialog: AlertDialog = builder.create()
-//
-//                // Display the alert dialog on app interface
-//                dialog.show()
-//            }
+                // Display the alert dialog on app interface
+                dialog.show()
+            }
 
 
 
@@ -95,7 +86,7 @@ class ShowSavedMovieActivity : BaseActivity() {
 
 
         }
-    }
+
     fun adapterSetup(movieArrayList : ArrayList<Movie>){
         Timber.e(movieArrayList.toString())
         savedmovie_rv.adapter = adapter
@@ -110,7 +101,16 @@ class ShowSavedMovieActivity : BaseActivity() {
 
 
     }
+private fun handleNStack(viewState: SavedMoviesViewState) {
+    viewState.savedMoviesArrayList.let { movieList ->
+        if (movieList != null) {
+            movieArrayList= movieList
+            adapterSetup(movieList)
+            Timber.e(movieList.toString())
 
+        }
+    }
+}
 }
 
 
