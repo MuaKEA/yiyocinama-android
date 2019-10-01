@@ -7,7 +7,7 @@ import dk.nodes.template.repositories.MovieRepository
 import javax.inject.Inject
 
 
-class GetSavedMoviesInteractor  @Inject constructor(
+class MoviesInteractor  @Inject constructor(
         private val movieRepository: MovieRepository
 ) {
 

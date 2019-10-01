@@ -36,7 +36,7 @@ class ShowSavedMovieActivity : BaseActivity() {
 
 
         var sharedpref = application.getSharedPreferences("moviesharedpref", Context.MODE_PRIVATE)
-            viewModel.fetchSavedMovies(sharedpref)
+            viewModel.fetchSavedMovies()
 
 
 
