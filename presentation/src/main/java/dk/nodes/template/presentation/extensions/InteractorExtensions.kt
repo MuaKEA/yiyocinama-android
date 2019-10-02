@@ -2,13 +2,7 @@ package dk.nodes.template.presentation.extensions
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import dk.nodes.template.domain.interactors.BaseAsyncInteractor
-import dk.nodes.template.domain.interactors.CompleteResult
-import dk.nodes.template.domain.interactors.Fail
-import dk.nodes.template.domain.interactors.InteractorResult
-import dk.nodes.template.domain.interactors.Loading
-import dk.nodes.template.domain.interactors.Success
-import dk.nodes.template.domain.interactors.Uninitialized
+import dk.nodes.template.domain.interactors.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.subjects.BehaviorSubject
@@ -29,6 +23,8 @@ interface LiveDataInteractor<T> : BaseAsyncInteractor<Unit> {
 }
 
 interface ResultInteractor<T> : BaseAsyncInteractor<CompleteResult<T>>
+
+interface ResultInputInteractor<T, O> : BaseInputAsyncInteractor<T, CompleteResult<O>>
 
 @ExperimentalCoroutinesApi
 interface ChannelInteractor<T> : BaseAsyncInteractor<Unit> {
@@ -90,6 +86,17 @@ private class ResultInteractorImpl<T>(private val interactor: BaseAsyncInteracto
     }
 }
 
+private class ResultInputInteractorImpl<I, O>(private val interactor: BaseInputAsyncInteractor<I, out O>) :
+        ResultInputInteractor<I, O> {
+    override suspend fun invoke(input: I): CompleteResult<O> {
+        return try {
+            Success(interactor(input))
+        } catch (e: Exception) {
+            Fail(e)
+        }
+    }
+}
+
 private class RxInteractorImpl<T>(private val interactor: BaseAsyncInteractor<out T>) :
     RxInteractor<T> {
     override fun observe() = subject.toFlowable(BackpressureStrategy.LATEST)!!
@@ -120,6 +127,10 @@ private class FlowInteractorImpl<T>(private val interactor: BaseAsyncInteractor<
 
 fun <T> BaseAsyncInteractor<T>.asResult(): ResultInteractor<T> {
     return ResultInteractorImpl(this)
+}
+
+fun <I, O> BaseInputAsyncInteractor<I, O>.asResult(): ResultInputInteractor<I, O> {
+    return ResultInputInteractorImpl(this)
 }
 
 fun <T> BaseAsyncInteractor<T>.asLiveData(): LiveDataInteractor<T> {

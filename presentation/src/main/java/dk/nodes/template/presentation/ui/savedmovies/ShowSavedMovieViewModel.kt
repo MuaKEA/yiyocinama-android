@@ -1,12 +1,13 @@
 package dk.nodes.template.presentation.ui.savedmovies
 
-import android.content.SharedPreferences
 import androidx.lifecycle.viewModelScope
+import dk.nodes.template.domain.interactors.GetMoviesInteractor
 import dk.nodes.template.domain.interactors.MoviesInteractor
+import dk.nodes.template.domain.interactors.SaveMovieInterator
 import dk.nodes.template.models.Movie
+import dk.nodes.template.presentation.extensions.asResult
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
-import dk.nodes.template.repositories.MovieRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,7 +15,10 @@ import javax.inject.Inject
 
 class ShowSavedMovieViewModel @Inject constructor(
     private val nStackPresenter: NStackPresenter,
-   private val moviesInteractor: MoviesInteractor
+   private val moviesInteractor: MoviesInteractor,
+    private val saveMovieInterator: SaveMovieInterator,
+    private val getMoviesInteractor: GetMoviesInteractor
+
 
     ) : BaseViewModel<SavedMoviesViewState>() {
     override val initState: SavedMoviesViewState = SavedMoviesViewState()
@@ -24,7 +28,9 @@ class ShowSavedMovieViewModel @Inject constructor(
 
         val list = withContext(Dispatchers.IO) {
 
-            moviesInteractor.getMovies()
+            moviesInteractor.asResult().invoke("lknlk")
+            getMoviesInteractor.getmovies()
+
 
 
         }
@@ -39,7 +45,7 @@ class ShowSavedMovieViewModel @Inject constructor(
 
             val list = withContext(Dispatchers.IO) {
 
-                moviesInteractor.saveMovieToSharedpref(movieArrayList)
+                saveMovieInterator.saveMovie(movieArrayList)
 
 
             }
@@ -52,21 +58,6 @@ class ShowSavedMovieViewModel @Inject constructor(
         }
 }
 
-
-
-//    fun removeMovie(movieHashSet: MutableSet<String>?): ArrayList<Movie>{
-//
-//
-//        // Do something when user press the positive button
-//                    storedMovies?.remove(gson.toJson(movieArrayList[movie]))
-//                    movieList.removeAt(movie)
-//                    sharedpref.edit().remove("movielist").apply()
-//                    sharedpref.edit().apply()
-//                    sharedpref.edit().putStringSet("movielist", storedMovies).apply()
-//
-//
-//
-//    }
 
 
 

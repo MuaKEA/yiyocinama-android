@@ -1,16 +1,13 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
@@ -22,8 +19,7 @@ import android.widget.Toast
 import android.view.View
 import android.widget.Switch
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
@@ -46,8 +42,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         setupRecyclerview()
 
         viewModel.viewState.observeNonNull(this) { state ->
-            handleNStack(state)
-
+            handleMovies(state)
+            handleErrors(state)
         }
 
         input_search.addTextChangedListener(object : TextWatcher {
@@ -63,14 +59,14 @@ class MainActivity : BaseActivity(), View.OnClickListener {
             override fun onTextChanged(s: CharSequence, start: Int,
                                        before: Int, count: Int) {
 
-                viewModel.moviefun(s.toString())
+                viewModel.moviesfun(s.toString())
                 setupRecyclerview()
 
             }
         })
     }
 
-    private fun handleNStack(viewState: MainActivityViewState) {
+    private fun handleMovies(viewState: MainActivityViewState) {
         viewState.movies?.let { movieList ->
             adapter.addMovies(movieList)
             adapter.notifyDataSetChanged()
@@ -78,6 +74,15 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         }
 
 
+    }
+
+    private fun handleErrors(viewState: MainActivityViewState) {
+        viewState?.viewError?.let {
+            if(it.consumed) return@let
+
+            // Lav noget fedt
+            Snackbar.make(rv_moviesList, "lol", Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupRecyclerview() {
@@ -155,7 +160,7 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
          if (savemovieswitch.isChecked) {
              saveMoviesArrayList.add(movie)
-             viewModel.saveMovieToSharedprefences(saveMoviesArrayList)
+             viewModel.saveMovie(saveMoviesArrayList)
 
          }
 
