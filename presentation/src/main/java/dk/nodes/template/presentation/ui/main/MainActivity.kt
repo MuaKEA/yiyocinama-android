@@ -19,6 +19,7 @@ import android.widget.Toast
 import android.view.View
 import android.widget.Switch
 import androidx.recyclerview.widget.GridLayoutManager
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
@@ -80,7 +81,10 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         viewState?.viewError?.let {
             if(it.consumed) return@let
 
-            // Lav noget fedt
+            Glide.with(this)
+                    .load("")
+                    .placeholder(R.drawable.binphoto)
+                    .into(error_view);
             Snackbar.make(rv_moviesList, "lol", Snackbar.LENGTH_SHORT).show()
         }
     }

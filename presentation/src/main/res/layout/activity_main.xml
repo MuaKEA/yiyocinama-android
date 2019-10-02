@@ -52,6 +52,16 @@
         app:layout_constraintTop_toBottomOf="@+id/rv_moviesList"
         app:layout_constraintVertical_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/error_view"
+        android:layout_width="500dp"
+        android:layout_height="786dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+        app:srcCompat="@drawable/images" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
