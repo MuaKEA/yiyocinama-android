@@ -84,6 +84,7 @@ class ShowSavedMovieActivity : BaseActivity() {
     private fun handleNStack(viewState: SavedMoviesViewState) {
         viewState.savedMoviesArrayList.let { movieList ->
             if (movieList != null) {
+                Timber.e(movieList.toString())
                 movieArrayList = movieList
                 adapterSetup(movieList)
                 Timber.e(movieList.toString())
