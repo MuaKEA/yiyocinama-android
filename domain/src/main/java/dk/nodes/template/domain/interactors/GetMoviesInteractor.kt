@@ -5,10 +5,11 @@ import dk.nodes.template.repositories.MovieRepository
 import javax.inject.Inject
 
 class GetMoviesInteractor @Inject constructor(
-       private val movieRepository: MovieRepository) {
+       private val movieRepository: MovieRepository): BaseAsyncInteractor<ArrayList<Movie>> {
 
-    suspend fun getmovies() : ArrayList<Movie>{
+
+    override suspend fun invoke(): ArrayList<Movie> {
         return movieRepository.getSavedMovies()
-
     }
+
 }

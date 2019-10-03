@@ -154,7 +154,7 @@
         app:layout_constraintTop_toBottomOf="@+id/overview_txt" />
 
     <Switch
-        android:id="@+id/svae_movie_switch"
+        android:id="@+id/save_movie_switch"
         android:layout_width="186dp"
         android:layout_height="40dp"
         android:layout_marginStart="120dp"

@@ -2,14 +2,17 @@ package dk.nodes.template.domain.interactors
 
 import dk.nodes.template.models.Movie
 import dk.nodes.template.repositories.MovieRepository
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 class SaveMovieInterator @Inject constructor(
         private val movieRepository: MovieRepository
-) {
-    suspend fun saveMovie(movieArrayList: ArrayList<Movie>){
+) :BaseInputAsyncInteractor<ArrayList<Movie>,Unit> {
 
-        return movieRepository.saveMovies(movieArrayList)
+    override suspend fun invoke(input: ArrayList<Movie>) {
+        return movieRepository.saveMovies(input)
     }
+
 
 }

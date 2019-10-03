@@ -3,12 +3,10 @@ package dk.nodes.template.presentation.ui.main
 import androidx.lifecycle.viewModelScope
 import dk.nodes.template.domain.interactors.*
 import dk.nodes.template.models.Movie
-import dk.nodes.template.models.Post
 import dk.nodes.template.presentation.extensions.asResult
-import dk.nodes.template.repositories.MovieRepository
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
-import dk.nodes.template.presentation.ui.sample.SampleViewState
+import dk.nodes.template.presentation.ui.savedmovies.SavedMoviesViewState
 import dk.nodes.template.presentation.util.SingleEvent
 import dk.nodes.template.presentation.util.ViewErrorController
 import kotlinx.coroutines.Dispatchers
@@ -31,9 +29,6 @@ class MainActivityViewModel @Inject constructor(
         val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(moviaName) }
         state = mapResult(result)
 
-
-
-
     }
 
     private fun mapResult(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
@@ -46,21 +41,26 @@ class MainActivityViewModel @Inject constructor(
             )
             else -> MainActivityViewState()
         }
+
     }
 
     fun saveMovie(movieArrayList: ArrayList<Movie>) = viewModelScope.launch {
 
-        state = state.copy(isLoading = true)
-
-        withContext(Dispatchers.IO) {
-
-            saveMovieInterator.saveMovie(movieArrayList)
-        }
-        state = state.copy(isLoading = false)
-
+        val result = withContext(Dispatchers.IO) { saveMovieInterator.asResult().invoke(movieArrayList) }
+        state = mapSaveMovie(result)
 
     }
 
+
+    private fun mapSaveMovie(result: CompleteResult<Unit>): MainActivityViewState {
+        return when (result) {
+            is Fail -> state.copy(
+                    viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
+                    isLoading = false
+            )
+            else -> MainActivityViewState()
+        }
+    }
 
 
 }
