@@ -29,8 +29,6 @@ import java.time.format.FormatStyle
 
 
 class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
-
-
     private val saveMoviesArrayList = ArrayList<Movie>()
     private val viewModel by viewModel<MainActivityViewModel>()
     private val adapter = MoviesAdapter(this)
