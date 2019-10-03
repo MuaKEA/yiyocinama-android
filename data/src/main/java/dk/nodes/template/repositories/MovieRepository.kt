@@ -20,11 +20,14 @@ class MovieRepository @Inject constructor(
         var movieslisto: ArrayList<Movie> = ArrayList()
 
         val response = api.getCurrentMovieData(moviename).execute()
+
+
         if (response.isSuccessful) {
             val moviesResponse = response.body()
 
             if (moviesResponse != null) {
                 movieslisto.addAll(moviesResponse.result)
+
             }
         }
         return movieslisto
@@ -44,11 +47,9 @@ class MovieRepository @Inject constructor(
         try {
             val json = gson.toJson(list)
             sharedPreferences.edit().putString("savedMovies", json).apply()
-
         } catch (e: Exception) {
 
         }
-
     }
 
 }
