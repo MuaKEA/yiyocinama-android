@@ -33,7 +33,7 @@ class MainActivityViewModel @Inject constructor(
 
     private fun mapResult(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
         return when (result) {
-            is Success -> state.copy(movies = result.data, isLoading = false)
+            is Success -> state.copy(movies = result.data, isLoading = false , viewError = null)
             is Loading<*> -> state.copy(isLoading = true)
             is Fail -> state.copy(
                     viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),

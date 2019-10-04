@@ -35,11 +35,12 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
+        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).error(R.drawable.images).fit().into(holder.moviePhoto)
+
+        holder.moviename?.text = movies.get(position).name
 
         holder.root.setOnClickListener {
             onItemClickedListener?.invoke(movies.get(position))
-
         }
 
     }
@@ -55,7 +56,7 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each movies to
     val moviePhoto = itemView.movieImage
     val root = view.movie_item
-
+    val moviename = view.moviename
 
 
 

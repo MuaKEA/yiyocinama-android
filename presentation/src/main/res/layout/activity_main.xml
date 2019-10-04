@@ -22,18 +22,21 @@
         android:id="@+id/textInputLayout3"
         android:layout_width="413dp"
         android:layout_height="71dp"
-        android:background="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+
+
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/input_search"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/black"
+            android:autoText="false"
             android:hint="Search for movies"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
+            android:textColorHint="@android:color/holo_red_dark"
             android:textSize="24sp" />
 
 

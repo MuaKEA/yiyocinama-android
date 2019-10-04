@@ -38,7 +38,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         setContentView(R.layout.activity_main)
 
         see_saved_movie_btn.setOnClickListener(this)
-        setupRecyclerview()
+        updateRecyclerview()
         input_search.addTextChangedListener(this)
 
         viewModel.viewState.observeNonNull(this) { state ->
@@ -66,7 +66,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         }
     }
 
-    private fun setupRecyclerview() {
+    private fun updateRecyclerview() {
         // Creates a vertical Layout Manager
         rv_moviesList.layoutManager = GridLayoutManager(this, 3)
         // Access the RecyclerView Adapter and load the data into it
@@ -91,7 +91,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
             dialog.setCancelable(false)
             dialog.setContentView(R.layout.movieinfodiaglogview)
             dialog.moviename_txt.setText(movie.name)
-            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).fit().into(dialog.movie_images)
+            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
             dialog.language_txt.setText(movie.original_language)
 
             if (dialog.release_txt.text == "") {
@@ -135,7 +135,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
         if (savemovieswitch.isChecked) {
             saveMoviesArrayList.add(movie)
-            Log.d("movierepo" ,  " --> Mainactivity saving" + saveMoviesArrayList.toString() )
+            Log.d("movierepo", " --> Mainactivity saving" + saveMoviesArrayList.toString())
             viewModel.saveMovie(movie)
 
         }
@@ -150,6 +150,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
     }
 
     override fun afterTextChanged(s: Editable?) {
+
     }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -157,7 +158,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
         viewModel.moviesfun(s.toString())
-        setupRecyclerview()
+        updateRecyclerview()
     }
 
 
