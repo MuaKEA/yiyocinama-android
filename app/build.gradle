@@ -7,7 +7,8 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion sdks.compileSdkVersion
-    buildToolsVersion sdks.buildToolsVersion
+
+
     flavorDimensions "default"
 
     defaultConfig {
@@ -162,4 +163,5 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata:${versions.lifecycle}"
     kapt "androidx.lifecycle:lifecycle-compiler:${versions.lifecycle}"
     implementation "androidx.core:core-ktx:${versions.ktx}"
+
 }

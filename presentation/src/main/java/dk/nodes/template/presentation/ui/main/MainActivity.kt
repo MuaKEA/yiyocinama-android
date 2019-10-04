@@ -106,7 +106,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
             dialog.vote_average_txt.setText(movie.vote_average + "/10")
             dialog.overview_txt.setText(movie.overview)
             dialog.popularity.setText(movie.popularity)
-            val savemovieswitch = dialog.save_movie_switch
+            val savemovieswitch = dialog.svae_movie_switch
             val backbtn = dialog.findViewById(R.id.back_btn) as Button
 
             dialog.show()
