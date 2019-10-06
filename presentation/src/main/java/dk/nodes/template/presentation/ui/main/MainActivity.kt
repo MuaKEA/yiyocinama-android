@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
+import android.widget.SearchView
 import android.widget.Switch
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -29,7 +30,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
+class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTextListener {
+
+
     private val viewModel by viewModel<MainActivityViewModel>()
     private val adapter = MoviesAdapter(this)
 
@@ -39,7 +42,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
         see_saved_movie_btn.setOnClickListener(this)
         updateRecyclerview()
-        input_search.addTextChangedListener(this)
+        input_search.setOnQueryTextListener(this)
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
@@ -87,8 +90,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
 
         adapter.onItemClickedListener = { movie ->
 
-            val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
-            dialog.setCancelable(false)
+            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
+            dialog.setCancelable(true)
             dialog.setContentView(R.layout.movieinfodiaglogview)
             dialog.moviename_txt.setText(movie.name)
             Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
@@ -106,15 +109,19 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
             dialog.vote_average_txt.setText(movie.vote_average + "/10")
             dialog.overview_txt.setText(movie.overview)
             dialog.popularity.setText(movie.popularity)
-            val savemovieswitch = dialog.svae_movie_switch
+            val savemovieswitch = dialog.save_movie_switch
             val backbtn = dialog.findViewById(R.id.back_btn) as Button
 
             dialog.show()
 
             savemovieswitch.setOnClickListener {
-                Timber.e(savemovieswitch.isChecked.toString())
-                showMessage(savemovieswitch)
+              if(!savemovieswitch.isChecked){
+                  dialog.setCancelable(true)
 
+              }else{
+                  dialog.setCancelable(false)
+              }
+                showMessage(savemovieswitch)
             }
             backbtn.setOnClickListener {
                 saveObject(savemovieswitch, movie)
@@ -149,18 +156,15 @@ class MainActivity : BaseActivity(), View.OnClickListener, TextWatcher {
         }
     }
 
-    override fun afterTextChanged(s: Editable?) {
-
-    }
-
-    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-    }
-
-    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        viewModel.moviesfun(s.toString())
+    override fun onQueryTextChange(newText: String?): Boolean {
+        viewModel.moviesfun(newText.toString())
         updateRecyclerview()
-    }
 
+    return true}
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return true
+    }
 
 }
 

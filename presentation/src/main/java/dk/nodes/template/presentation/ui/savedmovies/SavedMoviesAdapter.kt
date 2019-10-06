@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
-import kotlinx.android.synthetic.main.recyclerview.view.*
-import kotlinx.android.synthetic.main.savedmovie_recyclerview.view.*
-import java.text.SimpleDateFormat
+import kotlinx.android.synthetic.main.savedmovie_recyclerview_row.view.*
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -30,7 +28,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.savedmovie_recyclerview, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.savedmovie_recyclerview_row, parent, false))
     }
 
     // Binds each movies in the ArrayList to a view

@@ -4,17 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.squareup.picasso.RequestCreator
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
-import kotlinx.android.synthetic.main.recyclerview.view.*
-import timber.log.Timber
-
-
+import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
 
 
 class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
@@ -29,7 +23,7 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     // Inflates the item views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.recyclerview, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_recylerview_row, parent, false))
     }
 
     // Binds each movies in the ArrayList to a view

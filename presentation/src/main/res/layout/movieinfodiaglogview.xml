@@ -25,6 +25,10 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="55dp"
+        android:clickable="false"
+        android:focusable="auto"
+        android:focusedByDefault="false"
+        android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -52,6 +56,7 @@
         android:layout_marginEnd="199dp"
         android:text="vote average:"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -59,11 +64,12 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="220dp"
+        android:layout_marginStart="222dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="221dp"
-        android:text="popularity"
+        android:text="popularity:"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.475"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -76,6 +82,7 @@
         android:layout_marginEnd="223dp"
         android:text="language:"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.485"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
@@ -86,6 +93,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="166dp"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/moviename_txt" />
@@ -97,6 +105,7 @@
         android:layout_marginStart="93dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="166dp"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/release_txt" />
@@ -105,9 +114,10 @@
         android:id="@+id/popularity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="114dp"
+        android:layout_marginStart="111dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="166dp"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/vote_average_txt" />
@@ -116,9 +126,10 @@
         android:id="@+id/language_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="87dp"
+        android:layout_marginStart="89dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="136dp"
+        android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView6"
         app:layout_constraintTop_toBottomOf="@+id/popularity" />
@@ -133,6 +144,7 @@
         android:layout_marginBottom="36dp"
         android:background="@drawable/whiteborder"
         android:textSize="24sp"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toTopOf="@+id/back_btn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -154,24 +166,20 @@
         app:layout_constraintTop_toBottomOf="@+id/overview_txt" />
 
     <Switch
-        android:id="@+id/svae_movie_switch"
-        android:layout_width="186dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="150dp"
-        android:background="@drawable/circlebuttons"
+        android:id="@+id/save_movie_switch"
+        android:layout_width="155dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="100dp"
         android:outlineAmbientShadowColor="#00F80303"
         android:outlineSpotShadowColor="#00FF0000"
         android:shadowColor="#00F80000"
-        android:switchTextAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:showText="false"
+        android:switchTextAppearance="@style/TextAppearance.AppCompat.Body1"
         android:text="Gem Film"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="@android:color/white"
-        android:thumbTint="@color/hockeyapp_background_white"
-        android:trackTint="@color/hockeyapp_background_white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/movie_images"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

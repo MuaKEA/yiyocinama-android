@@ -1,7 +1,10 @@
 package dk.nodes.template.repositories
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
@@ -92,6 +95,15 @@ class MovieRepository @Inject constructor(
 //
 //
 //    }
+
+
+
+    fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean{
+        val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo=connectivityManager.activeNetworkInfo
+        return  networkInfo!=null && networkInfo.isConnected
+    }
+
 
 }
 
