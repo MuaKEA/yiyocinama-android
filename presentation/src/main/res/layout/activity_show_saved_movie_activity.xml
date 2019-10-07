@@ -8,11 +8,29 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedmovie_rv"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="413dp"
+        android:layout_height="781dp"
+        android:layout_marginEnd="1dp"
         android:background="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigation_showmovies"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation_showmovies"
+        android:layout_width="418dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:itemIconTint="@color/hockeyapp_background_white"
+        app:itemTextColor="@color/hockeyapp_background_white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/savedmovie_rv"
+        app:menu="@menu/menu_mainactivity" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

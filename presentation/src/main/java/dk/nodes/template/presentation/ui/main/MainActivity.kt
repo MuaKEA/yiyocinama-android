@@ -1,8 +1,10 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.squareup.picasso.Picasso
 import dk.nodes.template.presentation.extensions.observeNonNull
@@ -14,9 +16,11 @@ import android.view.View
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
+import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -24,7 +28,8 @@ import java.time.format.FormatStyle
 
 
 
-class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
+class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
+
 
     private val viewModel by viewModel<MainActivityViewModel>()
     private val adapter = MoviesAdapter(this)
@@ -37,7 +42,7 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
         //see_saved_movie_btn.setOnClickListener(this)
         updateRecyclerview()
         input_search.setOnQueryTextListener(this)
-
+        bottomNavigation_View.setOnNavigationItemSelectedListener(this)
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
@@ -126,12 +131,17 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
         }
     }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-  //  override fun onClick(v: View?) {
-     //   var intent = Intent(this, ShowSavedMovieActivity::class.java)
-   //     startActivity(intent)
+            if(item.itemId == R.id.navigation_savedphoto){
 
-  //  }
+
+                 startActivity(Intent(this, ShowSavedMovieActivity::class.java))
+             }
+
+    return true
+    }
+
 
     private fun saveObject(savemovieswitch: Switch, movie: Movie) {
         var saveMoviesArrayList = ArrayList<Movie>()

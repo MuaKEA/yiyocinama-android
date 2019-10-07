@@ -11,18 +11,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_show_saved_movie_activity.*
 import timber.log.Timber
 import android.app.AlertDialog
-import android.view.Window
+import android.content.Intent
+import android.view.MenuItem
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
+import dk.nodes.template.presentation.ui.main.MainActivity
 
 
-class ShowSavedMovieActivity : BaseActivity() {
+class ShowSavedMovieActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
     private val viewModel by viewModel<ShowSavedMovieViewModel>()
     private val adapter = SavedMoviesAdapter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_saved_movie_activity)
-
+        bottomNavigation_showmovies.setOnNavigationItemSelectedListener(this)
 
         viewModel.fetchSavedMovies()
 
@@ -87,7 +90,16 @@ class ShowSavedMovieActivity : BaseActivity() {
             Snackbar.make(rv_moviesList, "Error : Movie was not Deleted", Snackbar.LENGTH_LONG).show()
         }
     }
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
+        if(item.itemId == R.id.navigation_search){
+
+
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+
+        return true
+    }
 
 }
 
