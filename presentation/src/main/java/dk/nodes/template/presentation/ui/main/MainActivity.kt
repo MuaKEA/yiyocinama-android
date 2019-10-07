@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.widget.Toast
 import android.view.View
+import android.view.Window
 import android.widget.SearchView
 import android.widget.Switch
 import androidx.recyclerview.widget.GridLayoutManager
@@ -39,10 +40,12 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        viewModel.isDeviceOnlineCheck(this)
 
         see_saved_movie_btn.setOnClickListener(this)
         updateRecyclerview()
         input_search.setOnQueryTextListener(this)
+
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
@@ -55,7 +58,6 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
             error_view.visibility = View.INVISIBLE
             adapter.addMovies(movieList)
             adapter.notifyDataSetChanged()
-
         }
     }
 
@@ -76,6 +78,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         showDialog()
+
     }
 
 
@@ -93,6 +96,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
             val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
             dialog.setCancelable(true)
             dialog.setContentView(R.layout.movieinfodiaglogview)
+
             dialog.moviename_txt.setText(movie.name)
             Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
             dialog.language_txt.setText(movie.original_language)

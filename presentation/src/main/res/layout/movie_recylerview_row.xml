@@ -13,7 +13,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="220dp"
-        android:background="@drawable/roundcornersstyling">
+        android:layout_marginBottom="2dp"
+        >
 
         <TextView
             android:id="@+id/moviename"
@@ -29,14 +30,15 @@
 
         <ImageView
             android:id="@+id/movieImage"
-            android:layout_width="133dp"
-            android:layout_height="157dp"
+            android:layout_width="116dp"
+            android:layout_height="138dp"
             android:layout_gravity="bottom|top"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="20dp"
-            android:background="@drawable/roundcornersstyling"
+            android:scaleType="fitXY"
+            android:background="@drawable/movieroundcorners"
             android:contentDescription="this is the image for movie"
             android:src="@drawable/images" />
 

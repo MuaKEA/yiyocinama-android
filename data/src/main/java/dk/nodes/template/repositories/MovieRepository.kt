@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.ConnectivityManager
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.network.MovieService
+import java.io.IOException
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -46,17 +46,17 @@ class MovieRepository @Inject constructor(
         }
     }
 
-    suspend fun saveMovie(movie : Movie) : ArrayList<Movie> {
-        val moviesList  = ArrayList<Movie>()
+    suspend fun saveMovie(movie: Movie): ArrayList<Movie> {
+        val moviesList = ArrayList<Movie>()
 
         try {
-            if(getSavedMovies().size != 0){
+            if (getSavedMovies().size != 0) {
                 moviesList.add(movie)
                 moviesList.addAll(getSavedMovies())
                 sharedPreferences.edit().clear().apply()
 
-                Log.d("movierepo" ,moviesList.toString())
-            }else{
+                Log.d("movierepo", moviesList.toString())
+            } else {
                 moviesList.add(movie)
             }
 
@@ -72,7 +72,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun deleteMovies(movie: Movie): ArrayList<Movie> {
         val movieArrayList = getSavedMovies()
-            movieArrayList.remove(movie)
+        movieArrayList.remove(movie)
         val json = gson.toJson(movieArrayList)
         sharedPreferences.edit().putString("savedMovies", json).apply()
 
@@ -97,14 +97,18 @@ class MovieRepository @Inject constructor(
 //    }
 
 
+    fun isOnlineCheck(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        if (networkInfo != null && networkInfo.isConnected) {
 
-    fun verifyAvailableNetwork(activity:AppCompatActivity):Boolean{
-        val connectivityManager=activity.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo=connectivityManager.activeNetworkInfo
-        return  networkInfo!=null && networkInfo.isConnected
+            return true
+
+        } else {
+
+            throw IOException("No internet")
+        }
+
     }
 
-
 }
-
-

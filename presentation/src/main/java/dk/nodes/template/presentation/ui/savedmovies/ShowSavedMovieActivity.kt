@@ -11,6 +11,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_show_saved_movie_activity.*
 import timber.log.Timber
 import android.app.AlertDialog
+import android.view.Window
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -21,6 +22,7 @@ class ShowSavedMovieActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_saved_movie_activity)
+
 
         viewModel.fetchSavedMovies()
 
