@@ -9,8 +9,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_moviesList"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="416dp"
+        android:layout_height="712dp"
         android:layout_marginBottom="60dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,11 +21,13 @@
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayout3"
         android:layout_width="413dp"
-        android:layout_height="71dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="718dp"
+        app:iconifiedByDefault="false"
+        app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:iconifiedByDefault="false"
         app:queryHint="Your hint text">
 
         <SearchView
@@ -38,23 +40,10 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
-        android:id="@+id/see_saved_movie_btn"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="#008000"
-        android:text="My saved movies"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_moviesList"
-        app:layout_constraintVertical_bias="1.0" />
-
     <ImageView
         android:id="@+id/error_view"
-        android:layout_width="413dp"
-        android:layout_height="604dp"
+        android:layout_width="411dp"
+        android:layout_height="613dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -62,6 +51,20 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
         app:srcCompat="@drawable/images" />
 
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="409dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="800dp"
+        android:layout_marginBottom="16dp"
+        android:background="@android:color/darker_gray"
+        app:itemIconTint="@color/hockeyapp_background_white"
+        app:itemTextColor="@color/hockeyapp_background_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/menu_mainactivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

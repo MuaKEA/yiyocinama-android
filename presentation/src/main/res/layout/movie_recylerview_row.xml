@@ -30,16 +30,16 @@
 
         <ImageView
             android:id="@+id/movieImage"
-            android:layout_width="116dp"
-            android:layout_height="138dp"
+            android:layout_width="131dp"
+            android:layout_height="152dp"
             android:layout_gravity="bottom|top"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginBottom="20dp"
-            android:scaleType="fitXY"
-            android:background="@drawable/movieroundcorners"
+            android:background="@drawable/roundcornersstyling"
             android:contentDescription="this is the image for movie"
+            android:scaleType="centerCrop"
             android:src="@drawable/images" />
 
     </androidx.cardview.widget.CardView>

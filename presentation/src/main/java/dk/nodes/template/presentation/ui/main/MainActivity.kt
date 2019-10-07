@@ -1,38 +1,30 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.app.Dialog
-import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
-import android.widget.Button
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.squareup.picasso.Picasso
-import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
-import android.widget.Toast
 import android.view.View
-import android.view.Window
-import android.widget.SearchView
-import android.widget.Switch
+import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.models.Movie
-import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
+import dk.nodes.template.presentation.R
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
 
-class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTextListener {
 
+class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     private val viewModel by viewModel<MainActivityViewModel>()
     private val adapter = MoviesAdapter(this)
@@ -42,7 +34,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
         setContentView(R.layout.activity_main)
         viewModel.isDeviceOnlineCheck(this)
 
-        see_saved_movie_btn.setOnClickListener(this)
+        //see_saved_movie_btn.setOnClickListener(this)
         updateRecyclerview()
         input_search.setOnQueryTextListener(this)
 
@@ -135,11 +127,11 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
         }
     }
 
-    override fun onClick(v: View?) {
-        var intent = Intent(this, ShowSavedMovieActivity::class.java)
-        startActivity(intent)
+  //  override fun onClick(v: View?) {
+     //   var intent = Intent(this, ShowSavedMovieActivity::class.java)
+   //     startActivity(intent)
 
-    }
+  //  }
 
     private fun saveObject(savemovieswitch: Switch, movie: Movie) {
         var saveMoviesArrayList = ArrayList<Movie>()
@@ -164,7 +156,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, SearchView.OnQueryTex
         viewModel.moviesfun(newText.toString())
         updateRecyclerview()
 
-    return true}
+    return true
+    }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         return true

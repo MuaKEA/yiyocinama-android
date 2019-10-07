@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">presentation</string>
+    <string name="Search_Movies">search movies</string>
+    <string name="saved_Movies">savedMovies</string>
+
+
 </resources>

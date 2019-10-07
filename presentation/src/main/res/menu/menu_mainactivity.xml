@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_search"
+        android:icon="@drawable/searchimage"
+        android:title="@string/Search_Movies" />
+
+    <item
+        android:id="@+id/navigation_savedphoto"
+        android:icon="@drawable/binphoto"
+        android:title="@string/saved_Movies" />
+
+
+</menu>
+
