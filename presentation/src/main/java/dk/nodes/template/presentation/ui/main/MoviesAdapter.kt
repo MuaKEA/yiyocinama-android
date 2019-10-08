@@ -8,11 +8,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+
 import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
 
 
 class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
-    var onItemClickedListener: ((movie: Movie) ->Unit?)? = null
+    var onItemClickedListener: ((movie: Movie) -> Unit?)? = null
 
 
     val movies: ArrayList<Movie> = ArrayList()
@@ -29,8 +31,8 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).error(R.drawable.images).fit().into(holder.moviePhoto)
-
+        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path)
+                .error(R.drawable.images).fit().into(holder.moviePhoto)
         holder.moviename?.text = movies.get(position).name
 
         holder.root.setOnClickListener {
@@ -51,7 +53,6 @@ class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val moviePhoto = itemView.movieImage
     val root = view.movie_item
     val moviename = view.moviename
-
 
 
 }

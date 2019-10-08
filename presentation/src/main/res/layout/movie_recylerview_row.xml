@@ -7,42 +7,38 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    android:orientation="horizontal">
+    android:padding="12dp"
+    android:orientation="vertical">
 
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardViewbq
+        android:layout_width="150dp"
         android:layout_height="220dp"
-        android:layout_marginBottom="2dp"
-        >
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/moviename"
-            android:layout_width="132dp"
-            android:layout_height="50dp"
-            android:layout_gravity="bottom|center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="0dp"
-
-            android:text="" />
 
         <ImageView
             android:id="@+id/movieImage"
-            android:layout_width="131dp"
-            android:layout_height="152dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="bottom|top"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/roundcornersstyling"
             android:contentDescription="this is the image for movie"
             android:scaleType="centerCrop"
             android:src="@drawable/images" />
 
-    </androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardViewbq>
+
+    <TextView
+        android:id="@+id/moviename"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|center"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="12dp"
+        android:text="" />
 
 
 </LinearLayout>

@@ -70,7 +70,7 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
 
     private fun updateRecyclerview() {
         // Creates a vertical Layout Manager
-        rv_moviesList.layoutManager = GridLayoutManager(this, 3)
+        rv_moviesList.layoutManager = GridLayoutManager(this, 2)
         // Access the RecyclerView Adapter and load the data into it
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
