@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.movieinfodiaglogview.*
 import net.hockeyapp.android.UpdateManager
 import android.view.View
+import android.view.WindowManager
 import android.widget.*
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
@@ -21,11 +22,11 @@ import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
+import jp.wasabeef.picasso.transformations.GrayscaleTransformation
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-
 
 
 class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -38,8 +39,8 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel.isDeviceOnlineCheck(this)
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        //see_saved_movie_btn.setOnClickListener(this)
         updateRecyclerview()
         input_search.setOnQueryTextListener(this)
         bottomNavigation_View.setOnNavigationItemSelectedListener(this)
@@ -78,24 +79,22 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
 
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         // If we checked for hockey updates, unregisterak
         UpdateManager.unregister()
     }
 
-
     private fun showDialog() {
 
         adapter.onItemClickedListener = { movie ->
 
-            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_NoActionBar_Fullscreen)
+            val dialog = Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen)
             dialog.setCancelable(true)
             dialog.setContentView(R.layout.movieinfodiaglogview)
 
             dialog.moviename_txt.setText(movie.name)
-            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
+            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).transform(GrayscaleTransformation()).error(R.drawable.images).fit().into(dialog.movie_images)
             dialog.language_txt.setText(movie.original_language)
 
             if (dialog.release_txt.text == "") {
@@ -116,12 +115,12 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
             dialog.show()
 
             savemovieswitch.setOnClickListener {
-              if(!savemovieswitch.isChecked){
-                  dialog.setCancelable(true)
+                if (!savemovieswitch.isChecked) {
+                    dialog.setCancelable(true)
 
-              }else{
-                  dialog.setCancelable(false)
-              }
+                } else {
+                    dialog.setCancelable(false)
+                }
                 showMessage(savemovieswitch)
             }
             backbtn.setOnClickListener {
@@ -131,17 +130,19 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
 
         }
     }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-            if(item.itemId == R.id.navigation_savedphoto){
+        if (item.itemId == R.id.navigation_savedphoto) {
 
+            startActivity(Intent(this, ShowSavedMovieActivity::class.java))
+        } else {
+            Toast.makeText(this, "Ready in search", Toast.LENGTH_LONG).show()
 
-                 startActivity(Intent(this, ShowSavedMovieActivity::class.java))
-             }
+        }
 
-    return true
+        return true
     }
-
 
     private fun saveObject(savemovieswitch: Switch, movie: Movie) {
         var saveMoviesArrayList = ArrayList<Movie>()
@@ -166,7 +167,7 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener, BottomNavig
         viewModel.moviesfun(newText.toString())
         updateRecyclerview()
 
-    return true
+        return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
