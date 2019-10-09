@@ -8,5 +8,9 @@
     android:windowSoftInputMode="adjustPan|adjustResize"
     android:id="@+id/root_layout">
 
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

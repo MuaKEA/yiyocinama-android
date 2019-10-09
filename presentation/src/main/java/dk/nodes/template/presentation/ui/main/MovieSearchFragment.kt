@@ -36,7 +36,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
 
 
     }
- 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -59,7 +59,10 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
         }
 
         input_search.setOnQueryTextListener(this)
+
         bottomNavigation_View.setOnNavigationItemSelectedListener(this)
+        adapter.notifyDataSetChanged()
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -92,6 +95,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
 
     private fun handleMovies(viewState: MainActivityViewState) {
         viewState.movies?.let { movieList ->
+         Timber.e(movieList.toString())
             error_view.visibility = View.INVISIBLE
             adapter.addMovies(movieList)
             adapter.notifyDataSetChanged()
