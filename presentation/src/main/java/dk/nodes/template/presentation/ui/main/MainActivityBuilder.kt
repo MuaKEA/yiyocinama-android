@@ -7,6 +7,7 @@ import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import dk.nodes.template.presentation.injection.ViewModelKey
 import dk.nodes.template.presentation.ui.sample.SampleBuilder
+import dk.nodes.template.presentation.ui.splash.SplashFragment
 
 @Module
 internal abstract class MainActivityBuilder {
@@ -22,4 +23,7 @@ internal abstract class MainActivityBuilder {
         ]
     )
     internal abstract fun mainActivity(): MainActivity
+
+    @ContributesAndroidInjector
+    abstract fun MovieSearchFragment(): MovieSearchFragment
 }

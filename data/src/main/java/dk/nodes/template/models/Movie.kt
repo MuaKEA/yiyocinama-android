@@ -1,5 +1,6 @@
 package dk.nodes.template.models
 
+import android.text.BoringLayout
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
@@ -20,7 +21,6 @@ data class Movie(
         var overview: String,
         @SerializedName("id")
         var id: String
-
 
 
 ) {

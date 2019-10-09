@@ -17,4 +17,5 @@ data class MainActivityViewState(
         val viewError: SingleEvent<ViewError>? = null
 
 
+
         )

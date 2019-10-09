@@ -8,12 +8,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
 
 
-class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class MoviesAdapter(val context: Context?) : RecyclerView.Adapter<ViewHolder>() {
     var onItemClickedListener: ((movie: Movie) -> Unit?)? = null
 
 

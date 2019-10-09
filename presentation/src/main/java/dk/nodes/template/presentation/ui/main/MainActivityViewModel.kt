@@ -7,7 +7,6 @@ import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.extensions.asResult
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
-import dk.nodes.template.presentation.ui.savedmovies.SavedMoviesViewState
 import dk.nodes.template.presentation.util.SingleEvent
 import dk.nodes.template.presentation.util.ViewErrorController
 import kotlinx.coroutines.Dispatchers
@@ -19,7 +18,9 @@ class MainActivityViewModel @Inject constructor(
         private val nStackPresenter: NStackPresenter,
         moviesInteractor: MoviesInteractor,
         private val saveMovieInterator: SaveMovieInterator,
-        private val internetCheckInteractor: internetCheckInteractor
+        private val InternetCheckInteractor: InternetCheckInteractor,
+        private val movieSavedInteractor: movieSavedInteractor,
+        private val deleteMovieInteractor: DeleteMovieInteractor
 
 ) : BaseViewModel<MainActivityViewState>() {
     override val initState: MainActivityViewState = MainActivityViewState()
@@ -52,7 +53,23 @@ class MainActivityViewModel @Inject constructor(
         state = mapSaveMovie(result)
 
     }
-
+//
+//    fun movieSavedCheck(movie: Movie) = viewModelScope.launch {
+//
+//        val result = withContext(Dispatchers.IO) { movieSavedInteractor.asResult().invoke(movie) }
+//        state = mapMovieSavedCheck(result)
+//
+//    }
+//
+//    private fun mapMovieSavedCheck(result: CompleteResult<Boolean>): MainActivityViewState {
+//            return when (result) {
+//                is Success -> state.copy(isSaved = result.data, isLoading = false)
+//                is Fail -> state.copy(
+//                        viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
+//                        isLoading = false
+//                )
+//                else -> MainActivityViewState()
+//            }
 
     private fun mapSaveMovie(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
         return when (result) {
@@ -64,14 +81,14 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-     fun isDeviceOnlineCheck(context: Context) = viewModelScope.launch {
+     fun isDeviceOnlineCheck() = viewModelScope.launch {
 
-        val result = withContext(Dispatchers.IO) { internetCheckInteractor.asResult().invoke(context) }
-        state = isDeviceOnlie(result)
+        val result = withContext(Dispatchers.IO) { InternetCheckInteractor.asResult().invoke() }
+        state = isDeviceOnline(result)
 
     }
 
-    private fun isDeviceOnlie(result: CompleteResult<Boolean>): MainActivityViewState {
+    private fun isDeviceOnline(result: CompleteResult<Boolean>): MainActivityViewState {
         return when (result) {
             is Fail -> state.copy(
                     viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
@@ -81,5 +98,22 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun deleteMovie(movie: Movie) = viewModelScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) { deleteMovieInteractor.asResult().invoke(movie) }
+        state = mapSavedMovies(result)
+
+    }
+
+    private fun mapSavedMovies(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
+        return when (result) {
+            is Success -> state.copy(movies = result.data, isLoading = false)
+            is Loading<*> -> state.copy(isLoading = true)
+            is Fail -> state.copy(
+                    viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
+                    isLoading = false
+            )
+            else -> MainActivityViewState()
+        }
+    }
 
 }

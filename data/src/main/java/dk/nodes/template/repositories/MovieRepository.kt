@@ -21,7 +21,7 @@ class MovieRepository @Inject constructor(
 
 
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
-        var movieslisto: ArrayList<Movie> = ArrayList()
+        val movieslisto: ArrayList<Movie> = ArrayList()
 
         val response = api.getCurrentMovieData(moviename).execute()
         if (response.isSuccessful) {
@@ -50,7 +50,8 @@ class MovieRepository @Inject constructor(
         val moviesList = ArrayList<Movie>()
 
         try {
-            if (getSavedMovies().size != 0) {
+            if (getSavedMovies().size != 0 && !getSavedMovies().contains(movie)) {
+              //  movie.isSaved = true
                 moviesList.add(movie)
                 moviesList.addAll(getSavedMovies())
                 sharedPreferences.edit().clear().apply()
@@ -80,35 +81,13 @@ class MovieRepository @Inject constructor(
         return movieArrayList
     }
 
-//    suspend fun saveMovieResualts(movieList : ArrayList<Movie>){
-//        var gson = Gson()
-//        val itemType = object : TypeToken<ArrayList>() {}.type
-//
-//        if(sharedPreferences.getString("movieCache", "") == "") {
-//
-//
-//
-//
-//        }
-//        sharedPreferences.edit().clear()
-//        sharedPreferences.edit().putString("movieCache", gson.toJson(movieList)).apply()
-//
-//
-//    }
+    suspend fun isMovieSaved(movie: Movie): Boolean {
 
-
-    fun isOnlineCheck(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val networkInfo = connectivityManager.activeNetworkInfo
-        if (networkInfo != null && networkInfo.isConnected) {
-
-            return true
-
-        } else {
-
-            throw IOException("No internet")
+        if (getSavedMovies().size == 0) {
+            return false
         }
 
+        return getSavedMovies().contains(movie)
     }
 
 }

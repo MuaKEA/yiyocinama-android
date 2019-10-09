@@ -16,6 +16,7 @@ import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.ui.main.MainActivity
+import kotlinx.android.synthetic.main.fragment_movie_search.*
 
 
 class ShowSavedMovieActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
