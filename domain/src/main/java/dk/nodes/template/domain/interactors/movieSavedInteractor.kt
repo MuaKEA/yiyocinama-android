@@ -9,8 +9,8 @@ class movieSavedInteractor @Inject constructor(
 ): BaseInputAsyncInteractor<Movie, Boolean> {
 
 
-    override suspend fun invoke(movie: Movie): Boolean {
-        return movieRepository.isMovieSaved(movie)
+    override suspend fun invoke(input: Movie): Boolean {
+        return movieRepository.isMovieSaved(input)
     }
 
 }

@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.R
+import dk.nodes.template.presentation.ui.base.BaseFragment
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import timber.log.Timber
 
@@ -32,47 +33,13 @@ class MainActivity : BaseActivity(){
 
 
     }
+
+    fun replaceFragment(fragment: BaseFragment) {
+        supportFragmentManager?.beginTransaction()?.replace(R.id.main_frame, fragment)?.commit()
+    }
 }
 
-    private fun showDialog() {
 
-       // adapter.onItemClickedListener = { movie ->
-         //   Timber.e(movie.toString())
-        }            //            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
-//            dialog.setCancelable(true)
-//            dialog.setContentView(R.layout.movieinfodiaglogview)
-//            dialog.moviename_txt.setText(movie.name)
-//            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
-//            dialog.language_txt.setText(movie.original_language)
-//
-//            if (dialog.release_txt.text == "") {
-//                dialog.release_txt.setText("Unknown")
-//
-//            } else {
-//
-//                val localdate = LocalDate.of(movie.releaseDate!!.substring(0, 4).toInt(), movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-//                dialog.release_txt.setText(localdate.toString())
-//            }
-//
-//            dialog.vote_average_txt.setText(movie.vote_average + "/10")
-//            dialog.overview_txt.setText(movie.overview)
-//            dialog.popularity.setText(movie.popularity)
-//            val savemovieswitch = dialog.save_movie_switch
-//
-//            dialog.show()
-//            savemovieswitch.setOnClickListener {
-//                if (!savemovieswitch.isChecked) {
-//
-//                    viewModel.deleteMovie(movie)
-//                    showMessage(savemovieswitch)
-//
-//                } else {
-//
-//                    viewModel.saveMovie(movie)
-//                    showMessage(savemovieswitch)
-//
-//                }
-//            }
 
 
 

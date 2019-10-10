@@ -25,6 +25,9 @@ import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
 
 
+
+
+
 class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
 
@@ -134,17 +137,9 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
     private fun showDialog() {
 
         adapter?.onItemClickedListener = { movie ->
-            Timber.e(movie.toString())
-           
-            getActivity().getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.Layout_container, nextFrag, "findThisFragment")
-                    .addToBackStack(null)
-                    .commit();
+            (activity as? MainActivity)?.replaceFragment(ShowMovieDetails.newInstance(movie))
 
-
-
-
-        }            //            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
