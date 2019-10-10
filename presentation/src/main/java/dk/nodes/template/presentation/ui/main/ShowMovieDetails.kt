@@ -12,8 +12,10 @@ import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 
 import dk.nodes.template.presentation.R
+import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_movie_details.*
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -23,53 +25,65 @@ private const val ARG_PARAM1 = "param1"
 
 class ShowMovieDetails : BaseFragment() {
     private val viewModel by viewModel<MainActivityViewModel>()
-
-    private var movie : Movie
+    private var moviePosition : Int = 0
     private var listener: OnFragmentInteractionListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            movie = it.getParcelable(ARG_PARAM1)
+            moviePosition = it.getInt(ARG_PARAM1)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.viewState.observeNonNull(this) { state ->
+            handleMovies(state)
+        }
+    }
 
-            moviename_txt.setText(movie.name)
-            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
-            language_txt.setText(movie.original_language)
 
-            if (release_txt.text == "") {
-                release_txt.setText("Unknown")
+    private fun handleMovies(viewState: MainActivityViewState) {
+        viewState.movies?.let { movieList ->
+            Timber.e(movieList.toString())
+            moveDetails(movieList.get(moviePosition))
+        }
+    }
+
+
+    fun moveDetails(movie : Movie){
+
+        moviename_txt.setText(movie.name)
+        Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
+        language_txt.setText(movie.original_language)
+
+        if (release_txt.text == "") {
+            release_txt.setText("Unknown")
+
+        } else {
+
+            val localdate = LocalDate.of(movie.releaseDate!!.substring(0, 4).toInt(), movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+            release_txt.setText(localdate.toString())
+        }
+
+        vote_average_txt.setText(movie.vote_average + "/10")
+        overview_txt.setText(movie.overview)
+        popularity.setText(movie.popularity)
+
+        save_movie_switch.setOnClickListener {
+            if (!save_movie_switch.isChecked) {
+
+                viewModel.deleteMovie(movie)
+                showMessage(save_movie_switch)
 
             } else {
 
-                val localdate = LocalDate.of(movie.releaseDate!!.substring(0, 4).toInt(), movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-                release_txt.setText(localdate.toString())
+                viewModel.saveMovie(movie)
+                showMessage(save_movie_switch)
+
             }
-
-            vote_average_txt.setText(movie.vote_average + "/10")
-            overview_txt.setText(movie.overview)
-            popularity.setText(movie.popularity)
-
-        save_movie_switch.setOnClickListener {
-                if (!save_movie_switch.isChecked) {
-
-                    viewModel.deleteMovie(movie)
-                    showMessage(save_movie_switch)
-
-                } else {
-
-                    viewModel.saveMovie(movie)
-                    showMessage(save_movie_switch)
-
-                }
-            }
-
-
+        }
 
     }
 
@@ -134,10 +148,10 @@ class ShowMovieDetails : BaseFragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Movie) =
+        fun newInstance(param1: Int) =
                 ShowMovieDetails().apply {
                     arguments = Bundle().apply {
-                        putParcelable(ARG_PARAM1, param1)
+                        getInt(ARG_PARAM1, param1)
                     }
                 }
     }

@@ -1,68 +1,32 @@
 package dk.nodes.template.models
 
-import android.os.Parcel
-import android.os.Parcelable
 import android.text.BoringLayout
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
 data class Movie(
         @SerializedName("original_title")
-        var name: String?,
+        var name: String,
         @SerializedName("original_language")
-         var original_language: String?,
+         var original_language: String,
         @SerializedName("release_date")
         var releaseDate: String?,
         @SerializedName("popularity")
-        var popularity: String?,
+        var popularity: String,
         @SerializedName("poster_path")
-        var poster_path: String?,
+        var poster_path: String,
         @SerializedName("vote_average")
-        var vote_average: String?,
+        var vote_average: String,
         @SerializedName("overview")
-        var overview: String?,
+        var overview: String,
         @SerializedName("id")
-        var id: String?
+        var id: String,
+        var isSaved : Boolean = false
 
 
-) : Parcelable {
-        constructor(parcel: Parcel) : this(
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString(),
-                parcel.readString())
-
+) {
         override fun toString(): String {
                 return "Movie(name='$name', original_language='$original_language', releaseDate='$releaseDate', popularity='$popularity', poster_path='$poster_path', vote_average='$vote_average', overview='$overview', id='$id')"
-        }
-
-        override fun writeToParcel(parcel: Parcel, flags: Int) {
-                parcel.writeString(name)
-                parcel.writeString(original_language)
-                parcel.writeString(releaseDate)
-                parcel.writeString(popularity)
-                parcel.writeString(poster_path)
-                parcel.writeString(vote_average)
-                parcel.writeString(overview)
-                parcel.writeString(id)
-        }
-
-        override fun describeContents(): Int {
-                return 0
-        }
-
-        companion object CREATOR : Parcelable.Creator<Movie> {
-                override fun createFromParcel(parcel: Parcel): Movie {
-                        return Movie(parcel)
-                }
-
-                override fun newArray(size: Int): Array<Movie?> {
-                        return arrayOfNulls(size)
-                }
         }
 }
 

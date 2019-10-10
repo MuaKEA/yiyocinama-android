@@ -44,12 +44,7 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-
-        val view: View  = inflater.inflate(R.layout.fragment_movie_search, container, false)
-
-
-
-        return view
+        return inflater.inflate(R.layout.fragment_movie_search, container, false)
 
     }
 
@@ -101,7 +96,6 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
                     }
                 }
 
-
     private fun handleMovies(viewState: MainActivityViewState) {
         viewState.movies?.let { movieList ->
          Timber.e(movieList.toString())
@@ -141,10 +135,16 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
 
         adapter?.onItemClickedListener = { movie ->
             Timber.e(movie.toString())
+           
+            getActivity().getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.Layout_container, nextFrag, "findThisFragment")
+                    .addToBackStack(null)
+                    .commit();
+
+
+
+
         }            //            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
-
-
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -159,9 +159,6 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
 
         return true
     }
-
-
-
 
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.moviesfun(newText.toString())
