@@ -10,12 +10,16 @@ import android.widget.Switch
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
-
 import dk.nodes.template.presentation.R
-import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_movie_details.*
-import timber.log.Timber
+import kotlinx.android.synthetic.main.fragment_movie_details.language_txt
+import kotlinx.android.synthetic.main.fragment_movie_details.movie_images
+import kotlinx.android.synthetic.main.fragment_movie_details.moviename_txt
+import kotlinx.android.synthetic.main.fragment_movie_details.overview_txt
+import kotlinx.android.synthetic.main.fragment_movie_details.popularity
+import kotlinx.android.synthetic.main.fragment_movie_details.release_txt
+import kotlinx.android.synthetic.main.fragment_movie_details.save_movie_switch
+import kotlinx.android.synthetic.main.fragment_movie_details.vote_average_txt
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -23,11 +27,11 @@ import java.time.format.FormatStyle
 private const val ARG_PARAM1 = "movie"
 
 
-class ShowMovieDetails : BaseFragment() {
+class ShowMovieDetailsFragment : BaseFragment() {
     private val viewModel by viewModel<MainActivityViewModel>()
-    private var moviePosition: Int = 0
     private var listener: OnFragmentInteractionListener? = null
-    private var movie: Movie? = null
+    private var movie : Movie?=null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -38,21 +42,10 @@ class ShowMovieDetails : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.viewState.observeNonNull(this) { state ->
-            handleMovies(state)
-        }
+        movieDetails(movie)
     }
 
-
-    private fun handleMovies(viewState: MainActivityViewState) {
-        viewState.movies?.let { movieList ->
-            Timber.e(movieList.toString())
-
-        }
-    }
-
-
-    fun moveDetails(Movie: Movie) {
+    fun movieDetails(movie: Movie?) {
 
         moviename_txt.setText(movie?.name)
         Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie?.poster_path).error(R.drawable.images).fit().into(movie_images)
@@ -143,12 +136,12 @@ class ShowMovieDetails : BaseFragment() {
              *
              * @param param1 Parameter 1.
              * @param param2 Parameter 2.
-             * @return A new instance of fragment ShowMovieDetails.
+             * @return A new instance of fragment ShowMovieDetailsFragment.
              */
             // TODO: Rename and change types and number of parameters
             @JvmStatic
             fun newInstance(movie: Movie) =
-                    ShowMovieDetails().apply {
+                    ShowMovieDetailsFragment().apply {
                         arguments = Bundle().apply {
                             putParcelable(ARG_PARAM1, movie)
                         }

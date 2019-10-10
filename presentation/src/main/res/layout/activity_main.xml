@@ -18,5 +18,19 @@
         app:layout_constraintTop_toTopOf="parent">
 
     </FrameLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation_Main"
+        android:layout_width="418dp"
+        android:layout_height="0dp"
+        android:background="@android:color/darker_gray"
+        app:itemIconTint="@color/hockeyapp_background_white"
+        app:itemTextColor="@color/hockeyapp_background_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_frame"
+        app:menu="@menu/menu_mainactivity" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

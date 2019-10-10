@@ -1,15 +1,11 @@
 package dk.nodes.template.presentation.ui.main
 
-import android.app.Activity
-import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
-import android.widget.Adapter
 import android.widget.SearchView
-import android.widget.Switch
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
@@ -137,7 +133,7 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
     private fun showDialog() {
 
         adapter?.onItemClickedListener = { movie ->
-            (activity as? MainActivity)?.replaceFragment(ShowMovieDetails.newInstance(movie))
+            (activity as? MainActivity)?.replaceFragment(ShowMovieDetailsFragment.newInstance(movie))
 
         }
     }
