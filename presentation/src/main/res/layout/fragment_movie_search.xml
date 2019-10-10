@@ -13,8 +13,8 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_moviesList"
-            android:layout_width="402dp"
-            android:layout_height="703dp"
+            android:layout_width="422dp"
+            android:layout_height="765dp"
             android:layout_marginTop="88dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="765dp"
+    android:background="@android:color/black"
     tools:context=".ui.main.MovieDetailsFragment">
-
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,8 +85,8 @@
             android:layout_marginStart="248dp"
             android:layout_marginTop="48dp"
             android:text="language:"
-            android:textSize="16dp"
             android:textColor="@android:color/white"
+            android:textSize="16dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
@@ -170,8 +165,8 @@
 
         <TextView
             android:id="@+id/overview_txt"
-            android:layout_width="354dp"
-            android:layout_height="26dp"
+            android:layout_width="371dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="70dp"
             android:layout_marginEnd="2dp"
             android:textColor="@android:color/white"
@@ -182,5 +177,4 @@
             app:layout_constraintTop_toBottomOf="@+id/moviename_txt" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-</FrameLayout>
+</ScrollView>
