@@ -10,9 +10,10 @@ import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 
 import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
+import timber.log.Timber
 
 
-class MoviesAdapter(val context: Context?) : RecyclerView.Adapter<ViewHolder>() {
+class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     var onItemClickedListener: ((movie: Movie) -> Unit?)? = null
 
 
@@ -42,6 +43,7 @@ class MoviesAdapter(val context: Context?) : RecyclerView.Adapter<ViewHolder>() 
 
     fun addMovies(list: ArrayList<Movie>) {
         movies.clear()
+        Timber.e(list.toString())
         movies.addAll(list)
     }
 }

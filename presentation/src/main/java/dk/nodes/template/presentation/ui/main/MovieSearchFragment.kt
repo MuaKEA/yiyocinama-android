@@ -1,10 +1,13 @@
 package dk.nodes.template.presentation.ui.main
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import android.widget.Adapter
 import android.widget.SearchView
 import android.widget.Switch
 import android.widget.Toast
@@ -22,13 +25,14 @@ import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
 
 
-class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
+class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
-    private val adapter = MoviesAdapter(context)
-
+    private var adapter : MoviesAdapter?  = null
     private var listener: OnFragmentInteractionListener? = null
+
+    constructor() : super()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +53,11 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+         adapter = MoviesAdapter(context)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -61,7 +70,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
         input_search.setOnQueryTextListener(this)
 
         bottomNavigation_View.setOnNavigationItemSelectedListener(this)
-        adapter.notifyDataSetChanged()
+        adapter?.notifyDataSetChanged()
 
     }
 
@@ -97,8 +106,8 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
         viewState.movies?.let { movieList ->
          Timber.e(movieList.toString())
             error_view.visibility = View.INVISIBLE
-            adapter.addMovies(movieList)
-            adapter.notifyDataSetChanged()
+            adapter?.addMovies(movieList)
+            adapter?.notifyDataSetChanged()
         }
     }
 
@@ -130,43 +139,9 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
 
     private fun showDialog() {
 
-        adapter.onItemClickedListener = { movie ->
+        adapter?.onItemClickedListener = { movie ->
             Timber.e(movie.toString())
         }            //            val dialog = Dialog(this, android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen)
-//            dialog.setCancelable(true)
-//            dialog.setContentView(R.layout.movieinfodiaglogview)
-//            dialog.moviename_txt.setText(movie.name)
-//            Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie.poster_path).error(R.drawable.images).fit().into(dialog.movie_images)
-//            dialog.language_txt.setText(movie.original_language)
-//
-//            if (dialog.release_txt.text == "") {
-//                dialog.release_txt.setText("Unknown")
-//
-//            } else {
-//
-//                val localdate = LocalDate.of(movie.releaseDate!!.substring(0, 4).toInt(), movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-//                dialog.release_txt.setText(localdate.toString())
-//            }
-//
-//            dialog.vote_average_txt.setText(movie.vote_average + "/10")
-//            dialog.overview_txt.setText(movie.overview)
-//            dialog.popularity.setText(movie.popularity)
-//            val savemovieswitch = dialog.save_movie_switch
-//
-//            dialog.show()
-//            savemovieswitch.setOnClickListener {
-//                if (!savemovieswitch.isChecked) {
-//
-//                    viewModel.deleteMovie(movie)
-//                    showMessage(savemovieswitch)
-//
-//                } else {
-//
-//                    viewModel.saveMovie(movie)
-//                    showMessage(savemovieswitch)
-//
-//                }
-//            }
 
 
 
@@ -186,13 +161,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, Bott
     }
 
 
-    fun showMessage(savemovieswitch: Switch) {
-        if (savemovieswitch.isChecked) {
-            Toast.makeText(context, "movie is saved", Toast.LENGTH_SHORT).show()
-        } else {
-            Toast.makeText(context, "movie is unsaved", Toast.LENGTH_SHORT).show()
-        }
-    }
+
 
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.moviesfun(newText.toString())
