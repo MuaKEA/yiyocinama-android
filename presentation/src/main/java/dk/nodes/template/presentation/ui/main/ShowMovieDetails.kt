@@ -25,9 +25,9 @@ private const val ARG_PARAM1 = "movie"
 
 class ShowMovieDetails : BaseFragment() {
     private val viewModel by viewModel<MainActivityViewModel>()
-    private var moviePosition : Int = 0
+    private var moviePosition: Int = 0
     private var listener: OnFragmentInteractionListener? = null
-    private var movie : Movie? = null
+    private var movie: Movie? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -52,9 +52,7 @@ class ShowMovieDetails : BaseFragment() {
     }
 
 
-
-
-    fun moveDetails(Movie : Movie){
+    fun moveDetails(Movie: Movie) {
 
         moviename_txt.setText(movie?.name)
         Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie?.poster_path).error(R.drawable.images).fit().into(movie_images)
@@ -112,49 +110,49 @@ class ShowMovieDetails : BaseFragment() {
         super.onAttach(context)
         if (context is OnFragmentInteractionListener) {
             listener = context
-        } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
+        override fun onDetach() {
+            super.onDetach()
+            listener = null
+        }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-
-    }
-
-    companion object {
         /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
+         * This interface must be implemented by activities that contain this
+         * fragment to allow an interaction in this fragment to be communicated
+         * to the activity and potentially other fragments contained in that
+         * activity.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ShowMovieDetails.
+         *
+         * See the Android Training lesson [Communicating with Other Fragments]
+         * (http://developer.android.com/training/basics/fragments/communicating.html)
+         * for more information.
          */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(movie: Movie) =
-                ShowMovieDetails().apply {
-                    arguments = Bundle().apply {
-                        putParcelable(ARG_PARAM1, movie)
+        interface OnFragmentInteractionListener {
+            // TODO: Update argument type and name
+            fun onFragmentInteraction(uri: Uri)
+
+        }
+
+        companion object {
+            /**
+             * Use this factory method to create a new instance of
+             * this fragment using the provided parameters.
+             *
+             * @param param1 Parameter 1.
+             * @param param2 Parameter 2.
+             * @return A new instance of fragment ShowMovieDetails.
+             */
+            // TODO: Rename and change types and number of parameters
+            @JvmStatic
+            fun newInstance(movie: Movie) =
+                    ShowMovieDetails().apply {
+                        arguments = Bundle().apply {
+                            putParcelable(ARG_PARAM1, movie)
+                        }
                     }
-                }
-    }
+        }
+
 }

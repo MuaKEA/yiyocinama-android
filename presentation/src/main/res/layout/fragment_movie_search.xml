@@ -14,14 +14,14 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_moviesList"
             android:layout_width="402dp"
-            android:layout_height="388dp"
-            android:layout_marginBottom="60dp"
+            android:layout_height="703dp"
+            android:layout_marginTop="88dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-            app:layout_constraintVertical_bias="0.406" />
+            app:layout_constraintVertical_bias="0.318" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
@@ -61,7 +61,7 @@
             android:layout_width="409dp"
             android:layout_height="46dp"
             android:layout_gravity="bottom"
-            android:layout_marginTop="800dp"
+            android:layout_marginTop="1020dp"
             android:layout_marginBottom="16dp"
             android:background="@android:color/darker_gray"
             app:itemIconTint="@color/hockeyapp_background_white"
