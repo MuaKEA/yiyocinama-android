@@ -1,41 +1,32 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
-import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
 
 
-
-
-
-class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, BottomNavigationView.OnNavigationItemSelectedListener {
+class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
-    private var adapter : MoviesAdapter?  = null
+    private var adapter: MoviesAdapter? = null
     private var listener: OnFragmentInteractionListener? = null
 
-    constructor() : super()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
 
     }
@@ -49,21 +40,23 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-         adapter = MoviesAdapter(context)
+        adapter = MoviesAdapter(context)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.isDeviceOnlineCheck()
+
+
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
             handleErrors(state)
         }
 
+
         input_search.setOnQueryTextListener(this)
 
-        bottomNavigation_View.setOnNavigationItemSelectedListener(this)
         adapter?.notifyDataSetChanged()
 
     }
@@ -72,7 +65,6 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
-
 
 
 //    override fun onDetach() {
@@ -92,12 +84,12 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
         fun newInstance() =
                 MovieSearchFragment().apply {
 
-                    }
                 }
+    }
 
     private fun handleMovies(viewState: MainActivityViewState) {
         viewState.movies?.let { movieList ->
-         Timber.e(movieList.toString())
+            Timber.e(movieList.toString())
             error_view.visibility = View.INVISIBLE
             adapter?.addMovies(movieList)
             adapter?.notifyDataSetChanged()
@@ -138,23 +130,10 @@ class MovieSearchFragment : BaseFragment, SearchView.OnQueryTextListener, Bottom
         }
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
-        if (item.itemId == R.id.navigation_savedphoto) {
-
-            startActivity(Intent(context, ShowSavedMovieActivity::class.java))
-        } else {
-            Toast.makeText(context, "Ready in search", Toast.LENGTH_LONG).show()
-
-        }
-
-        return true
-    }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.moviesfun(newText.toString())
         updateRecyclerview()
-
         return true
     }
 

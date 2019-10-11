@@ -39,7 +39,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     }
 
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+    override fun onNavigationItemSelected(item: MenuItem) : Boolean {
 
         when (item.itemId) {
 
@@ -48,7 +48,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             R.id.navigation_savedphoto -> startActivity(Intent(this,ShowSavedMovieActivity::class.java))
         }
 
-        return true
+        return false
     }
 
 

@@ -2,26 +2,24 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="600dp"
+    android:layout_width="match_parent"
+    android:layout_height="765dp"
     tools:context=".ui.main.MovieSearchFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="400dp"
-        android:layout_height="630dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_moviesList"
-            android:layout_width="422dp"
-            android:layout_height="765dp"
-            android:layout_marginTop="88dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/error_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
-            app:layout_constraintVertical_bias="0.318" />
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textInputLayout3"
@@ -48,29 +46,15 @@
         <ImageView
             android:id="@+id/error_view"
             android:layout_width="411dp"
-            android:layout_height="613dp"
+            android:layout_height="0dp"
             android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
             app:srcCompat="@drawable/images" />
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottomNavigation_View"
-            android:layout_width="409dp"
-            android:layout_height="46dp"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="1020dp"
-            android:layout_marginBottom="16dp"
-            android:background="@android:color/darker_gray"
-            app:itemIconTint="@color/hockeyapp_background_white"
-            app:itemTextColor="@color/hockeyapp_background_white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:menu="@menu/menu_mainactivity" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

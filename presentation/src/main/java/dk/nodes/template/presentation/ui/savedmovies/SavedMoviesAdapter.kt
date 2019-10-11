@@ -34,7 +34,17 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         var releaseDate = movies.get(position).releaseDate
-        LocalDate.of(releaseDate!!.substring(0, 4).toInt(), releaseDate.substring(5, 7).toInt(), releaseDate.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+
+        if(releaseDate !=""){
+
+                LocalDate.of(releaseDate!!.substring(0, 4).toInt(), releaseDate.substring(5, 7).toInt(), releaseDate.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+
+            }else{
+
+            releaseDate = "unknown"
+
+        }
+
 
 
 
@@ -42,8 +52,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
         holder.overview?.text = movies.get(position).overview
 
         val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/w185/" + movies.get(position).poster_path).centerInside().fit().into(holder.moviePhoto)
-
+        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
         holder.binview.setOnClickListener {
             onItemClickedListener?.invoke(position)
 

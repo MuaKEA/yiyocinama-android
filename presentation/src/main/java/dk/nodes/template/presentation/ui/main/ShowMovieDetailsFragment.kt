@@ -1,25 +1,22 @@
 package dk.nodes.template.presentation.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
+import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
-import kotlinx.android.synthetic.main.fragment_movie_details.language_txt
-import kotlinx.android.synthetic.main.fragment_movie_details.movie_images
-import kotlinx.android.synthetic.main.fragment_movie_details.moviename_txt
-import kotlinx.android.synthetic.main.fragment_movie_details.overview_txt
-import kotlinx.android.synthetic.main.fragment_movie_details.popularity
-import kotlinx.android.synthetic.main.fragment_movie_details.release_txt
-import kotlinx.android.synthetic.main.fragment_movie_details.save_movie_switch
-import kotlinx.android.synthetic.main.fragment_movie_details.vote_average_txt
+import kotlinx.android.synthetic.main.fragment_show_movie_details.*
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -27,10 +24,30 @@ import java.time.format.FormatStyle
 private const val ARG_PARAM1 = "movie"
 
 
-class ShowMovieDetailsFragment : BaseFragment() {
+class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeListener {
+
+    private var movie: Movie? = null
+
+
+    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        if (isChecked) {
+            viewModel.saveMovie(movie!!)
+            showMessage(save_movie_switch)
+
+
+        } else {
+
+            viewModel.deleteMovie(movie!!)
+            showMessage(save_movie_switch)
+            viewModel.movieSavedCheck(movie!!)
+
+        }
+
+    }
+
     private val viewModel by viewModel<MainActivityViewModel>()
     private var listener: OnFragmentInteractionListener? = null
-    private var movie : Movie?=null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,42 +59,39 @@ class ShowMovieDetailsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.viewState.observeNonNull(this) { state ->
+            handleSavedMovies(state)
+        }
+
         movieDetails(movie)
     }
 
+    @SuppressLint("SetTextI18n")
     fun movieDetails(movie: Movie?) {
+        if (movie != null) {
+            viewModel.movieSavedCheck(movie)
 
-        moviename_txt.setText(movie?.name)
-        Picasso.get().load("https://image.tmdb.org/t/p/w185/" + movie?.poster_path).error(R.drawable.images).fit().into(movie_images)
-        language_txt.setText(movie?.original_language)
+            moviename_txt.setText(movie.name)
+            Picasso.get().load("https://image.tmdb.org/t/p/original/" + movie.poster_path).error(R.drawable.images).fit().into(movie_images)
+            language_txt.setText(movie.original_language)
 
-        if (release_txt.text == "") {
-            release_txt.setText("Unknown")
-
-        } else {
-
-            val localdate = LocalDate.of(movie?.releaseDate?.substring(0, 4)?.toInt()!!, movie!!.releaseDate!!.substring(5, 7).toInt(), movie!!.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
-            release_txt.setText(localdate.toString())
-        }
-
-        vote_average_txt.setText(movie?.vote_average.toString() + "/10")
-        overview_txt.setText(movie?.overview)
-        popularity.setText(movie?.popularity.toString())
-
-        save_movie_switch.setOnClickListener {
-            if (!save_movie_switch.isChecked) {
-
-                viewModel.deleteMovie(movie!!)
-                showMessage(save_movie_switch)
+            if (movie.releaseDate == "") {
+                release_txt.setText("Unknown")
 
             } else {
 
-                viewModel.saveMovie(movie!!)
-                showMessage(save_movie_switch)
-
+                val localdate = LocalDate.of(movie.releaseDate?.substring(0, 4)?.toInt()!!, movie.releaseDate!!.substring(5, 7).toInt(), movie.releaseDate!!.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+                release_txt.setText(localdate.toString())
             }
-        }
 
+            vote_average_txt.setText(movie.vote_average.toString() + "/10")
+            overview_txt.setText(movie.overview)
+            popularity.setText(movie.popularity.toString())
+
+
+
+            save_movie_switch.setOnCheckedChangeListener(this)
+        }
     }
 
     fun showMessage(savemovieswitch: Switch) {
@@ -107,45 +121,56 @@ class ShowMovieDetailsFragment : BaseFragment() {
         }
     }
 
-        override fun onDetach() {
-            super.onDetach()
-            listener = null
-        }
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+    }
 
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     *
+     *
+     * See the Android Training lesson [Communicating with Other Fragments]
+     * (http://developer.android.com/training/basics/fragments/communicating.html)
+     * for more information.
+     */
+    interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        fun onFragmentInteraction(uri: Uri)
+
+    }
+
+    companion object {
         /**
-         * This interface must be implemented by activities that contain this
-         * fragment to allow an interaction in this fragment to be communicated
-         * to the activity and potentially other fragments contained in that
-         * activity.
+         * Use this factory method to create a new instance of
+         * this fragment using the provided parameters.
          *
-         *
-         * See the Android Training lesson [Communicating with Other Fragments]
-         * (http://developer.android.com/training/basics/fragments/communicating.html)
-         * for more information.
+         * @param param1 Parameter 1.
+         * @param param2 Parameter 2.
+         * @return A new instance of fragment ShowMovieDetailsFragment.
          */
-        interface OnFragmentInteractionListener {
-            // TODO: Update argument type and name
-            fun onFragmentInteraction(uri: Uri)
-
-        }
-
-        companion object {
-            /**
-             * Use this factory method to create a new instance of
-             * this fragment using the provided parameters.
-             *
-             * @param param1 Parameter 1.
-             * @param param2 Parameter 2.
-             * @return A new instance of fragment ShowMovieDetailsFragment.
-             */
-            // TODO: Rename and change types and number of parameters
-            @JvmStatic
-            fun newInstance(movie: Movie) =
-                    ShowMovieDetailsFragment().apply {
-                        arguments = Bundle().apply {
-                            putParcelable(ARG_PARAM1, movie)
-                        }
+        // TODO: Rename and change types and number of parameters
+        @JvmStatic
+        fun newInstance(movie: Movie) =
+                ShowMovieDetailsFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(ARG_PARAM1, movie)
                     }
+                }
+    }
+
+    private fun handleSavedMovies(viewState: MainActivityViewState) {
+        viewState.let { isMovieSaved ->
+            if (viewState.isMovieSaved != null && viewState.isMovieSaved == true) {
+                save_movie_switch.isChecked = true
+                Timber.e(isMovieSaved.toString())
+
+            }
+
         }
 
+    }
 }

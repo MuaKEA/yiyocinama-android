@@ -9,6 +9,7 @@ import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.network.MovieService
 import java.io.IOException
+import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -50,19 +51,25 @@ class MovieRepository @Inject constructor(
         val moviesList = ArrayList<Movie>()
 
         try {
-            if (getSavedMovies().size != 0 && !getSavedMovies().contains(movie)) {
-              //  movie.isSaved = true
-                moviesList.add(movie)
-                moviesList.addAll(getSavedMovies())
-                sharedPreferences.edit().clear().apply()
 
-                Log.d("movierepo", moviesList.toString())
-            } else {
-                moviesList.add(movie)
+            when (getSavedMovies().isEmpty()) {
+
+                true ->
+                    moviesList.add(movie)
+
+                false ->
+                    if (!getSavedMovies().contains(movie)) {
+                        moviesList.add(movie)
+                        moviesList.addAll(getSavedMovies())
+
+                    } else {
+                        moviesList.add(movie)
+
+
+                    }
             }
-
             val json = gson.toJson(moviesList)
-            sharedPreferences.edit().putString("savedMovies", json).apply()
+            sharedPreferences.edit().clear().putString("savedMovies", json).apply()
 
             return moviesList
         } catch (e: Exception) {
@@ -82,12 +89,19 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun isMovieSaved(movie: Movie): Boolean {
+        try {
 
-        if (getSavedMovies().size == 0) {
-            return false
+            Log.d("movierepo", getSavedMovies().contains(movie).toString())
+
+            return getSavedMovies().contains(movie)
+
+        } catch (E: NullPointerException) {
+            Log.d("movierepo", "NullPointerException is thrown")
         }
+        return false
 
-        return getSavedMovies().contains(movie)
     }
 
 }
+
+
