@@ -30,16 +30,17 @@ class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeL
 
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+        val movie = movie ?: return
         if (isChecked) {
-            viewModel.saveMovie(movie!!)
+            viewModel.saveMovie(movie)
             showMessage(save_movie_switch)
 
 
         } else {
 
-            viewModel.deleteMovie(movie!!)
+            viewModel.deleteMovie(movie)
             showMessage(save_movie_switch)
-            viewModel.movieSavedCheck(movie!!)
+            viewModel.movieSavedCheck(movie)
 
         }
 
@@ -63,13 +64,16 @@ class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeL
             handleSavedMovies(state)
         }
 
+        viewModel.movieSavedCheck(movie!!)
+
         movieDetails(movie)
+
     }
 
     @SuppressLint("SetTextI18n")
     fun movieDetails(movie: Movie?) {
         if (movie != null) {
-            viewModel.movieSavedCheck(movie)
+
 
             moviename_txt.setText(movie.name)
             Picasso.get().load("https://image.tmdb.org/t/p/original/" + movie.poster_path).error(R.drawable.images).fit().into(movie_images)
@@ -88,12 +92,11 @@ class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeL
             overview_txt.setText(movie.overview)
             popularity.setText(movie.popularity.toString())
 
-
-
             save_movie_switch.setOnCheckedChangeListener(this)
+
+
         }
     }
-
     fun showMessage(savemovieswitch: Switch) {
         if (savemovieswitch.isChecked) {
             Toast.makeText(context, "movie is saved", Toast.LENGTH_SHORT).show()
@@ -164,7 +167,7 @@ class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeL
 
     private fun handleSavedMovies(viewState: MainActivityViewState) {
         viewState.let { isMovieSaved ->
-            if (viewState.isMovieSaved != null && viewState.isMovieSaved == true) {
+            if (viewState.isMovieSaved) {
                 save_movie_switch.isChecked = true
                 Timber.e(isMovieSaved.toString())
 

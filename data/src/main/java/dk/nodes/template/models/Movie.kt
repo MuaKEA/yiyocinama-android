@@ -24,7 +24,6 @@ data class Movie(
         @SerializedName("id")
         var id: String?
 
-
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
                 parcel.readString(),
@@ -64,6 +63,9 @@ data class Movie(
                         return arrayOfNulls(size)
                 }
         }
+
+
+
 }
 
 
