@@ -93,10 +93,10 @@ class ShowMovieDetailsFragment : BaseFragment(), CompoundButton.OnCheckedChangeL
             popularity.setText(movie.popularity.toString())
 
             save_movie_switch.setOnCheckedChangeListener(this)
-
-
         }
     }
+
+
     fun showMessage(savemovieswitch: Switch) {
         if (savemovieswitch.isChecked) {
             Toast.makeText(context, "movie is saved", Toast.LENGTH_SHORT).show()

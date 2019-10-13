@@ -29,6 +29,12 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+
+
+    }
+
     fun replaceFragment(fragment: BaseFragment) {
         supportFragmentManager.beginTransaction().replace(R.id.main_frame,fragment).commit()
     }
@@ -37,13 +43,14 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
     override fun onNavigationItemSelected(item: MenuItem) : Boolean {
         if(shownMenu == item.itemId) return false
 
+
         when (item.itemId) {
             R.id.navigation_search -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_frame, ShowSavedMovieActivity.newInstance(), "ShowSavedMovieActivity").commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, MovieSearchFragment.newInstance(), "movieSearch").commit()
             }
 
             R.id.navigation_savedphoto -> {
-                supportFragmentManager.beginTransaction().replace(R.id.main_frame, MovieSearchFragment.newInstance(), "movieSearch").commit()
+                supportFragmentManager.beginTransaction().replace(R.id.main_frame, ShowSavedMovieActivity.newInstance(), "ShowSavedMovieActivity").commit()
             }
         }
 

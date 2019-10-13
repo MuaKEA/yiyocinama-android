@@ -31,6 +31,14 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        if(savedInstanceState != null){
+        input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
+        }
+        }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
@@ -45,6 +53,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         viewModel.isDeviceOnlineCheck()
 
@@ -141,6 +150,9 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
         return true
     }
 
-
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("movieSearchtxt",input_search.toString())
+    }
 }
 

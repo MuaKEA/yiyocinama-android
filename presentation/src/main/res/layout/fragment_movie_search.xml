@@ -27,7 +27,6 @@
             android:layout_height="52dp"
             android:layout_marginBottom="718dp"
             app:iconifiedByDefault="false"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigation_showmovies"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -45,8 +44,8 @@
 
         <ImageView
             android:id="@+id/error_view"
-            android:layout_width="411dp"
-            android:layout_height="0dp"
+            android:layout_width="409dp"
+            android:layout_height="716dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

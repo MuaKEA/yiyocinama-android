@@ -2,6 +2,7 @@
     <string name="app_name">presentation</string>
     <string name="Search_Movies">search movies</string>
     <string name="saved_Movies">savedMovies</string>
+    <string name="movie_details">movie details</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
