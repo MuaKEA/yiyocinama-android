@@ -50,25 +50,15 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun saveMovie(movie: Movie): ArrayList<Movie> {
-        val moviesList = ArrayList<Movie>()
+        val moviesList = getSavedMovies()
 
         try {
             Log.d("movierepo", "4 -> " +  moviesList)
 
-            when (getSavedMovies().isEmpty()) {
-
-                true ->
-
+            if(!moviesList.contains(movie)) {
                 moviesList.add(movie)
-                false ->
-                    if (!getSavedMovies().contains(movie)) {
-                        moviesList.add(movie)
-                        moviesList.addAll(getSavedMovies())
-
-                    }else{
-                        moviesList.addAll(getSavedMovies())
-                    }
             }
+
             val json = gson.toJson(moviesList)
             sharedPreferences.edit().putString("savedMovies", json).apply()
             Log.d("movierepo", "4 -> " +  moviesList)
@@ -77,8 +67,6 @@ class MovieRepository @Inject constructor(
         } catch (e: Exception) {
 
         }
-        Log.d("movierepo", "5 -> " +  moviesList)
-
         return ArrayList()
     }
 
