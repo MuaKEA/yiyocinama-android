@@ -6,22 +6,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
-import dk.nodes.template.presentation.ui.base.BaseActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_show_saved_movie_activity.*
+import kotlinx.android.synthetic.main.show_saved_movie_fragment.*
 import timber.log.Timber
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.ui.base.BaseFragment
-import dk.nodes.template.presentation.ui.main.MoviesAdapter
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 
 
@@ -39,7 +33,7 @@ class ShowSavedMovieActivity : BaseFragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_show_saved_movie_activity, container, false)
+        return inflater.inflate(R.layout.show_saved_movie_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

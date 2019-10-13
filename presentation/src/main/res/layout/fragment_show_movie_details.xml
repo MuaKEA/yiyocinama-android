@@ -16,9 +16,10 @@
 
         <ImageView
             android:id="@+id/movie_images"
-            android:layout_width="406dp"
-            android:layout_height="385dp"
+            android:layout_width="407dp"
+            android:layout_height="420dp"
             android:layout_marginBottom="100dp"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toTopOf="@+id/moviename_txt"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
