@@ -11,9 +11,6 @@
         android:icon="@drawable/ic_save_black_24dp"
         android:title="@string/saved_Movies" />
 
-    <item
-        android:id="@+id/navigation_movie_details"
-        android:icon="@drawable/ic_save_black_24dp"
-        android:title="@string/movie_details" />
+
 </menu>
 

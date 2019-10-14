@@ -2,15 +2,12 @@ package dk.nodes.template.presentation.ui.main
 
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.ui.base.BaseActivity
 import dk.nodes.template.presentation.ui.base.BaseFragment
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import timber.log.Timber
-import kotlin.concurrent.timer
 
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -33,6 +30,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         super.onBackPressed()
 
 
+
     }
 
     fun replaceFragment(fragment: BaseFragment) {
@@ -51,7 +49,11 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
             R.id.navigation_savedphoto -> {
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame, ShowSavedMovieActivity.newInstance(), "ShowSavedMovieActivity").commit()
+
+                return true
+
             }
+
         }
 
         shownMenu = item.itemId

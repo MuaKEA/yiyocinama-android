@@ -1,6 +1,7 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
@@ -12,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
+import dk.nodes.template.presentation.ui.ShowmovieDetails.ShowMovieDetails
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
@@ -23,24 +25,20 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private val viewModel by viewModel<MainActivityViewModel>()
     private var adapter: MoviesAdapter? = null
     private var listener: OnFragmentInteractionListener? = null
+    private var mainContext : Context?=null
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
-
-        if(savedInstanceState != null){
-        input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
-        }
-        }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+        if(savedInstanceState != null){
+            var s = Bundle()
+            input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),false)
+            input_search.clearFocus()
+
+            Timber.e("adding to input search-->" + savedInstanceState.getString("movieSearchtxt","") )
+        }
+
 
         return inflater.inflate(R.layout.fragment_movie_search, container, false)
 
@@ -49,14 +47,12 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         adapter = MoviesAdapter(context)
+        mainContext=context
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         viewModel.isDeviceOnlineCheck()
-
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
@@ -76,10 +72,10 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     }
 
 
-//    override fun onDetach() {
-//        super.onDetach()
-//        listener = null
-//    }
+    override fun onDetach() {
+        super.onDetach()
+        listener = null
+ }
 
 
     interface OnFragmentInteractionListener {
@@ -104,6 +100,8 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
             adapter?.notifyDataSetChanged()
         }
     }
+
+
 
     private fun handleErrors(viewState: MainActivityViewState) {
         viewState?.viewError?.let {
@@ -134,7 +132,9 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun showDialog() {
 
         adapter?.onItemClickedListener = { movie ->
-            (activity as? MainActivity)?.replaceFragment(ShowMovieDetailsFragment.newInstance(movie))
+          val intent = Intent(mainContext, ShowMovieDetails::class.java)
+            intent.putExtra("movie" ,movie)
+           startActivity(intent)
 
         }
     }
@@ -143,16 +143,18 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.moviesfun(newText.toString())
         updateRecyclerview()
+
         return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
+       input_search.clearFocus()
         return true
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString("movieSearchtxt",input_search.toString())
+        outState.putString("movieSearchtxt",input_search.query.toString())
     }
 }
 
