@@ -13,7 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
-import dk.nodes.template.presentation.ui.ShowmovieDetails.ShowMovieDetails
+import dk.nodes.template.presentation.ui.movieDetails.ShowMovieDetailsActivity
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
@@ -32,7 +32,6 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
                               savedInstanceState: Bundle?): View? {
 
         if(savedInstanceState != null){
-            var s = Bundle()
             input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),false)
             input_search.clearFocus()
 
@@ -104,7 +103,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
 
     private fun handleErrors(viewState: MainActivityViewState) {
-        viewState?.viewError?.let {
+        viewState.viewError?.let {
             if (it.consumed) return@let
             Timber.e("no internet")
             Glide.with(this).asGif().load(R.drawable.nointernetconnection).into(error_view)
@@ -132,7 +131,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     private fun showDialog() {
 
         adapter?.onItemClickedListener = { movie ->
-          val intent = Intent(mainContext, ShowMovieDetails::class.java)
+          val intent = Intent(mainContext, ShowMovieDetailsActivity::class.java)
             intent.putExtra("movie" ,movie)
            startActivity(intent)
 

@@ -5,9 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
+import kotlinx.android.synthetic.main.activity_show_movie_details.*
 
 import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
 import timber.log.Timber
@@ -30,9 +31,9 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path)
-                .error(R.drawable.images).fit().into(holder.moviePhoto)
+
+        Glide.with(context).load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).error(R.drawable.binphoto).into(holder.moviePhoto)
+
         holder.moviename?.text = movies.get(position).name
 
         holder.root.setOnClickListener {

@@ -11,4 +11,6 @@ interface Api {
 
     @GET("photos")
     suspend fun getPhotos(): Response<List<Photo>>
+
+
 }

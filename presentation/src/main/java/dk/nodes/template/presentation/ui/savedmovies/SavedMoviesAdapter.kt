@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import kotlinx.android.synthetic.main.savedmovie_recyclerview_row.view.*
@@ -51,8 +51,9 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
         holder.moviename?.text = movies.get(position).name + " (" + releaseDate.toString() + ")"
         holder.overview?.text = movies.get(position).overview
 
-        val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
+        Glide.with(context).load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).error(R.drawable.binphoto).into(holder.moviePhoto)
+
+
         holder.binview.setOnClickListener {
             onItemClickedListener?.invoke(position)
 

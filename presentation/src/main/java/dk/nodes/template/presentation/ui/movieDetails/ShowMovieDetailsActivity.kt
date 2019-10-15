@@ -1,20 +1,16 @@
-package dk.nodes.template.presentation.ui.ShowmovieDetails
+package dk.nodes.template.presentation.ui.movieDetails
 
 import android.os.Bundle
 import android.view.View
-import android.view.Window
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
-import dk.nodes.template.presentation.ui.main.MainActivityViewModel
-import dk.nodes.template.presentation.ui.main.MainActivityViewState
 import kotlinx.android.synthetic.main.activity_show_movie_details.*
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 import timber.log.Timber
@@ -22,8 +18,9 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 
-class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener {
-    private val viewModel by viewModel<MainActivityViewModel>()
+
+class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener {
+    private val viewModel by viewModel<ShowMovieDetailsViewModel>()
     private var movie: Movie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +31,13 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
+
             Timber.e(movie.toString())
         }
 
         viewModel.viewState.observeNonNull(this) { state ->
-            handleErrors(state)
             handleSavedMovies(state)
+            handleThrillerurl(state)
         }
 
         viewModel.movieSavedCheck(movie!!)
@@ -47,11 +45,20 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
         movieDetails(movie)
     }
 
+    private fun handleThrillerurl(viewState: ShowMovieDetailsViewState) {
+        viewState.let { fetchurl ->
+            if (viewState.thrillerurl != null) {
+                Timber.e(viewState.thrillerurl + "<-- this is the url")
+            }
+        }
+    }
+
     fun movieDetails(movie: Movie?) {
         if (movie != null) {
 
             moviename_txt.setText(movie.name)
-            Picasso.get().load("https://image.tmdb.org/t/p/original/" + movie.poster_path).error(R.drawable.images).fit().into(movie_images)
+            Glide.with(this).load("https://image.tmdb.org/t/p/original/" + movie.poster_path).error(R.drawable.binphoto).into(movie_images)
+
             language_txt.setText(movie.original_language)
 
             if (movie.releaseDate == "") {
@@ -71,15 +78,7 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
         }
     }
 
-    private fun handleErrors(viewState: MainActivityViewState) {
-        viewState?.viewError?.let {
-            if (it.consumed) return@let
-            Timber.e("no internet")
-            Glide.with(this).asGif().load(R.drawable.nointernetconnection).into(error_view)
-            error_view.visibility = View.VISIBLE
-            Snackbar.make(rv_moviesList, "No Internet OR No Result", Snackbar.LENGTH_LONG).show()
-        }
-    }
+
 
     fun showMessage(savemovieswitch: Switch) {
         if (savemovieswitch.isChecked) {
@@ -94,6 +93,7 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
         if (isChecked) {
             viewModel.saveMovie(movie)
             showMessage(save_movie_switch)
+            viewModel.fetchThrillerUrl("324552")
 
 
         } else {
@@ -106,7 +106,7 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
 
     }
 
-    private fun handleSavedMovies(viewState: MainActivityViewState) {
+    private fun handleSavedMovies(viewState: ShowMovieDetailsViewState) {
         viewState.let { isMovieSaved ->
             if (viewState.isMovieSaved) {
                 save_movie_switch.isChecked = true
@@ -115,6 +115,8 @@ class ShowMovieDetails : BaseActivity(), CompoundButton.OnCheckedChangeListener 
             }
         }
     }
+
+
 }
 
 

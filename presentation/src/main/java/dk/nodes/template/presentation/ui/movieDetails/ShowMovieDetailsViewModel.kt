@@ -1,4 +1,4 @@
-package dk.nodes.template.presentation.ui.main
+package dk.nodes.template.presentation.ui.movieDetails
 
 import androidx.lifecycle.viewModelScope
 import dk.nodes.template.domain.interactors.*
@@ -13,63 +13,81 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class MainActivityViewModel @Inject constructor(
+
+data class ShowMovieDetailsViewModel @Inject constructor(
         private val nStackPresenter: NStackPresenter,
-        moviesInteractor: MoviesInteractor,
-        private val InternetCheckInteractor: InternetCheckInteractor,
+        private val fetchMovieThriler : FetchTrailerIntepretor,
+        private val IsMovieSavedInteractor: IsMovieSavedInteractor,
+        private val saveMovieInterator: SaveMovieInterator,
         private val deleteMovieInteractor: DeleteMovieInteractor
 
-) : BaseViewModel<MainActivityViewState>() {
-    override val initState: MainActivityViewState = MainActivityViewState()
 
 
-    private val moviesInteractor = moviesInteractor.asResult()
 
-    fun moviesfun(moviaName: String) = viewModelScope.launch(Dispatchers.Main) {
-        val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(moviaName) }
+
+) : BaseViewModel<ShowMovieDetailsViewState>() {
+    override val initState: ShowMovieDetailsViewState = ShowMovieDetailsViewState()
+
+
+    private val fetchTrailerIntepretor = fetchMovieThriler.asResult()
+
+    fun fetchThrillerUrl(movieId: String) = viewModelScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) { fetchTrailerIntepretor.invoke(movieId) }
         state = mapResult(result)
 
     }
 
-    private fun mapResult(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
+    private fun mapResult(result: CompleteResult<String>): ShowMovieDetailsViewState {
         return when (result) {
-            is Success -> state.copy(movies = result.data, isLoading = false, viewError = null)
+            is Success -> state.copy(thrillerurl = result.data)
             is Loading<*> -> state.copy(isLoading = true)
             is Fail -> state.copy(
                     viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
                     isLoading = false
             )
-            else -> MainActivityViewState()
+            else -> ShowMovieDetailsViewState()
         }
 
     }
 
+    fun movieSavedCheck(movie: Movie) = viewModelScope.launch {
 
-
-     fun isDeviceOnlineCheck() = viewModelScope.launch {
-
-        val result = withContext(Dispatchers.IO) { InternetCheckInteractor.asResult().invoke() }
-        state = isDeviceOnline(result)
+        val result = withContext(Dispatchers.IO) {IsMovieSavedInteractor.asResult().invoke(movie) }
+        state = mapMovieSavedCheck(result)
 
     }
 
-    private fun isDeviceOnline(result: CompleteResult<Boolean>): MainActivityViewState {
+    private fun mapMovieSavedCheck(result: CompleteResult<Boolean>): ShowMovieDetailsViewState {
+        return when (result) {
+            is Success -> state.copy(isMovieSaved = result.data)
+            is Fail -> state.copy()
+        }
+    }
+
+    fun saveMovie(movie: Movie) = viewModelScope.launch {
+
+        val result = withContext(Dispatchers.IO) { saveMovieInterator.asResult().invoke(movie) }
+        state = mapSaveMovie(result)
+
+    }
+
+
+    private fun mapSaveMovie(result: CompleteResult<ArrayList<Movie>>): ShowMovieDetailsViewState {
         return when (result) {
             is Fail -> state.copy(
                     viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
                     isLoading = false
             )
-            is Success<*> -> state.copy()
+            else -> state.copy()
         }
     }
-
     fun deleteMovie(movie: Movie) = viewModelScope.launch(Dispatchers.Main) {
         val result = withContext(Dispatchers.IO) { deleteMovieInteractor.asResult().invoke(movie) }
         state = mapSavedMovies(result)
 
     }
 
-    private fun mapSavedMovies(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
+    private fun mapSavedMovies(result: CompleteResult<ArrayList<Movie>>): ShowMovieDetailsViewState {
         return when (result) {
             is Success -> state.copy(movies = result.data, isLoading = false)
             is Loading<*> -> state.copy(isLoading = true)
@@ -77,8 +95,7 @@ class MainActivityViewModel @Inject constructor(
                     viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
                     isLoading = false
             )
-            else -> MainActivityViewState()
+            else -> ShowMovieDetailsViewState()
         }
     }
-
 }

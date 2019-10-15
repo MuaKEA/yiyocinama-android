@@ -28,6 +28,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
     override fun onBackPressed() {
         super.onBackPressed()
+        supportFragmentManager.beginTransaction().replace(R.id.main_frame, MovieSearchFragment.newInstance(), "movieSearch").commit()
 
 
 

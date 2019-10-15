@@ -1,15 +1,12 @@
 package dk.nodes.template.repositories
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.net.ConnectivityManager
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
-import dk.nodes.template.models.SavedMovie
+import dk.nodes.template.models.ThrillerInfo
 import dk.nodes.template.network.MovieService
-import java.io.IOException
 import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -20,6 +17,38 @@ class MovieRepository @Inject constructor(
         private val sharedPreferences: SharedPreferences,
         private val gson: Gson
 ) {
+
+    suspend fun getTrailerinfo(movieid: String): String {
+
+        val trailerList: ArrayList<ThrillerInfo> = ArrayList()
+        val response = api.getMovieThriller(movieid).execute()
+        Log.d("thrillerdetails", response.toString())
+
+        if (response.isSuccessful) {
+            val moviesResponse = response.body()
+
+            if (moviesResponse != null) {
+                trailerList.addAll(moviesResponse.result)
+
+                for (trailer in trailerList) {
+                    Log.d("thrillerdetails", trailer.toString())
+                    if (trailer.type == "YouTube" && trailer.type == "Trailer") {
+                        return "https://www.youtube.com/watch?v=" + trailer.key
+                    }
+                }
+            }
+
+        }else{
+
+            Log.d("thrillerdetails", "<--not working")
+
+
+        }
+
+
+        return ""
+
+    }
 
 
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
@@ -53,15 +82,15 @@ class MovieRepository @Inject constructor(
         val moviesList = getSavedMovies()
 
         try {
-            Log.d("movierepo", "4 -> " +  moviesList)
+            Log.d("movierepo", "4 -> " + moviesList)
 
-            if(!moviesList.contains(movie)) {
+            if (!moviesList.contains(movie)) {
                 moviesList.add(movie)
             }
 
             val json = gson.toJson(moviesList)
             sharedPreferences.edit().putString("savedMovies", json).apply()
-            Log.d("movierepo", "4 -> " +  moviesList)
+            Log.d("movierepo", "4 -> " + moviesList)
 
             return moviesList
         } catch (e: Exception) {
@@ -71,7 +100,7 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun deleteMovies(movie: Movie): ArrayList<Movie> {
-        Log.e("movierepo" , "deletemovie is called")
+        Log.e("movierepo", "deletemovie is called")
         val movieArrayList = getSavedMovies()
         movieArrayList.remove(movie)
         val json = gson.toJson(movieArrayList)
@@ -83,7 +112,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun isMovieSaved(movie: Movie): Boolean {
         try {
-            Log.d("movierepo", "5 -> " + getSavedMovies().contains(movie) )
+            Log.d("movierepo", "5 -> " + getSavedMovies().contains(movie))
 
             return getSavedMovies().contains(movie)
 
@@ -93,6 +122,7 @@ class MovieRepository @Inject constructor(
         return false
 
     }
+
 
 }
 
