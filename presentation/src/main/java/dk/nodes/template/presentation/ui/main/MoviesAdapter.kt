@@ -32,7 +32,7 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
     // Binds each movies in the ArrayList to a view
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        Glide.with(context).load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).error(R.drawable.binphoto).into(holder.moviePhoto)
+        Glide.with(context).load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).error(R.drawable.binphoto).fitCenter().into(holder.moviePhoto)
 
         holder.moviename?.text = movies.get(position).name
 

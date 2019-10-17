@@ -3,7 +3,7 @@ package dk.nodes.template.models
 import com.google.gson.annotations.SerializedName
 
 class ThrillerResualt(
-@SerializedName("resualt")
+@SerializedName("results")
 var result : ArrayList<ThrillerInfo>
 
 

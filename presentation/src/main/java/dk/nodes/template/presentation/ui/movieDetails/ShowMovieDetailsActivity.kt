@@ -5,8 +5,11 @@ import android.view.View
 import android.widget.CompoundButton
 import android.widget.Switch
 import android.widget.Toast
+import androidx.annotation.NonNull
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
@@ -17,15 +20,23 @@ import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.pierfrancescosoffritti.androidyoutubeplayer.core.ui.PlayerUiController
+import dk.nodes.template.models.ThrillerInfo
 
 
-class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener {
+class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+
+
     private val viewModel by viewModel<ShowMovieDetailsViewModel>()
     private var movie: Movie? = null
-
+    private var movieTrailer : String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_movie_details)
+
 
 
         val intent = intent
@@ -37,19 +48,19 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleSavedMovies(state)
-            handleThrillerurl(state)
+            handleThrillerUrl(state)
         }
-
+        movie_images.setOnClickListener(this)
         viewModel.movieSavedCheck(movie!!)
-
         movieDetails(movie)
+        movie?.id?.let { viewModel.fetchThrillerUrl(it) }
     }
 
-    private fun handleThrillerurl(viewState: ShowMovieDetailsViewState) {
+    private fun handleThrillerUrl(viewState: ShowMovieDetailsViewState) {
         viewState.let { fetchurl ->
-            if (viewState.thrillerurl != null) {
-                Timber.e(viewState.thrillerurl + "<-- this is the url")
-            }
+            Timber.e(fetchurl.thrillerurl)
+            movieTrailer = fetchurl.thrillerurl
+
         }
     }
 
@@ -79,7 +90,6 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     }
 
 
-
     fun showMessage(savemovieswitch: Switch) {
         if (savemovieswitch.isChecked) {
             Toast.makeText(this, "movie is saved", Toast.LENGTH_SHORT).show()
@@ -93,7 +103,6 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         if (isChecked) {
             viewModel.saveMovie(movie)
             showMessage(save_movie_switch)
-            viewModel.fetchThrillerUrl("324552")
 
 
         } else {
@@ -103,8 +112,8 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
             viewModel.movieSavedCheck(movie)
 
         }
-
     }
+
 
     private fun handleSavedMovies(viewState: ShowMovieDetailsViewState) {
         viewState.let { isMovieSaved ->
@@ -115,6 +124,33 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
             }
         }
     }
+
+    override fun onClick(v: View?) {
+        v?.visibility = View.INVISIBLE
+        movie_images.visibility = View.INVISIBLE
+        playTrailer()
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        youtube_player_view.release()
+    }
+
+fun playTrailer(){
+    youtube_player_view.visibility = View.VISIBLE
+    val youTubePlayerView = youtube_player_view
+    playbuttonview.setOnClickListener(this)
+    lifecycle.addObserver(youTubePlayerView)
+
+        youTubePlayerView.addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+            override fun onReady(youTubePlayer: YouTubePlayer) {
+                Timber.e(movieTrailer)
+                youTubePlayer.loadVideo(movieTrailer!!, 0F)
+            }
+        })
+
+}
 
 
 }

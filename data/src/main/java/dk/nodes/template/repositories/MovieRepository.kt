@@ -22,18 +22,17 @@ class MovieRepository @Inject constructor(
 
         val trailerList: ArrayList<ThrillerInfo> = ArrayList()
         val response = api.getMovieThriller(movieid).execute()
-        Log.d("thrillerdetails", response.toString())
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
-
+                Log.d("thrillerdetails",response.body().toString())
             if (moviesResponse != null) {
                 trailerList.addAll(moviesResponse.result)
 
                 for (trailer in trailerList) {
                     Log.d("thrillerdetails", trailer.toString())
                     if (trailer.type == "YouTube" && trailer.type == "Trailer") {
-                        return "https://www.youtube.com/watch?v=" + trailer.key
+                        return trailer.key.toString()
                     }
                 }
             }
