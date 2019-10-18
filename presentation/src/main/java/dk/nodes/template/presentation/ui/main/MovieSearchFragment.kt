@@ -31,12 +31,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        if(savedInstanceState != null){
-            input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),false)
-            input_search.clearFocus()
 
-            Timber.e("adding to input search-->" + savedInstanceState.getString("movieSearchtxt","") )
-        }
 
 
         return inflater.inflate(R.layout.fragment_movie_search, container, false)
@@ -154,6 +149,19 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString("movieSearchtxt",input_search.query.toString())
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        if(savedInstanceState != null){
+            input_search.isFocusable = true
+            input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),false)
+
+            Timber.e("adding to input search-->" + savedInstanceState.getString("movieSearchtxt","") )
+        }
+
+
+
     }
 }
 

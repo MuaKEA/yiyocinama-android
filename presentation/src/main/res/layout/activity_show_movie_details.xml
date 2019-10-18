@@ -54,7 +54,6 @@
                 android:layout_height="434dp"
                 app:autoPlay="false"
                 app:showFullScreenButton="true"
-                app:videoId="S0Q4gqBUs7c"
                 android:visibility="invisible"/>
         </androidx.cardview.widget.CardView>
 

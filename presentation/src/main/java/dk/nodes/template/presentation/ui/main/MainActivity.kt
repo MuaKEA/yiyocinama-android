@@ -8,6 +8,7 @@ import dk.nodes.template.presentation.ui.base.BaseActivity
 import dk.nodes.template.presentation.ui.base.BaseFragment
 import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 
 class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -51,7 +52,8 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
             R.id.navigation_savedphoto -> {
                 supportFragmentManager.beginTransaction().replace(R.id.main_frame, ShowSavedMovieActivity.newInstance(), "ShowSavedMovieActivity").commit()
 
-                return true
+
+                Timber.e(item.itemId.toString())
 
             }
 

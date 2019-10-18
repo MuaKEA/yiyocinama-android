@@ -30,8 +30,8 @@ class MovieRepository @Inject constructor(
                 trailerList.addAll(moviesResponse.result)
 
                 for (trailer in trailerList) {
-                    Log.d("thrillerdetails", trailer.toString())
-                    if (trailer.type == "YouTube" && trailer.type == "Trailer") {
+                    if (trailer.site == "YouTube" && trailer.type == "Trailer") {
+                        Log.d("thrillerdetails",trailer.key.toString() + "<--- ")
                         return trailer.key.toString()
                     }
                 }
