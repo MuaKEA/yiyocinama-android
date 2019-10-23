@@ -154,6 +154,8 @@ private fun handleErrors(viewState: SavedMoviesViewState) {
         Snackbar.make(rv_moviesList, "Error : Movie was not Deleted", Snackbar.LENGTH_LONG).show()
     }
 }
-    }
+
+
+}
 
 

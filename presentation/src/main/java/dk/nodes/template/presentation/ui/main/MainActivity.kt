@@ -60,11 +60,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         return false
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-
-    }
 }
 
 

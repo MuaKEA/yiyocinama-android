@@ -7,6 +7,7 @@ import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.models.ThrillerInfo
 import dk.nodes.template.network.MovieService
+import okhttp3.Response
 import java.lang.NullPointerException
 import javax.inject.Inject
 import kotlin.collections.ArrayList
@@ -48,6 +49,20 @@ class MovieRepository @Inject constructor(
         return ""
 
     }
+
+
+    suspend fun getRecommendations(recomName: String): ArrayList<Movie>{
+        val recomNameList: ArrayList<Movie> = ArrayList()
+        val response = api.getRecommendations(recomName).execute()
+        if(response.isSuccessful){
+            val movieResponse = response.body()
+                if(movieResponse != null){
+                recomNameList.addAll(movieResponse.result)
+                }
+        }
+            return recomNameList
+    }
+
 
 
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
@@ -124,5 +139,6 @@ class MovieRepository @Inject constructor(
 
 
 }
+
 
 

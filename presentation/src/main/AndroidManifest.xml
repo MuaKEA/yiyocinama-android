@@ -5,14 +5,17 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application>
-        <activity android:name="dk.nodes.template.presentation.ui.movieDetails.ShowMovieDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+        <activity android:name=".ui.main.MenuActivity"></activity>
+        <activity android:name=".ui.main.ActivityMenu" />
+        <activity android:name=".activity_menu" />
+        <activity
+            android:name=".ui.movieDetails.ShowMovieDetailsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
-            android:hardwareAccelerated="true"/>
-
+            android:hardwareAccelerated="true"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".ui.savedmovies.ShowSavedMovieActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

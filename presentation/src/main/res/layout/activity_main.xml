@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:windowSoftInputMode="adjustPan|adjustResize"
-    android:id="@+id/root_layout">
+    android:background="@drawable/cinemabackground">
 
 
     <FrameLayout
@@ -33,4 +31,3 @@
         app:menu="@menu/menu_mainactivity" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-

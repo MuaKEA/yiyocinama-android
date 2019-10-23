@@ -18,6 +18,7 @@ import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
 import android.view.MotionEvent
 import android.view.View.OnTouchListener
+import androidx.recyclerview.widget.RecyclerView
 import dk.nodes.template.presentation.R
 
 
@@ -122,7 +123,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
 
     private fun updateRecyclerview() {
         // Creates a vertical Layout Manager
-        rv_moviesList.layoutManager = GridLayoutManager(context, 3)
+        rv_moviesList.layoutManager = GridLayoutManager(context, 3) as RecyclerView.LayoutManager?
         // Access the RecyclerView Adapter and load the data into it
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
@@ -149,7 +150,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
 
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        viewModel.moviesfun(newText.toString())
+        viewModel.moviesFun(newText.toString())
         updateRecyclerview()
 
         return true

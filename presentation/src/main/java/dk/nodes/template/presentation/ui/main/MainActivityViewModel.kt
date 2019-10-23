@@ -25,8 +25,8 @@ class MainActivityViewModel @Inject constructor(
 
     private val moviesInteractor = moviesInteractor.asResult()
 
-    fun moviesfun(moviaName: String) = viewModelScope.launch(Dispatchers.Main) {
-        val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(moviaName) }
+    fun moviesFun(movieName: String) = viewModelScope.launch(Dispatchers.Main) {
+        val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(movieName) }
         state = mapResult(result)
 
     }
@@ -63,12 +63,12 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun deleteMovie(movie: Movie) = viewModelScope.launch(Dispatchers.Main) {
+   /* fun deleteMovie(movie: Movie) = viewModelScope.launch(Dispatchers.Main) {
         val result = withContext(Dispatchers.IO) { deleteMovieInteractor.asResult().invoke(movie) }
         state = mapSavedMovies(result)
 
     }
-
+*/
     private fun mapSavedMovies(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
         return when (result) {
             is Success -> state.copy(movies = result.data, isLoading = false)

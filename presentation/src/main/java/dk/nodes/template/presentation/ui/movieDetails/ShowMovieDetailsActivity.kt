@@ -1,7 +1,6 @@
 package dk.nodes.template.presentation.ui.movieDetails
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.CompoundButton
@@ -22,13 +21,9 @@ import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import android.graphics.drawable.Drawable
 import android.graphics.Bitmap
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.widget.ImageView
+import androidx.lifecycle.ViewModel
 import com.squareup.picasso.Target
 import androidx.palette.graphics.Palette
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import java.lang.Exception
 
 
@@ -42,30 +37,42 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_movie_details)
         playbuttonview.setOnClickListener(this)
+        viewModel.viewState.observeNonNull(this) { state ->
+            handleMovies(state)
+        }
 
 
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
-            viewModel.fetchThrillerUrl(movie?.id!!)
+            viewModel.fetchTrailerUrl(movie?.id!!)
         }
-
+        viewModel.moviesRecommendation(movie?.id!!)
         Timber.e(movie.toString())
 
         viewModel.viewState.observeNonNull(this) { state ->
-            handleSavedMovies(state)
-            handleThrillerUrl(state)
+            handleRecommendation(state)
         }
+
+
         movie_images.setOnClickListener(this)
         viewModel.movieSavedCheck(movie!!)
         movieDetails(movie)
+
+
+
+
+    }
+    private fun handleMovies(viewState: ShowMovieDetailsViewState) {
+        viewState.movies?.let { movieList ->
+            Timber.e(movieList.toString())
+     Timber.e(movieList.toString())
+        }
     }
 
-
-    private fun handleThrillerUrl(viewState: ShowMovieDetailsViewState) {
+    private fun handleRecommendation(viewState: ShowMovieDetailsViewState) {
         viewState.let { fetchurl ->
-            Timber.e(fetchurl.thrillerurl)
-            movieTrailer = fetchurl.thrillerurl
+            Timber.e(fetchurl.trailerUrl)
 
         }
     }
@@ -207,6 +214,8 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
             }
 
 
+
+
             override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
                 super.onVideoDuration(youTubePlayer, duration)
                 videoduration = duration
@@ -219,6 +228,8 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
                     youtube_player_view.visibility = View.INVISIBLE
                     playbuttonview.visibility = View.VISIBLE
                     movie_images.visibility = View.VISIBLE
+                }else{
+                    return youTubePlayer.loadVideo("film", 3.45.toFloat())
                 }
 
             }
