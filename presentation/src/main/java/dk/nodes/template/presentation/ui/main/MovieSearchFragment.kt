@@ -10,16 +10,24 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseFragment
 import dk.nodes.template.presentation.ui.movieDetails.ShowMovieDetailsActivity
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 import net.hockeyapp.android.UpdateManager
 import timber.log.Timber
+import android.view.MotionEvent
+import android.view.View.OnTouchListener
+import dk.nodes.template.presentation.R
 
 
-class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
+class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTouchListener {
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+            input_search.clearFocus()
+            return false
+
+    }
 
 
     private val viewModel by viewModel<MainActivityViewModel>()
@@ -30,7 +38,6 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
 
 
 
@@ -53,10 +60,16 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
             handleErrors(state)
         }
 
+        input_search.isIconified()
+        adapter?.notifyDataSetChanged()
+        input_search.setIconified(true)
 
         input_search.setOnQueryTextListener(this)
 
-        adapter?.notifyDataSetChanged()
+
+        rv_moviesList.setOnTouchListener(this)
+
+
 
     }
 
@@ -113,6 +126,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
         // Access the RecyclerView Adapter and load the data into it
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+
         showDialog()
 
     }
@@ -153,15 +167,19 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
         if(savedInstanceState != null){
             input_search.isFocusable = true
-            input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),false)
-
-            Timber.e("adding to input search-->" + savedInstanceState.getString("movieSearchtxt","") )
+            input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
         }
 
-
-
     }
+
+
+
+
+
 }
+
+
 

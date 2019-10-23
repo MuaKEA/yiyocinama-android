@@ -6,11 +6,13 @@
 
     <application>
         <activity android:name="dk.nodes.template.presentation.ui.movieDetails.ShowMovieDetailsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
+            android:hardwareAccelerated="true"/>
 
         <activity
             android:name=".ui.savedmovies.ShowSavedMovieActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
     </application>
 
 </manifest>

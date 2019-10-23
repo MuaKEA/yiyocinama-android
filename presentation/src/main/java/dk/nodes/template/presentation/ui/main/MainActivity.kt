@@ -22,7 +22,7 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         setContentView(R.layout.activity_main)
         bottomNavigation_Main.setOnNavigationItemSelectedListener(this)
 
-        supportFragmentManager.beginTransaction().add(R.id.main_frame, MovieSearchFragment.newInstance(), "").commit()
+        supportFragmentManager.beginTransaction().replace(R.id.main_frame, MovieSearchFragment.newInstance(), "").commit()
 
 
     }
@@ -34,11 +34,6 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
 
     }
-
-    fun replaceFragment(fragment: BaseFragment) {
-        supportFragmentManager.beginTransaction().replace(R.id.main_frame,fragment).commit()
-    }
-
 
     override fun onNavigationItemSelected(item: MenuItem) : Boolean {
         if(shownMenu == item.itemId) return false
@@ -65,7 +60,11 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
         return false
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
 
+
+    }
 }
 
 
