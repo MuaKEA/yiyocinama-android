@@ -166,20 +166,21 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         outState.putString("movieSearchtxt",input_search.query.toString())
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState != null){
+            var s  = savedInstanceState.getString("movieSearchtxt","")
+            Timber.e(s +  "<-- from bundle")
             input_search.isFocusable = true
             input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
+
+
         }
 
+
     }
-
-
-
-
-
 }
 
 

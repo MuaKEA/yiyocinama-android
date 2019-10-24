@@ -11,29 +11,28 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/black"
+        android:id="@+id/movieBackgroundLayout"
+        android:padding="24dp"
         android:minHeight="765dp">
 
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView2"
-            android:layout_width="match_parent"
-            android:layout_height="443dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:cardCornerRadius="8dp"
-            app:cardElevation="8dp"
+            app:cardElevation="4dp"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
                 android:id="@+id/movie_images"
                 android:layout_width="match_parent"
-                android:layout_height="420dp"
-                android:layout_marginBottom="100dp"
+                android:layout_height="432dp"
                 android:scaleType="fitXY"
-                android:tooltipText="click on the picture to see trailer"
+                android:tooltipText="click on the play button to see trailer"
                 app:layout_constraintBottom_toTopOf="@+id/moviename_txt"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

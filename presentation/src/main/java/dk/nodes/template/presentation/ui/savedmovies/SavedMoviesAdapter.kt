@@ -52,7 +52,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
         holder.overview?.text = movies.get(position).overview
 
         val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
+        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).resizeDimen(R.dimen.movieswith,R.dimen.moviesheight).into(holder.moviePhoto)
         holder.binview.setOnClickListener {
             onItemClickedListener?.invoke(position)
 

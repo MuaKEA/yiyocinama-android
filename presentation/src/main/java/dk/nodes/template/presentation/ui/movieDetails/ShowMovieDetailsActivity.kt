@@ -1,15 +1,20 @@
 package dk.nodes.template.presentation.ui.movieDetails
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.CompoundButton
+import android.widget.ImageView
 import android.widget.Switch
 import android.widget.Toast
+import androidx.palette.graphics.Palette
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
@@ -19,12 +24,6 @@ import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
-import android.graphics.drawable.Drawable
-import android.graphics.Bitmap
-import androidx.lifecycle.ViewModel
-import com.squareup.picasso.Target
-import androidx.palette.graphics.Palette
-import java.lang.Exception
 
 
 class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener, View.OnClickListener {
@@ -33,46 +32,65 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     private val viewModel by viewModel<ShowMovieDetailsViewModel>()
     private var movie: Movie? = null
     private var movieTrailer: String? = null
+    lateinit var movieImageView: ImageView
+
+    private val imageCallback = object : Target {
+
+        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+            Timber.e(errorDrawable.toString() + "<---")
+
+        }
+
+        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+
+        }
+
+
+        override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
+            Timber.e("onBitmapLoaded doing something ")
+            movieImageView.setImageBitmap(bitmap)
+            Palette.from(bitmap)
+                    .generate(Palette.PaletteAsyncListener { palette ->
+
+                        movieBackgroundLayout.setBackgroundColor(
+                                palette?.darkMutedSwatch?.rgb ?:
+                                palette?.darkVibrantSwatch?.rgb ?:
+                                palette?.mutedSwatch?.rgb ?:
+                                R.color.hockeyapp_text_black
+                        )
+                    })
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_movie_details)
         playbuttonview.setOnClickListener(this)
-        viewModel.viewState.observeNonNull(this) { state ->
-            handleMovies(state)
-        }
 
 
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
-            viewModel.fetchTrailerUrl(movie?.id!!)
+            viewModel.fetchThrillerUrl(movie?.id!!)
         }
-        viewModel.moviesRecommendation(movie?.id!!)
+
         Timber.e(movie.toString())
 
         viewModel.viewState.observeNonNull(this) { state ->
-            handleRecommendation(state)
+            handleSavedMovies(state)
+            handleThrillerUrl(state)
         }
-
-
         movie_images.setOnClickListener(this)
         viewModel.movieSavedCheck(movie!!)
         movieDetails(movie)
-
-
-
-
-    }
-    private fun handleMovies(viewState: ShowMovieDetailsViewState) {
-        viewState.movies?.let { movieList ->
-            Timber.e(movieList.toString())
-     Timber.e(movieList.toString())
-        }
+        movieImageView = movie_images
     }
 
-    private fun handleRecommendation(viewState: ShowMovieDetailsViewState) {
+
+    private fun handleThrillerUrl(viewState: ShowMovieDetailsViewState) {
         viewState.let { fetchurl ->
-            Timber.e(fetchurl.trailerUrl)
+            Timber.e(fetchurl.thrillerurl)
+            movieTrailer = fetchurl.thrillerurl
 
         }
     }
@@ -82,34 +100,11 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
 
             moviename_txt.setText(movie.name)
 
-            Picasso.get().load("https://image.tmdb.org/t/p/original/" + movie.poster_path).error(R.drawable.images)
-                    .into(object : Target {
+            Picasso.get().isLoggingEnabled = true
 
-                        override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-                        }
-
-                        override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                        }
-
-
-                       override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
-                            movie_images.setImageBitmap(bitmap)
-                            Palette.from(bitmap)
-                                    .generate(Palette.PaletteAsyncListener { palette ->
-                                        val textSwatch = palette!!.vibrantSwatch
-                                        if (textSwatch == null) {
-                                            return@PaletteAsyncListener
-                                        }
-                                        cardView2.setBackgroundColor(textSwatch.rgb)
-
-                                    })
-                        }
-                    })
-
-
-
+            Picasso.get().load("https://image.tmdb.org/t/p/original" + movie.poster_path)
+                    .error(R.drawable.images)
+                    .into(imageCallback)
 
 
 
@@ -214,8 +209,6 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
             }
 
 
-
-
             override fun onVideoDuration(youTubePlayer: YouTubePlayer, duration: Float) {
                 super.onVideoDuration(youTubePlayer, duration)
                 videoduration = duration
@@ -228,8 +221,6 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
                     youtube_player_view.visibility = View.INVISIBLE
                     playbuttonview.visibility = View.VISIBLE
                     movie_images.visibility = View.VISIBLE
-                }else{
-                    return youTubePlayer.loadVideo("film", 3.45.toFloat())
                 }
 
             }

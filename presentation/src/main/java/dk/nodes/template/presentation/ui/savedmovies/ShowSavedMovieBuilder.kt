@@ -6,8 +6,6 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import dk.nodes.template.presentation.injection.ViewModelKey
-import dk.nodes.template.presentation.ui.main.MainActivity
-import dk.nodes.template.presentation.ui.main.MainActivityViewModel
 import dk.nodes.template.presentation.ui.sample.SampleBuilder
 
 
@@ -24,7 +22,7 @@ internal abstract class ShowSavedMovieBuilder {
                 SampleBuilder::class
             ]
     )
-    internal abstract fun showSavedMovieActivity(): ShowSavedMovieActivity
+    internal abstract fun showSavedMovieActivity(): ShowSavedMovieFragment
 }
 
 

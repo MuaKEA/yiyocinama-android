@@ -19,7 +19,7 @@ import dk.nodes.template.presentation.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_movie_search.*
 
 
-class ShowSavedMovieActivity : BaseFragment() {
+class ShowSavedMovieFragment : BaseFragment() {
     private val viewModel by viewModel<ShowSavedMovieViewModel>()
     private var mainActivitycontext : Context? = null
     private var listener: OnFragmentInteractionListener? = null
@@ -126,7 +126,7 @@ class ShowSavedMovieActivity : BaseFragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance() =
-                ShowSavedMovieActivity().apply {
+                ShowSavedMovieFragment().apply {
 
                 }
     }
