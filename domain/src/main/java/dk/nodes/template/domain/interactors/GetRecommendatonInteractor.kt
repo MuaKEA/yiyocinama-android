@@ -5,10 +5,10 @@ import dk.nodes.template.repositories.MovieRepository
 import javax.inject.Inject
 
 class GetRecommendatonInteractor @Inject constructor(
-        private val movieRepository: MovieRepository): BaseInputAsyncInteractor<String,ArrayList<Movie>> {
+        private val movieRepository: MovieRepository): BaseAsyncInteractor<ArrayList<Movie>> {
 
-    override suspend fun invoke(input: String): ArrayList<Movie> {
-        return movieRepository.getRecommendations(input)
+    override suspend fun invoke(): ArrayList<Movie> {
+        return movieRepository.getRecommendations()
     }
 
 

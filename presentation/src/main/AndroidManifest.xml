@@ -8,11 +8,18 @@
         <activity android:name="dk.nodes.template.presentation.ui.movieDetails.ShowMovieDetailsActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
-            android:hardwareAccelerated="true"></activity>
+            android:hardwareAccelerated="true"/>
 
         <activity
             android:name=".ui.savedmovies.ShowSavedMovieFragment"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity android:name=".ui.main.MainActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+
+
     </application>
 
 </manifest>

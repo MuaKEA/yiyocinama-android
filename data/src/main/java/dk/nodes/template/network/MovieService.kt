@@ -15,7 +15,7 @@ interface MovieService {
     fun getMovieThriller(@Path("movieId") movieId: String) : Call<ThrillerResualt>
 
 
-    @GET("movie/{movieId}/recommendations?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getRecommendations(@Path("movieId") movieId: String) : Call<JsonResultMovies>
+    @GET("movie/{movie_id}/recommendations?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
+    fun getRecommendations(@Path("movie_id") movie_id: String) : Call<JsonResultMovies>
 
 }

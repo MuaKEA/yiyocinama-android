@@ -3,8 +3,6 @@ package dk.nodes.template.presentation.ui.main
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.ui.base.BaseActivity
@@ -28,20 +26,13 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
 
 
         showSavedMovieFragment =  ShowSavedMovieFragment.newInstance()
-        movieSearchFragment = MovieSearchFragment.newInstance()
+        movieSearchFragment    =  MovieSearchFragment.newInstance()
 
         supportFragmentManager.beginTransaction()
                 .add(R.id.main_frame, movieSearchFragment)
                 .add(R.id.main_frame, showSavedMovieFragment)
                 .hide(showSavedMovieFragment)
                 .show(movieSearchFragment).commit()
-
-
-
-
-
-
-
     }
 
     override fun onBackPressed() {

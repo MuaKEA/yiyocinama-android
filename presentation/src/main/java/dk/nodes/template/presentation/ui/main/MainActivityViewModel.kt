@@ -15,9 +15,9 @@ import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
         private val nStackPresenter: NStackPresenter,
-        moviesInteractor: MoviesInteractor,
+         moviesInteractor: MoviesInteractor,
         private val InternetCheckInteractor: InternetCheckInteractor,
-        private val deleteMovieInteractor: DeleteMovieInteractor
+        private val getRecommendatonInteractor: GetRecommendatonInteractor
 
 ) : BaseViewModel<MainActivityViewState>() {
     override val initState: MainActivityViewState = MainActivityViewState()
@@ -45,8 +45,7 @@ class MainActivityViewModel @Inject constructor(
     }
 
 
-
-     fun isDeviceOnlineCheck() = viewModelScope.launch {
+    fun isDeviceOnlineCheck() = viewModelScope.launch {
 
         val result = withContext(Dispatchers.IO) { InternetCheckInteractor.asResult().invoke() }
         state = isDeviceOnline(result)
@@ -63,22 +62,10 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-   /* fun deleteMovie(movie: Movie) = viewModelScope.launch(Dispatchers.Main) {
-        val result = withContext(Dispatchers.IO) { deleteMovieInteractor.asResult().invoke(movie) }
-        state = mapSavedMovies(result)
+    fun getRecommendations() =  viewModelScope.launch {
+
+        val result = withContext(Dispatchers.IO) { getRecommendatonInteractor.asResult().invoke() }
+        state = mapResult(result)
 
     }
-*/
-    private fun mapSavedMovies(result: CompleteResult<ArrayList<Movie>>): MainActivityViewState {
-        return when (result) {
-            is Success -> state.copy(movies = result.data, isLoading = false)
-            is Loading<*> -> state.copy(isLoading = true)
-            is Fail -> state.copy(
-                    viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
-                    isLoading = false
-            )
-            else -> MainActivityViewState()
-        }
-    }
-
 }

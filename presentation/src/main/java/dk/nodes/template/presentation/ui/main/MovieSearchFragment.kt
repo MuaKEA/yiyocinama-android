@@ -1,5 +1,6 @@
 package dk.nodes.template.presentation.ui.main
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -23,13 +24,6 @@ import dk.nodes.template.presentation.R
 
 
 class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTouchListener {
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-
-            input_search.clearFocus()
-            return false
-
-    }
-
 
     private val viewModel by viewModel<MainActivityViewModel>()
     private var adapter: MoviesAdapter? = null
@@ -37,11 +31,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
     private var mainContext : Context?=null
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
-
-
-
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_search, container, false)
 
     }
@@ -55,6 +45,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.isDeviceOnlineCheck()
+        viewModel.getRecommendations()
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
@@ -64,13 +55,8 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         input_search.isIconified()
         adapter?.notifyDataSetChanged()
         input_search.setIconified(true)
-
         input_search.setOnQueryTextListener(this)
-
-
         rv_moviesList.setOnTouchListener(this)
-
-
 
     }
 
@@ -106,6 +92,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
             error_view.visibility = View.INVISIBLE
             adapter?.addMovies(movieList)
             adapter?.notifyDataSetChanged()
+            updateRecyclerview()
         }
     }
 
@@ -123,23 +110,20 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
 
     private fun updateRecyclerview() {
         // Creates a vertical Layout Manager
-        rv_moviesList.layoutManager = GridLayoutManager(context, 3) as RecyclerView.LayoutManager?
+        rv_moviesList.layoutManager = GridLayoutManager(context, 3)
         // Access the RecyclerView Adapter and load the data into it
         rv_moviesList.adapter = adapter
         rv_moviesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-
         showDialog()
 
     }
 
     override fun onDestroy() {
         super.onDestroy()
-
         UpdateManager.unregister()
     }
 
     private fun showDialog() {
-
         adapter?.onItemClickedListener = { movie ->
           val intent = Intent(mainContext, ShowMovieDetailsActivity::class.java)
             intent.putExtra("movie" ,movie)
@@ -148,6 +132,12 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         }
     }
 
+    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+
+        input_search.clearFocus()
+        return false
+
+    }
 
     override fun onQueryTextChange(newText: String?): Boolean {
         viewModel.moviesFun(newText.toString())
@@ -166,20 +156,13 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         outState.putString("movieSearchtxt",input_search.query.toString())
     }
 
-
-
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState != null){
-            var s  = savedInstanceState.getString("movieSearchtxt","")
-            Timber.e(s +  "<-- from bundle")
+            val s  = savedInstanceState.getString("movieSearchtxt","")
             input_search.isFocusable = true
             input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
-
-
         }
-
-
     }
 }
 

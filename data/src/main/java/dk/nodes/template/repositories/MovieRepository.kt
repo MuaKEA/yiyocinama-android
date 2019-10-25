@@ -26,19 +26,17 @@ class MovieRepository @Inject constructor(
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
-                Log.d("thrillerdetails",response.body().toString())
             if (moviesResponse != null) {
                 trailerList.addAll(moviesResponse.result)
 
                 for (trailer in trailerList) {
                     if (trailer.site == "YouTube" && trailer.type == "Trailer") {
-                        Log.d("thrillerdetails",trailer.key.toString() + "<--- ")
                         return trailer.key.toString()
                     }
                 }
             }
 
-        }else{
+        } else {
 
             Log.d("thrillerdetails", "<--not working")
 
@@ -51,18 +49,25 @@ class MovieRepository @Inject constructor(
     }
 
 
-    suspend fun getRecommendations(recomName: String): ArrayList<Movie>{
-        val recomNameList: ArrayList<Movie> = ArrayList()
-        val response = api.getRecommendations(recomName).execute()
-        if(response.isSuccessful){
-            val movieResponse = response.body()
-                if(movieResponse != null){
-                recomNameList.addAll(movieResponse.result)
-                }
-        }
-            return recomNameList
-    }
+    suspend fun getRecommendations(): ArrayList<Movie> {
+        val movieList: ArrayList<Movie> = getSavedMovies()
 
+
+        if (movieList.size > 0) {
+            val response = api.getRecommendations(movieList.random().id!!).execute()
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    movieList.addAll(movieResponse.result)
+                    return movieList
+                }
+            }
+
+        }
+
+        return movieList
+
+    }
 
 
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
