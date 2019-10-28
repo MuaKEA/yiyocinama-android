@@ -5,8 +5,9 @@ import android.os.Parcelable
 import android.text.BoringLayout
 import com.google.gson.annotations.SerializedName
 import java.util.*
+import kotlin.collections.ArrayList
 
-data class Movie(
+class Movie(
         @SerializedName("original_title")
         var name: String?,
         @SerializedName("original_language")
@@ -22,7 +23,11 @@ data class Movie(
         @SerializedName("overview")
         var overview: String?,
         @SerializedName("id")
-        var id: String?
+        var id: String?,
+        @SerializedName("genre_ids")
+        var genreArray: Array<String>?
+
+
 
 ) : Parcelable {
         constructor(parcel: Parcel) : this(
@@ -33,10 +38,8 @@ data class Movie(
                 parcel.readString(),
                 parcel.readString(),
                 parcel.readString(),
-                parcel.readString())
-
-        override fun toString(): String {
-                return "Movie(name='$name', original_language='$original_language', releaseDate='$releaseDate', popularity='$popularity', poster_path='$poster_path', vote_average='$vote_average', overview='$overview', id='$id')"
+                parcel.readString(),
+                parcel.createStringArray()) {
         }
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -48,10 +51,15 @@ data class Movie(
                 parcel.writeString(vote_average)
                 parcel.writeString(overview)
                 parcel.writeString(id)
+                parcel.writeStringArray(genreArray)
         }
 
         override fun describeContents(): Int {
                 return 0
+        }
+
+        override fun toString(): String {
+                return "Movie(name=$name, original_language=$original_language, releaseDate=$releaseDate, popularity=$popularity, poster_path=$poster_path, vote_average=$vote_average, overview=$overview, id=$id, genreArray=${genreArray?.contentToString()})"
         }
 
         companion object CREATOR : Parcelable.Creator<Movie> {
@@ -64,16 +72,5 @@ data class Movie(
                 }
         }
 
-
-
 }
-
-
-
-
-
-
-
-
-
 

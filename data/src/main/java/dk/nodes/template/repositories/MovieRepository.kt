@@ -1,7 +1,9 @@
 package dk.nodes.template.repositories
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
+import android.util.SparseArray
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
@@ -36,11 +38,6 @@ class MovieRepository @Inject constructor(
                 }
             }
 
-        } else {
-
-            Log.d("thrillerdetails", "<--not working")
-
-
         }
 
 
@@ -70,18 +67,61 @@ class MovieRepository @Inject constructor(
     }
 
 
+    suspend fun getSpecifiedReconmendations(movieId: String): ArrayList<Movie> {
+        val movieList: ArrayList<Movie> = getSavedMovies()
+
+
+        if (movieList.size > 0) {
+            val response = api.getRecommendations(movieId).execute()
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    movieList.addAll(movieResponse.result)
+                    return movieList
+                }
+            }
+
+        }
+
+        return movieList
+
+    }
+
+
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
-        val movieslisto: ArrayList<Movie> = ArrayList()
+        val movieslist: ArrayList<Movie> = ArrayList()
+
         Log.d("movierepo", "1")
         val response = api.getCurrentMovieData(moviename).execute()
         if (response.isSuccessful) {
             val moviesResponse = response.body()
             Log.d("movierepo", "2")
             if (moviesResponse != null) {
-                movieslisto.addAll(moviesResponse.result)
+                movieslist.addAll(moviesResponse.result)
+
+
+
+                return completedList(movieslist)
+
             }
         }
-        return movieslisto
+        return movieslist
+    }
+
+    suspend fun completedList(moviesList: ArrayList<Movie>): ArrayList<Movie> {
+        val genreHashmap = getGenres()
+
+        for (movie in moviesList) {
+
+            if (movie.genreArray != null) {
+                for (i in 0 until (movie.genreArray?.size!!)) {
+                    val s = genreHashmap.get(movie.genreArray!![i].toInt()).toString()
+                    movie.genreArray!![i] = s
+                }
+            }
+        }
+        return moviesList
+
     }
 
     suspend fun getSavedMovies(): ArrayList<Movie> {
@@ -119,8 +159,9 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun deleteMovies(movie: Movie): ArrayList<Movie> {
-        Log.e("movierepo", "deletemovie is called")
         val movieArrayList = getSavedMovies()
+
+
         movieArrayList.remove(movie)
         val json = gson.toJson(movieArrayList)
         sharedPreferences.edit().putString("savedMovies", json).apply()
@@ -142,7 +183,39 @@ class MovieRepository @Inject constructor(
 
     }
 
+    @SuppressLint("UseSparseArrays")
+    suspend fun getGenres(): HashMap<Int, String> {
+        val genrehashmap = HashMap<Int, String>()
+        val response = api.getGenres().execute()
+        if (response.isSuccessful) {
+            val moviesResponse = response.body()
+            if (moviesResponse != null) {
 
+                for (moviegenres in moviesResponse.genreList!!)
+                    moviegenres.id?.let { moviegenres.name?.let { it1 -> genrehashmap.put(it, it1) } }
+            }
+        }
+        return genrehashmap
+
+    }
+
+    suspend fun getSemiliarMovies(movieId: String): ArrayList<Movie> {
+        val movieList: ArrayList<Movie> = getSavedMovies()
+        if (movieList.size > 0) {
+            val response = api.getSimilarMovies(movieId).execute()
+            if (response.isSuccessful) {
+                val movieResponse = response.body()
+                if (movieResponse != null) {
+                    movieList.addAll(movieResponse.result)
+                    return movieList
+                }
+            }
+
+        }
+
+        return movieList
+
+    }
 }
 
 

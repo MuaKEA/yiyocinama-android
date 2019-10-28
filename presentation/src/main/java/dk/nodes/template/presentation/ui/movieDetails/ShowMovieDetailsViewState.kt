@@ -17,7 +17,8 @@ data class ShowMovieDetailsViewState (
             val viewError: SingleEvent<ViewError>? = null,
             val thrillerurl : String?=null,
             var isMovieSaved : Boolean=false,
-            val movies: ArrayList<Movie>? = null
+            val movies: ArrayList<Movie>? = null,
+            val semilarMoivesList : ArrayList<Movie>?=null
 
 
 

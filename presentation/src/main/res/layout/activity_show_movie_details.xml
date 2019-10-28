@@ -57,10 +57,10 @@
 
         <TextView
             android:id="@+id/moviename_txt"
-            android:layout_width="387dp"
+            android:layout_width="0dp"
             android:layout_height="66dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="250dp"
             android:layout_marginEnd="10dp"
             android:clickable="false"
             android:focusable="auto"
@@ -168,9 +168,9 @@
             android:id="@+id/save_movie_switch"
             android:layout_width="155dp"
             android:layout_height="48dp"
-            android:layout_marginStart="253dp"
+            android:layout_marginStart="200dp"
             android:layout_marginTop="40dp"
-            android:layout_marginEnd="3dp"
+            android:layout_marginEnd="50dp"
             android:layout_marginBottom="30dp"
             android:outlineAmbientShadowColor="#00F80303"
             android:outlineSpotShadowColor="#00FF0000"
@@ -181,6 +181,7 @@
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toTopOf="@+id/overview_txt"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviename_txt" />
 
@@ -210,7 +211,36 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/moviename_txt" />
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/showdetailsrecycler"
+            android:layout_width="375dp"
+            android:layout_height="159dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="50dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/moviename_txt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.595"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
+
+        <TextView
+            android:id="@+id/recomendedmovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="204dp"
+            android:layout_marginBottom="60dp"
+            android:text="Recommended movies"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="18dp"
+            android:textStyle="bold|italic"
+            app:layout_constraintBottom_toTopOf="@+id/showdetailsrecycler"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

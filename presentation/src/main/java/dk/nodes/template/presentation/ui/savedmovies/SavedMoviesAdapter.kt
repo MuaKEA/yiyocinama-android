@@ -18,7 +18,6 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
     var onItemClickedListener: ((movie: Int) -> Unit?)? = null
 
     val movies: ArrayList<Movie> = ArrayList()
-    // Gets the number of movies in the list
 
     override fun getItemCount(): Int {
         return movies.size
@@ -37,7 +36,7 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
 
         if(releaseDate !=""){
 
-                LocalDate.of(releaseDate!!.substring(0, 4).toInt(), releaseDate.substring(5, 7).toInt(), releaseDate.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
+            LocalDate.of(releaseDate!!.substring(0, 4).toInt(), releaseDate.substring(5, 7).toInt(), releaseDate.substring(8, 10).toInt()).format((DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)))
 
             }else{
 
@@ -45,14 +44,11 @@ class SavedMoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder
 
         }
 
-
-
-
         holder.moviename?.text = movies.get(position).name + " (" + releaseDate.toString() + ")"
         holder.overview?.text = movies.get(position).overview
 
         val picasso = Picasso.get()
-        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).resizeDimen(R.dimen.movieswith,R.dimen.moviesheight).into(holder.moviePhoto)
+        picasso.load("https://image.tmdb.org/t/p/original/" + movies.get(position).poster_path).fit().into(holder.moviePhoto)
         holder.binview.setOnClickListener {
             onItemClickedListener?.invoke(position)
 

@@ -1,5 +1,6 @@
 package dk.nodes.template.presentation.ui.movieDetails
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -10,6 +11,9 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.Toast
 import androidx.palette.graphics.Palette
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener
@@ -19,7 +23,9 @@ import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
+import dk.nodes.template.presentation.ui.main.MoviesAdapter
 import kotlinx.android.synthetic.main.activity_show_movie_details.*
+import kotlinx.android.synthetic.main.fragment_movie_search.*
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -33,6 +39,7 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     private var movie: Movie? = null
     private var movieTrailer: String? = null
     lateinit var movieImageView: ImageView
+    private var adapter: MoviesAdapter? = null
 
     private val imageCallback = object : Target {
 
@@ -65,27 +72,67 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_show_movie_details)
-        playbuttonview.setOnClickListener(this)
+        movieImageView = movie_images
 
+        playbuttonview.setOnClickListener(this)
 
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
+            viewModel.movieSavedCheck(movie!!)
             viewModel.fetchThrillerUrl(movie?.id!!)
+            viewModel.getSemiliarMovies(movie?.id!!)
+
         }
 
-        Timber.e(movie.toString())
+        adapter = MoviesAdapter(this,R.layout.recommendedmovies_row)
+
+
+        movie_images.setOnClickListener(this)
+        movieDetails(movie)
 
         viewModel.viewState.observeNonNull(this) { state ->
             handleSavedMovies(state)
             handleThrillerUrl(state)
+            handleSemilarMovies(state)
         }
-        movie_images.setOnClickListener(this)
-        viewModel.movieSavedCheck(movie!!)
-        movieDetails(movie)
-        movieImageView = movie_images
+
+        adapter?.notifyDataSetChanged()
+
     }
 
+
+
+    private fun addItemOnclick() {
+        adapter?.onItemClickedListener = { movie ->
+            val intent = Intent(this, ShowMovieDetailsActivity::class.java)
+            intent.putExtra("movie" ,movie)
+            startActivity(intent)
+
+        }
+    }
+
+
+    private fun handleSemilarMovies(viewState: ShowMovieDetailsViewState) {
+        viewState.let { fetchRecomended->
+            fetchRecomended.semilarMoivesList?.let { adapter?.addMovies(it) }
+
+            addItemOnclick()
+            Timber.e(fetchRecomended.movies.toString())
+            updateRecyclerview()
+            adapter?.notifyDataSetChanged()
+
+        }
+
+    }
+    fun updateRecyclerview(){
+            // Creates a vertical Layout Manager
+        showdetailsrecycler.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        showdetailsrecycler.adapter = adapter
+        addItemOnclick()
+
+
+        }
 
     private fun handleThrillerUrl(viewState: ShowMovieDetailsViewState) {
         viewState.let { fetchurl ->

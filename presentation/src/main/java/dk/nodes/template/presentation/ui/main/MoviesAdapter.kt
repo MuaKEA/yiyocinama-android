@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.movie_recylerview_row.view.*
 import timber.log.Timber
 
 
-class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
+class MoviesAdapter(val context: Context, val recyclerviewRow : Int) : RecyclerView.Adapter<ViewHolder>() {
     var onItemClickedListener: ((movie: Movie) -> Unit?)? = null
 
 
@@ -26,7 +26,7 @@ class MoviesAdapter(val context: Context) : RecyclerView.Adapter<ViewHolder>() {
 
     // Inflates the item views
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(context).inflate(R.layout.movie_recylerview_row, parent, false))
+        return ViewHolder(LayoutInflater.from(context).inflate(recyclerviewRow, parent, false))
     }
 
     // Binds each movies in the ArrayList to a view

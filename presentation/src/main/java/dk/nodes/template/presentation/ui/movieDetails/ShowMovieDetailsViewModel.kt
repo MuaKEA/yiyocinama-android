@@ -28,7 +28,9 @@ data class ShowMovieDetailsViewModel @Inject constructor(
         private val fetchMovieThriler : FetchTrailerIntepretor,
         private val IsMovieSavedInteractor: IsMovieSavedInteractor,
         private val saveMovieInterator: SaveMovieInterator,
-        private val deleteMovieInteractor: DeleteMovieInteractor
+        private val deleteMovieInteractor: DeleteMovieInteractor,
+        private val getMovieRecomendations: getMovieRecomendations,
+        private val getSimiliarMovies: GetSimiliarMovies
 
 
 
@@ -109,44 +111,30 @@ data class ShowMovieDetailsViewModel @Inject constructor(
     }
 
 
-    fun processImage(posterURL : String)  = viewModelScope.launch(Dispatchers.Main)  {
-        var backgoundColor : Int?=null
-
-        withContext(Dispatchers.IO) {
-          Picasso.get().load("https://image.tmdb.org/t/p/original/" + posterURL)
-                  .error(R.drawable.images)
-                  .into(object : Target {
-
-                      override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                          Timber.e(errorDrawable.toString() + "<---")
-
-                      }
-
-                      override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
-
-                      }
-
-
-                      override fun onBitmapLoaded(bitmap: Bitmap, from: Picasso.LoadedFrom) {
-                          Timber.e("onBitmapLoaded doing something ")
-                          Palette.from(bitmap)
-                                  .generate(Palette.PaletteAsyncListener { palette ->
-                                      val textSwatch = palette!!.dominantSwatch
-                                      if (textSwatch == null) {
-                                          return@PaletteAsyncListener
-                                      }
-                                      backgoundColor = textSwatch.rgb
-                                  })
-
-
-                      }
-
-                  })
-
+    private fun mapSemiliarMovies(result: CompleteResult<ArrayList<Movie>>): ShowMovieDetailsViewState {
+        return when (result) {
+            is Success -> state.copy(semilarMoivesList = result.data)
+            is Loading<*> -> state.copy(isLoading = true)
+            is Fail -> state.copy(
+                    viewError = SingleEvent(ViewErrorController.mapThrowable(result.throwable)),
+                    isLoading = false
+            )
+            else -> ShowMovieDetailsViewState()
         }
 
     }
 
+    fun getSemiliarMovies(movieId : String) =  viewModelScope.launch {
+
+        val result = withContext(Dispatchers.IO) { getSimiliarMovies.asResult().invoke(movieId) }
+        state = mapSemiliarMovies(result)
+
+    }
+
+        }
 
 
-}
+
+
+
+

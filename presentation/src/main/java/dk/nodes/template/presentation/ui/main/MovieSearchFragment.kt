@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,7 +30,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
     private var adapter: MoviesAdapter? = null
     private var listener: OnFragmentInteractionListener? = null
     private var mainContext : Context?=null
-
+    private var oldQuaryLength=0
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_movie_search, container, false)
@@ -38,7 +39,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        adapter = MoviesAdapter(context)
+        adapter = MoviesAdapter(context,R.layout.movie_recylerview_row)
         mainContext=context
     }
 
@@ -113,7 +114,6 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         rv_moviesList.layoutManager = GridLayoutManager(context, 3)
         // Access the RecyclerView Adapter and load the data into it
         rv_moviesList.adapter = adapter
-        rv_moviesList.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         showDialog()
 
     }
@@ -140,16 +140,24 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
     }
 
     override fun onQueryTextChange(newText: String?): Boolean {
-        viewModel.moviesFun(newText.toString())
+        if(newText?.length!! > oldQuaryLength.plus(2)) {
+            Log.d("quary old", oldQuaryLength.toString() + "<-old-new ->" + newText?.length?.plus(3).toString())
+
+            input_search.clearFocus()
+
+        }
+        oldQuaryLength = newText.length
+        newText?.let { viewModel.moviesFun(it) }
         updateRecyclerview()
 
         return true
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-       input_search.clearFocus()
+        input_search.clearFocus()
         return true
     }
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
@@ -160,6 +168,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         super.onViewStateRestored(savedInstanceState)
         if(savedInstanceState != null){
             val s  = savedInstanceState.getString("movieSearchtxt","")
+            input_search.setQuery(s,true)
             input_search.isFocusable = true
             input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
         }
