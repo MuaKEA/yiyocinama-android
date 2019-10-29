@@ -22,11 +22,11 @@ class MovieRepository @Inject constructor(
 ) {
 
     suspend fun getTrailerinfo(movieid: String): String {
-
         val trailerList: ArrayList<ThrillerInfo> = ArrayList()
         val response = api.getMovieThriller(movieid).execute()
 
         if (response.isSuccessful) {
+
             val moviesResponse = response.body()
             if (moviesResponse != null) {
                 trailerList.addAll(moviesResponse.result)
@@ -40,15 +40,12 @@ class MovieRepository @Inject constructor(
 
         }
 
-
         return ""
 
     }
 
-
     suspend fun getRecommendations(): ArrayList<Movie> {
         val movieList: ArrayList<Movie> = getSavedMovies()
-
 
         if (movieList.size > 0) {
             val response = api.getRecommendations(movieList.random().id!!).execute()
@@ -66,7 +63,6 @@ class MovieRepository @Inject constructor(
 
     }
 
-
     suspend fun getSpecifiedReconmendations(movieId: String): ArrayList<Movie> {
         val movieList: ArrayList<Movie> = getSavedMovies()
 
@@ -80,29 +76,22 @@ class MovieRepository @Inject constructor(
                     return movieList
                 }
             }
-
         }
 
         return movieList
 
     }
 
-
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
         val movieslist: ArrayList<Movie> = ArrayList()
-
-        Log.d("movierepo", "1")
         val response = api.getCurrentMovieData(moviename).execute()
+
         if (response.isSuccessful) {
             val moviesResponse = response.body()
-            Log.d("movierepo", "2")
             if (moviesResponse != null) {
                 movieslist.addAll(moviesResponse.result)
 
-
-
                 return completedList(movieslist)
-
             }
         }
         return movieslist
@@ -128,10 +117,9 @@ class MovieRepository @Inject constructor(
         return try {
             val json = sharedPreferences.getString("savedMovies", null)
             val itemType = object : TypeToken<ArrayList<Movie>>() {}.type
-            Log.d("movierepo", "3 -> " + gson.fromJson<ArrayList<Movie>>(json, itemType))
-
 
             return gson.fromJson<ArrayList<Movie>>(json, itemType)
+
         } catch (e: Exception) {
             ArrayList()
         }
@@ -141,17 +129,15 @@ class MovieRepository @Inject constructor(
         val moviesList = getSavedMovies()
 
         try {
-            Log.d("movierepo", "4 -> " + moviesList)
-
             if (!moviesList.contains(movie)) {
                 moviesList.add(movie)
-            }
 
+            }
             val json = gson.toJson(moviesList)
             sharedPreferences.edit().putString("savedMovies", json).apply()
-            Log.d("movierepo", "4 -> " + moviesList)
 
             return moviesList
+
         } catch (e: Exception) {
 
         }
@@ -161,7 +147,8 @@ class MovieRepository @Inject constructor(
     suspend fun deleteMovies(movie: Movie): ArrayList<Movie> {
         val movieArrayList = getSavedMovies()
 
-
+        Log.d("Special", movieArrayList.contains(movie).toString() + " <-if contains")
+        Log.d("Special",movie.toString() + " <-" + "\n" + movieArrayList.toString())
         movieArrayList.remove(movie)
         val json = gson.toJson(movieArrayList)
         sharedPreferences.edit().putString("savedMovies", json).apply()
@@ -172,8 +159,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun isMovieSaved(movie: Movie): Boolean {
         try {
-            Log.d("movierepo", "5 -> " + getSavedMovies().contains(movie))
-
+                Log.d("speacial" , getSavedMovies().contains(movie).toString() + " <--")
             return getSavedMovies().contains(movie)
 
         } catch (E: NullPointerException) {

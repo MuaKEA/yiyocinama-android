@@ -2,12 +2,10 @@ package dk.nodes.template.models
 
 import android.os.Parcel
 import android.os.Parcelable
-import android.text.BoringLayout
 import com.google.gson.annotations.SerializedName
-import java.util.*
-import kotlin.collections.ArrayList
 
-class Movie(
+
+data class Movie(
         @SerializedName("original_title")
         var name: String?,
         @SerializedName("original_language")
@@ -39,8 +37,8 @@ class Movie(
                 parcel.readString(),
                 parcel.readString(),
                 parcel.readString(),
-                parcel.createStringArray()) {
-        }
+                parcel.createStringArray())
+
 
         override fun writeToParcel(parcel: Parcel, flags: Int) {
                 parcel.writeString(name)
@@ -58,8 +56,22 @@ class Movie(
                 return 0
         }
 
-        override fun toString(): String {
-                return "Movie(name=$name, original_language=$original_language, releaseDate=$releaseDate, popularity=$popularity, poster_path=$poster_path, vote_average=$vote_average, overview=$overview, id=$id, genreArray=${genreArray?.contentToString()})"
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+
+                other as Movie
+
+                if (genreArray != null) {
+                        if (other.genreArray == null) return false
+                        if (!genreArray!!.contentEquals(other.genreArray!!)) return false
+                } else if (other.genreArray != null) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                return genreArray?.contentHashCode() ?: 0
         }
 
         companion object CREATOR : Parcelable.Creator<Movie> {
@@ -71,6 +83,4 @@ class Movie(
                         return arrayOfNulls(size)
                 }
         }
-
 }
-

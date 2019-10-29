@@ -51,6 +51,7 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
         viewModel.viewState.observeNonNull(this) { state ->
             handleMovies(state)
             handleErrors(state)
+
         }
 
         input_search.isIconified()
@@ -172,6 +173,12 @@ class MovieSearchFragment : BaseFragment(), SearchView.OnQueryTextListener, OnTo
             input_search.isFocusable = true
             input_search.setQuery(savedInstanceState.getString("movieSearchtxt",""),true)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getRecommendations()
+
     }
 }
 

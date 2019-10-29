@@ -79,11 +79,11 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
-            viewModel.movieSavedCheck(movie!!)
             viewModel.fetchThrillerUrl(movie?.id!!)
             viewModel.getSemiliarMovies(movie?.id!!)
 
         }
+        movie?.let { viewModel.movieSavedCheck(it) }
 
         adapter = MoviesAdapter(this,R.layout.recommendedmovies_row)
 
@@ -92,11 +92,10 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         movieDetails(movie)
 
         viewModel.viewState.observeNonNull(this) { state ->
-            handleSavedMovies(state)
             handleThrillerUrl(state)
             handleSemilarMovies(state)
+            handleSavedMovies(state)
         }
-
         adapter?.notifyDataSetChanged()
 
     }

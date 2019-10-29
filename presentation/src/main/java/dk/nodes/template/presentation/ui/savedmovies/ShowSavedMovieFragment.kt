@@ -11,6 +11,7 @@ import timber.log.Timber
 import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +40,6 @@ class ShowSavedMovieFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.fetchSavedMovies()
 
         adapter = mainActivitycontext?.let { SavedMoviesAdapter(it) } ?: return
 
@@ -47,7 +47,10 @@ class ShowSavedMovieFragment : BaseFragment() {
             handleMovies(state)
             handleErrors(state)
 
+
         }
+        adapter?.notifyDataSetChanged()
+
 
         adapter?.onItemClickedListener = { moviePosition ->
 
@@ -155,7 +158,17 @@ private fun handleErrors(viewState: SavedMoviesViewState) {
     }
 }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        adapter?.notifyDataSetChanged()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchSavedMovies()
+
+    }
 }
 
 
