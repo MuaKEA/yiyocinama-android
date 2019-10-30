@@ -14,6 +14,9 @@ data class MainActivityViewState(
         val nstackRateReminder: RateReminder? = null,
         val nstackUpdate: AppUpdate? = null,
         val movies: ArrayList<Movie>? = null,
+        val actionMovies :ArrayList<Movie>?=null,
+        val dramaMovies : ArrayList<Movie>? = null,
+        val SemiliarMovies : ArrayList<Movie>?=null,
         val viewError: SingleEvent<ViewError>? = null
 
 

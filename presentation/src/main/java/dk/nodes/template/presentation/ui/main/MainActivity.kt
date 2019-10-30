@@ -1,101 +1,81 @@
 package dk.nodes.template.presentation.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
-import androidx.fragment.app.Fragment
+import android.view.View
+import android.widget.SearchView
+import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.tabs.TabLayout
+import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.R
+import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
-import dk.nodes.template.presentation.ui.savedmovies.ShowSavedMovieFragment
+import dk.nodes.template.presentation.ui.experimental.ui.main.SectionsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_movie_search.*
 import timber.log.Timber
 
 
-class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
+    private var adapter: SectionsPagerAdapter? = null
+    private var oldQuaryLength = 0
 
 
-    private var shownMenu: Int = 0
-    lateinit var movieSearchFragment :Fragment
-    lateinit var showSavedMovieFragment : Fragment
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        input_search.setOnQueryTextListener(this)
+        adapter = SectionsPagerAdapter(this, supportFragmentManager)
 
-        bottomNavigation_Main.setOnNavigationItemSelectedListener(this)
+        createTabviewAdapter(input_search.query.toString())
 
 
-        showSavedMovieFragment =  ShowSavedMovieFragment.newInstance()
-        movieSearchFragment    =  MovieSearchFragment.newInstance()
+        adapter?.notifyDataSetChanged()
 
-        supportFragmentManager.beginTransaction()
-                .add(R.id.main_frame, movieSearchFragment)
-                .add(R.id.main_frame, showSavedMovieFragment)
-                .hide(showSavedMovieFragment)
-                .show(movieSearchFragment).commit()
+    }
+    fun createTabviewAdapter(movieName :String){
+        val viewPager: ViewPager = findViewById(R.id.view_pager)
+        viewPager.adapter = adapter
+        adapter?.addString(movieName)
+        val tabs: TabLayout = findViewById(R.id.tabs)
+        tabs.setupWithViewPager(viewPager)
+
+    }
+    override fun onResume() {
+        super.onResume()
+        adapter?.notifyDataSetChanged()
+
     }
 
-    override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount > 1) {
-            supportFragmentManager.popBackStack()
-        } else {
-            finish()
+    override fun onQueryTextChange(newText: String?): Boolean {
+        if(newText?.length!! > oldQuaryLength.plus(2)) {
+           adapter?.addString(newText)
+            input_search.clearFocus()
+            adapter?.notifyDataSetChanged()
+
+            return true
         }
-
+        oldQuaryLength = newText.length
+        adapter?.addString(newText)
+        adapter?.notifyDataSetChanged()
+        return true
     }
 
-    override fun onNavigationItemSelected(item: MenuItem) : Boolean {
-        if(shownMenu == item.itemId) return false
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        input_search.clearFocus()
+        adapter?.addString(query.toString())
+        adapter?.notifyDataSetChanged()
 
-
-
-
-        when (item.itemId) {
-            R.id.navigation_search -> {
-                supportFragmentManager
-                        .beginTransaction()
-                        .show(movieSearchFragment)
-                        .hide(showSavedMovieFragment)
-                        .commit()
-
-            }
-
-            R.id.navigation_savedphoto -> {
-                supportFragmentManager
-                        .beginTransaction()
-                        .hide(movieSearchFragment)
-                        .show(showSavedMovieFragment)
-                        .commit()
-
-                Timber.e(item.itemId.toString())
-
-            }
-
-        }
-
-        shownMenu = item.itemId
-
-
-        return false
+        return true
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

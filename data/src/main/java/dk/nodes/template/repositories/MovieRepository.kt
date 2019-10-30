@@ -12,14 +12,18 @@ import dk.nodes.template.network.MovieService
 import okhttp3.Response
 import java.lang.NullPointerException
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.collections.ArrayList
 
-
+@Singleton
 class MovieRepository @Inject constructor(
         private val api: MovieService,
         private val sharedPreferences: SharedPreferences,
         private val gson: Gson
 ) {
+
+
+    private lateinit var currentMovies : ArrayList<Movie>
 
     suspend fun getTrailerinfo(movieid: String): String {
         val trailerList: ArrayList<ThrillerInfo> = ArrayList()
@@ -45,6 +49,7 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun getRecommendations(): ArrayList<Movie> {
+
         val movieList: ArrayList<Movie> = getSavedMovies()
 
         if (movieList.size > 0) {
@@ -83,6 +88,7 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
+        Log.d("shadush","->" +  moviename)
         val movieslist: ArrayList<Movie> = ArrayList()
         val response = api.getCurrentMovieData(moviename).execute()
 
@@ -90,12 +96,16 @@ class MovieRepository @Inject constructor(
             val moviesResponse = response.body()
             if (moviesResponse != null) {
                 movieslist.addAll(moviesResponse.result)
-
                 return completedList(movieslist)
             }
         }
         return movieslist
     }
+
+
+
+
+
 
     suspend fun completedList(moviesList: ArrayList<Movie>): ArrayList<Movie> {
         val genreHashmap = getGenres()
@@ -108,8 +118,79 @@ class MovieRepository @Inject constructor(
                     movie.genreArray!![i] = s
                 }
             }
+
         }
+
+        currentMovies =moviesList
+
         return moviesList
+
+    }
+
+
+    suspend fun getActionMovies() :ArrayList<Movie> {
+        var actionMovieList = ArrayList<Movie>()
+
+        for (movie in currentMovies) {
+            if (movie.genreArray != null) {
+                for (genre in movie.genreArray!!)
+                    if (genre == "Action") {
+                        actionMovieList.add(movie)
+                    }
+            }
+
+
+        }
+        return actionMovieList
+
+    }
+
+
+
+    suspend fun getdramaMovies() :ArrayList<Movie> {
+        var actionMovieList = ArrayList<Movie>()
+
+        for (movie in currentMovies) {
+            if (movie.genreArray != null) {
+                for (genre in movie.genreArray!!)
+                    if (genre == "Drama") {
+                        actionMovieList.add(movie)
+                    }
+            }
+        }
+        return actionMovieList
+
+    }
+
+
+    suspend fun getComedyMovies(): ArrayList<Movie> {
+        var actionMovieList = ArrayList<Movie>()
+
+        for (movie in currentMovies) {
+            if (movie.genreArray != null) {
+                for (genre in movie.genreArray!!)
+                    if (genre == "Comedy") {
+                        actionMovieList.add(movie)
+                    }
+            }
+        }
+        return actionMovieList
+
+    }
+
+
+    suspend fun getHorrorMovies(): ArrayList<Movie> {
+        var actionMovieList = ArrayList<Movie>()
+
+        for (movie in currentMovies) {
+            if (movie.genreArray != null) {
+                for (genre in movie.genreArray!!)
+                    if (genre == "Horror") {
+                        actionMovieList.add(movie)
+                    }
+            }
+        }
+        return actionMovieList
 
     }
 
@@ -147,8 +228,6 @@ class MovieRepository @Inject constructor(
     suspend fun deleteMovies(movie: Movie): ArrayList<Movie> {
         val movieArrayList = getSavedMovies()
 
-        Log.d("Special", movieArrayList.contains(movie).toString() + " <-if contains")
-        Log.d("Special",movie.toString() + " <-" + "\n" + movieArrayList.toString())
         movieArrayList.remove(movie)
         val json = gson.toJson(movieArrayList)
         sharedPreferences.edit().putString("savedMovies", json).apply()
@@ -203,6 +282,7 @@ class MovieRepository @Inject constructor(
 
     }
 }
+
 
 
 

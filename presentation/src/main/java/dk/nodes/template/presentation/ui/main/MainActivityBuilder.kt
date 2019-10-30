@@ -6,6 +6,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import dk.nodes.template.presentation.injection.ViewModelKey
+import dk.nodes.template.presentation.ui.experimental.ui.main.MovieSearchFragment
 import dk.nodes.template.presentation.ui.sample.SampleBuilder
 
 @Module

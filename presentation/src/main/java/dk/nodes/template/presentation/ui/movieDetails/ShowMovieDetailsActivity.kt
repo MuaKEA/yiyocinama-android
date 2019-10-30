@@ -4,6 +4,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.CompoundButton
@@ -11,8 +12,6 @@ import android.widget.ImageView
 import android.widget.Switch
 import android.widget.Toast
 import androidx.palette.graphics.Palette
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.PlayerConstants
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
@@ -25,7 +24,6 @@ import dk.nodes.template.presentation.extensions.observeNonNull
 import dk.nodes.template.presentation.ui.base.BaseActivity
 import dk.nodes.template.presentation.ui.main.MoviesAdapter
 import kotlinx.android.synthetic.main.activity_show_movie_details.*
-import kotlinx.android.synthetic.main.fragment_movie_search.*
 import timber.log.Timber
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -79,11 +77,12 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
+           viewModel.movieSavedCheck(movie!!)
             viewModel.fetchThrillerUrl(movie?.id!!)
             viewModel.getSemiliarMovies(movie?.id!!)
 
         }
-        movie?.let { viewModel.movieSavedCheck(it) }
+        viewModel.movieSavedCheck(movie!!)
 
         adapter = MoviesAdapter(this,R.layout.recommendedmovies_row)
 
@@ -96,6 +95,7 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
             handleSemilarMovies(state)
             handleSavedMovies(state)
         }
+
         adapter?.notifyDataSetChanged()
 
     }
@@ -152,6 +152,7 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
                     .error(R.drawable.images)
                     .into(imageCallback)
 
+            viewModel.movieSavedCheck(movie)
 
 
             language_txt.setText(movie.original_language)

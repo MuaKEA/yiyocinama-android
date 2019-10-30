@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="765dp"
-    tools:context=".ui.main.MovieSearchFragment">
+    tools:context=".ui.experimental.ui.main.MovieSearchFragment">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,45 +13,26 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_moviesList"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/error_view"
+            android:layout_width="411dp"
+            android:layout_height="771dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayout3"
-            android:layout_width="408dp"
-            android:layout_height="52dp"
-            android:layout_marginBottom="718dp"
-            app:iconifiedByDefault="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="Your hint text">
-
-            <SearchView
-                android:id="@+id/input_search"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:clickable="true"
-                android:focusable="true" />
-
-
-        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
             android:id="@+id/error_view"
             android:layout_width="409dp"
             android:layout_height="716dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="49dp"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textInputLayout3"
+            app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/images" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

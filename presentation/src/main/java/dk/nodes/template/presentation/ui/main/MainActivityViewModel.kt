@@ -1,11 +1,13 @@
 package dk.nodes.template.presentation.ui.main
 
 import androidx.lifecycle.viewModelScope
+import dk.nodes.template.domain.interactor.MoviesInteractor
 import dk.nodes.template.domain.interactors.*
 import dk.nodes.template.models.Movie
 import dk.nodes.template.presentation.extensions.asResult
 import dk.nodes.template.presentation.nstack.NStackPresenter
 import dk.nodes.template.presentation.ui.base.BaseViewModel
+import dk.nodes.template.presentation.ui.experimental.ui.main.MovieViewType
 import dk.nodes.template.presentation.util.SingleEvent
 import dk.nodes.template.presentation.util.ViewErrorController
 import kotlinx.coroutines.Dispatchers
@@ -15,19 +17,33 @@ import javax.inject.Inject
 
 class MainActivityViewModel @Inject constructor(
         private val nStackPresenter: NStackPresenter,
-         moviesInteractor: MoviesInteractor,
+        moviesInteractor: MoviesInteractor,
         private val InternetCheckInteractor: InternetCheckInteractor,
-        private val getRecommendatonInteractor: GetRecommendatonInteractor
+        private val getActionMoviesInteractor:GetActionMoviesInteractor,
+        private val getRecommendatonInteractor: GetRecommendatonInteractor,
+        private val getDramaMoviesInteractor :GetDramaMoviesInteractor,
+        private val getComedyMoviesInteractor: GetComedyMoviesInteractor,
+        private val getHorrorMoviesInteractor: GetHorrorMoviesInteractor
 
 ) : BaseViewModel<MainActivityViewState>() {
     override val initState: MainActivityViewState = MainActivityViewState()
 
 
     private val moviesInteractor = moviesInteractor.asResult()
+    private val getRecommendatonInteractors = getRecommendatonInteractor.asResult()
+    private val getActionMoviesInteractors = getActionMoviesInteractor.asResult()
+    private val getDramaMoviesInteractors = getDramaMoviesInteractor.asResult()
+    private val getComedyMoviesInteractors = getComedyMoviesInteractor.asResult()
+    private val getHorrorMoviesInteractors =  getComedyMoviesInteractors.asResult()
 
-    fun moviesFun(movieName: String) = viewModelScope.launch(Dispatchers.Main) {
-        val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(movieName) }
-        state = mapResult(result)
+    fun fetchMovies(movieName: String?, movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.Movie -> {
+                val result = withContext(Dispatchers.IO) { moviesInteractor.invoke(movieName.toString()) }
+                state = mapResult(result)
+            }
+        }
 
     }
 
@@ -62,10 +78,62 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun getRecommendations() =  viewModelScope.launch {
+    fun fetchRecomendedMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
 
-        val result = withContext(Dispatchers.IO) { getRecommendatonInteractor.asResult().invoke() }
-        state = mapResult(result)
+        when(movieViewType) {
+            is MovieViewType.Recommended -> {
+                val result = withContext(Dispatchers.IO) { getRecommendatonInteractors.invoke() }
+                state = mapResult(result)
+            }
+        }
 
     }
+
+
+    fun fetchActionMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.ActionMovie -> {
+                val result = withContext(Dispatchers.IO) { getActionMoviesInteractors.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+    fun fetchDramaMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.DramaMovie -> {
+                val result = withContext(Dispatchers.IO) { getDramaMoviesInteractors.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+
+    fun fetchComedyMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.ComedyMovie -> {
+                val result = withContext(Dispatchers.IO) { getComedyMoviesInteractors.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+    fun fetchHorrorMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.HorrorMovie -> {
+                val result = withContext(Dispatchers.IO) { getComedyMoviesInteractors.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+
 }
