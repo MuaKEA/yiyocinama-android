@@ -23,7 +23,16 @@ class MainActivityViewModel @Inject constructor(
         private val getRecommendatonInteractor: GetRecommendatonInteractor,
         private val getDramaMoviesInteractor :GetDramaMoviesInteractor,
         private val getComedyMoviesInteractor: GetComedyMoviesInteractor,
-        private val getHorrorMoviesInteractor: GetHorrorMoviesInteractor
+        private val getHorrorMoviesInteractor: GetHorrorMoviesInteractor,
+        private val GetMoviesSavedMoviesInteractor : GetMoviesInteractor,
+        private val getNowPlayingInteractor: GetNowPlayingInteractor,
+        private val getPopularMovieInterActior: GetPopularMovieInterActior,
+        private val getTopRatedMovieInteractor: GetTopRatedMovieInteractor
+
+
+
+
+
 
 ) : BaseViewModel<MainActivityViewState>() {
     override val initState: MainActivityViewState = MainActivityViewState()
@@ -34,7 +43,13 @@ class MainActivityViewModel @Inject constructor(
     private val getActionMoviesInteractors = getActionMoviesInteractor.asResult()
     private val getDramaMoviesInteractors = getDramaMoviesInteractor.asResult()
     private val getComedyMoviesInteractors = getComedyMoviesInteractor.asResult()
-    private val getHorrorMoviesInteractors =  getComedyMoviesInteractors.asResult()
+    private val getHorrorMoviesInteractors =  getHorrorMoviesInteractor.asResult()
+    private val getMoviesInteractor = GetMoviesSavedMoviesInteractor.asResult()
+    private val getnowtPlayingInteractor = getNowPlayingInteractor.asResult()
+    private val getpopularMoviesInterctor = getPopularMovieInterActior.asResult()
+    private val getTopRatedmovieInteractor = getTopRatedMovieInteractor.asResult()
+
+
 
     fun fetchMovies(movieName: String?, movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
 
@@ -128,12 +143,57 @@ class MainActivityViewModel @Inject constructor(
 
         when(movieViewType) {
             is MovieViewType.HorrorMovie -> {
-                val result = withContext(Dispatchers.IO) { getComedyMoviesInteractors.invoke() }
+                val result = withContext(Dispatchers.IO) { getHorrorMoviesInteractors.invoke() }
                 state = mapResult(result)
             }
         }
 
     }
 
+    fun fetchTopRatedMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.TopRateMovie -> {
+                val result = withContext(Dispatchers.IO) { getTopRatedmovieInteractor.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+    fun fetchNowPlayingMoves(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.NowPlaying -> {
+                val result = withContext(Dispatchers.IO) { getnowtPlayingInteractor.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+    fun fetchPopularMoves(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.PopularMovie -> {
+                val result = withContext(Dispatchers.IO) { getpopularMoviesInterctor.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
+
+
+
+    fun fetchSavedMovies(movieViewType: MovieViewType) = viewModelScope.launch(Dispatchers.Main) {
+
+        when(movieViewType) {
+            is MovieViewType.SavedMovie -> {
+                val result = withContext(Dispatchers.IO) { getMoviesInteractor.invoke() }
+                state = mapResult(result)
+            }
+        }
+
+    }
 
 }

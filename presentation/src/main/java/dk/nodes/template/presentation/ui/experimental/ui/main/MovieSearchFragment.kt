@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.recyclerview.widget.GridLayoutManager
 import dk.nodes.template.presentation.extensions.observeNonNull
@@ -16,7 +15,6 @@ import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.ui.main.MainActivityViewModel
 import dk.nodes.template.presentation.ui.main.MainActivityViewState
 import dk.nodes.template.presentation.ui.main.MoviesAdapter
-import timber.log.Timber
 
 private const val ARG_PARAM1 = "param1"
 
@@ -73,6 +71,10 @@ class MovieSearchFragment : BaseFragment() {
         viewModel.fetchDramaMovies(movieViewType = movieViewType)
         viewModel.fetchComedyMovies(movieViewType = movieViewType)
         viewModel.fetchHorrorMovies(movieViewType = movieViewType)
+        viewModel.fetchSavedMovies(movieViewType = movieViewType)
+        viewModel.fetchNowPlayingMoves(movieViewType = movieViewType )
+        viewModel.fetchPopularMoves(movieViewType = movieViewType )
+        viewModel.fetchTopRatedMovies(movieViewType = movieViewType )
         viewModel.viewState.observeNonNull(this) { state ->
 
             handleMovies(state)
@@ -110,7 +112,7 @@ class MovieSearchFragment : BaseFragment() {
     companion object {
 
         @JvmStatic
-        fun newInstance(movieName: String?, type: MovieViewType) =
+        fun newInstance(movieName: String? = null, type: MovieViewType) =
                 MovieSearchFragment().apply {
                     movieViewType = type
 

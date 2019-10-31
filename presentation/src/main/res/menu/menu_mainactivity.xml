@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_search"
+        android:id="@+id/navigation_Home"
         android:icon="@drawable/ic_search_black_24dp"
-        android:title="@string/Search_Movies" />
+        android:title="@string/Home" />
 
     <item
-        android:id="@+id/navigation_savedphoto"
+        android:id="@+id/navigation_Discover_Movies"
         android:icon="@drawable/ic_save_black_24dp"
-        android:title="@string/saved_Movies" />
+        android:title="@string/Discover" />
+
+
+    <item
+        android:id="@+id/navigation_savedmovies"
+        android:icon="@drawable/ic_save_black_24dp"
+        android:title="@string/Saved" />
 
 
 </menu>

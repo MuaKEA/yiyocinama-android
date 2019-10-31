@@ -26,5 +26,14 @@ interface MovieService {
     fun getSimilarMovies(@Path("movie_id") movie_id: String) : Call<JsonResultMovies>
 
 
+    @GET("movie/popular?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
+    fun getPolularMovies(): Call<JsonResultMovies>
+
+    @GET("movie/top_rated?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
+    fun getTopRated(): Call<JsonResultMovies>
+
+    @GET("movie/now_playing?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
+    fun GetNowMoviesData(): Call<JsonResultMovies>
+
 }
 

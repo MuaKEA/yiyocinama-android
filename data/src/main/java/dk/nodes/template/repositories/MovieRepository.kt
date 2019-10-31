@@ -104,6 +104,52 @@ class MovieRepository @Inject constructor(
 
 
 
+    suspend fun getPopularMovies(): ArrayList<Movie> {
+        val movieslist: ArrayList<Movie> = ArrayList()
+        val response = api.getPolularMovies().execute()
+
+        if (response.isSuccessful) {
+            val moviesResponse = response.body()
+            if (moviesResponse != null) {
+                movieslist.addAll(moviesResponse.result)
+                return completedList(movieslist)
+            }
+        }
+        return movieslist
+    }
+
+
+    suspend fun getTopRatedMovies(): ArrayList<Movie> {
+        val movieslist: ArrayList<Movie> = ArrayList()
+        val response = api.getTopRated().execute()
+
+        if (response.isSuccessful) {
+            val moviesResponse = response.body()
+            if (moviesResponse != null) {
+                movieslist.addAll(moviesResponse.result)
+                return completedList(movieslist)
+            }
+        }
+        return movieslist
+    }
+
+
+    suspend fun getNowPlayingMovies(): ArrayList<Movie> {
+        val movieslist: ArrayList<Movie> = ArrayList()
+        val response = api.GetNowMoviesData().execute()
+
+        if (response.isSuccessful) {
+            val moviesResponse = response.body()
+            if (moviesResponse != null) {
+                movieslist.addAll(moviesResponse.result)
+                return completedList(movieslist)
+            }
+        }
+        return movieslist
+    }
+
+
+
 
 
 

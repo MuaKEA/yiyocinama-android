@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.main.MainActivity">
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan|adjustResize"
+    android:id="@+id/root_layout">
 
 
     <com.google.android.material.appbar.AppBarLayout
@@ -59,9 +61,22 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="679dp"
         android:windowSoftInputMode="adjustPan"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation_Main"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:background="@android:color/holo_blue_dark"
+        app:itemIconTint="@color/hockeyapp_text_black"
+        app:itemTextColor="@color/hockeyapp_text_black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="bottom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_mainactivity" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

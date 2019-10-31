@@ -1,6 +1,7 @@
 package dk.nodes.template.presentation.ui.experimental.ui.main
 
 import android.content.Context
+import android.text.method.MovementMethod
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -12,8 +13,8 @@ private val TAB_TITLES = arrayOf(
         R.string.tab_text_1,
         R.string.tab_text_2,
         R.string.tab_text_3,
-        R.string.tab_text_4,
-        R.string.tab_text_5
+        R.string.tab_text_9
+
 )
 
 /**
@@ -42,12 +43,11 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
 
     override fun getItem(position: Int): Fragment {
         when(position){
-            0->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.Recommended)
-            1-> return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.Movie)
-            2->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ActionMovie)
-            3->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.DramaMovie)
-            4->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ComedyMovie)
-            5->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.HorrorMovie)
+            0-> return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.Movie)
+            1->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ActionMovie)
+            2->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.DramaMovie)
+            3->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ComedyMovie)
+            4->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.HorrorMovie)
 
 
         }
@@ -61,18 +61,22 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     }
 
     override fun getCount(): Int {
-        // Show 6 total pages.
-        return 6
+        return 5
     }
 }
 
 
 sealed class MovieViewType {
 
-    object Recommended: MovieViewType()
-    object Movie : MovieViewType()
-    object ActionMovie :MovieViewType()
-    object DramaMovie : MovieViewType()
-    object ComedyMovie : MovieViewType()
-    object HorrorMovie : MovieViewType()
+    object Recommended:  MovieViewType()
+    object Movie:        MovieViewType()
+    object ActionMovie:  MovieViewType()
+    object DramaMovie:   MovieViewType()
+    object ComedyMovie:  MovieViewType()
+    object HorrorMovie:  MovieViewType()
+    object SavedMovie:   MovieViewType()
+    object NowPlaying:   MovieViewType()
+    object PopularMovie: MovieViewType()
+    object TopRateMovie: MovieViewType()
+
 }
