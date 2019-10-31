@@ -16,10 +16,11 @@ import dk.nodes.template.presentation.R
 import dk.nodes.template.presentation.ui.main.MainActivityViewModel
 import dk.nodes.template.presentation.ui.main.MainActivityViewState
 import dk.nodes.template.presentation.ui.main.MoviesAdapter
+import timber.log.Timber
 
 private const val ARG_PARAM1 = "param1"
 
-class MovieSearchFragment :BaseFragment() {
+class MovieSearchFragment : BaseFragment() {
 
     private var param1: String? = null
 
@@ -48,11 +49,23 @@ class MovieSearchFragment :BaseFragment() {
         adapter = MoviesAdapter(context, R.layout.movie_recylerview_row)
         mainContext = context
 
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        getContens()
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        adapter?.notifyDataSetChanged()
+    }
+
+    fun getContens() {
+
         viewModel.isDeviceOnlineCheck()
         viewModel.fetchMovies(param1, movieViewType = movieViewType)
         viewModel.fetchRecomendedMovies(movieViewType = movieViewType)
@@ -71,11 +84,17 @@ class MovieSearchFragment :BaseFragment() {
 
     }
 
+
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         listener?.onFragmentInteraction(uri)
     }
 
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        adapter?.notifyDataSetChanged()
+
+    }
 
     override fun onDetach() {
         super.onDetach()
@@ -97,7 +116,6 @@ class MovieSearchFragment :BaseFragment() {
 
                     arguments = Bundle().apply {
                         putString(ARG_PARAM1, movieName)
-                        Log.d("shadush", movieName)
 
                     }
                 }
@@ -128,7 +146,6 @@ class MovieSearchFragment :BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.fetchMovies(param1, movieViewType = movieViewType)
         adapter?.notifyDataSetChanged()
     }
 
@@ -139,4 +156,6 @@ class MovieSearchFragment :BaseFragment() {
             updateRecyclerview()
         }
     }
+
+
 }

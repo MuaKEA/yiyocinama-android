@@ -9,12 +9,13 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="842dp">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_moviesList"
             android:layout_width="411dp"
-            android:layout_height="771dp"
+            android:layout_height="835dp"
+            android:windowSoftInputMode="adjustPan"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

@@ -54,8 +54,10 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
 
     }
 
+    
+
     override fun onQueryTextChange(newText: String?): Boolean {
-        if(newText?.length!! > oldQuaryLength.plus(2)) {
+        if(newText?.length!! > oldQuaryLength.plus(1)) {
            adapter?.addString(newText)
             input_search.clearFocus()
             adapter?.notifyDataSetChanged()
@@ -69,9 +71,9 @@ class MainActivity : BaseActivity(), SearchView.OnQueryTextListener {
     }
 
     override fun onQueryTextSubmit(query: String?): Boolean {
-        input_search.clearFocus()
         adapter?.addString(query.toString())
         adapter?.notifyDataSetChanged()
+        input_search.clearFocus()
 
         return true
     }
