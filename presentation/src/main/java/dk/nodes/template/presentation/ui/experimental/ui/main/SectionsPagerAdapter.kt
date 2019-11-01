@@ -1,59 +1,25 @@
 package dk.nodes.template.presentation.ui.experimental.ui.main
 
 import android.content.Context
-import android.text.method.MovementMethod
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
-import dk.nodes.template.presentation.R
 
-private val TAB_TITLES = arrayOf(
-        R.string.tab_text_0,
-        R.string.tab_text_1,
-        R.string.tab_text_2,
-        R.string.tab_text_3,
-        R.string.tab_text_9
 
+
+class SectionsPagerAdapter(private val context: Context, fm: FragmentManager,private val TAB_TITLES : Array<Int>,
+                           private val instance : ArrayList<Fragment>
 )
+    : FragmentPagerAdapter(fm) {
 
-/**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
- */
-class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
-    : FragmentStatePagerAdapter(fm) {
-
-
-
-    var moviesSearhTxt: String = ""
-
-
-
-    fun addString(movieName : String) {
-
-        moviesSearhTxt= movieName
-
-    }
 
     override fun getItemPosition(`object`: Any): Int {
-
         return POSITION_NONE;
     }
 
     override fun getItem(position: Int): Fragment {
-        when(position){
-            0-> return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.Movie)
-            1->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ActionMovie)
-            2->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.DramaMovie)
-            3->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.ComedyMovie)
-            4->return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.HorrorMovie)
-
-
-        }
-
-
-        return MovieSearchFragment.newInstance(moviesSearhTxt,MovieViewType.Recommended)
+        return instance[position]
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
@@ -61,12 +27,11 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager)
     }
 
     override fun getCount(): Int {
-        return 5
+        return TAB_TITLES.size
     }
 }
 
-
-sealed class MovieViewType {
+sealed class MovieViewType  {
 
     object Recommended:  MovieViewType()
     object Movie:        MovieViewType()

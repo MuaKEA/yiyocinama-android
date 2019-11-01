@@ -15,9 +15,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:hardwareAccelerated="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity
-            android:name=".ui.savedmovies.ShowSavedMovieFragment"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
 
     </application>
 
