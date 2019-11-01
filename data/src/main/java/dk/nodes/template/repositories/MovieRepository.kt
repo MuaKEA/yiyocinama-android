@@ -3,13 +3,11 @@ package dk.nodes.template.repositories
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.util.Log
-import android.util.SparseArray
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dk.nodes.template.models.Movie
 import dk.nodes.template.models.ThrillerInfo
 import dk.nodes.template.network.MovieService
-import okhttp3.Response
 import java.lang.NullPointerException
 import javax.inject.Inject
 import javax.inject.Singleton

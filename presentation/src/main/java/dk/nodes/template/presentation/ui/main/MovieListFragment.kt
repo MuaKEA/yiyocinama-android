@@ -45,10 +45,7 @@ class MovieListFragment : BaseFragment() {
 
     }
 
-    fun updateActionAdapter(){
-        viewModel.fetchActionMovies(movieViewType = movieViewType)
 
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

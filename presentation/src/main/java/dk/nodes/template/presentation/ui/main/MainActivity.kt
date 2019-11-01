@@ -34,8 +34,8 @@ class MainActivity : BaseActivity(), BottomNavigationView.OnNavigationItemSelect
                 .add(R.id.main_frame, showSavedMovieFragment,"2")
                 .add(R.id.main_frame,searchMoviesFragment,"3")
                 .hide(discoverMoviesFragment)
-                .hide(searchMoviesFragment)
-                .show(showSavedMovieFragment)
+                .hide(showSavedMovieFragment)
+                .show(searchMoviesFragment)
                 .commit()
     }
 

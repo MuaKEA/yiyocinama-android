@@ -117,7 +117,6 @@ class SearchMoviesFragment : BaseFragment(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextSubmit(query: String?): Boolean {
         movieSearchFragment.updateAdapter(query.toString())
-
         adapter?.notifyDataSetChanged()
         input_search.clearFocus()
         oldQuaryLength = query?.length!!
