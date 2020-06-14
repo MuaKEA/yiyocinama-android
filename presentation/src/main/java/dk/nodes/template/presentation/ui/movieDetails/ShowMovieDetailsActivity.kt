@@ -1,10 +1,12 @@
 package dk.nodes.template.presentation.ui.movieDetails
 
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.CompoundButton
@@ -38,7 +40,7 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     private var movieTrailer: String? = null
     lateinit var movieImageView: ImageView
     private var adapter: MoviesAdapter? = null
-
+    var id = ""
     private val imageCallback = object : Target {
 
         override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
@@ -58,10 +60,8 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
                     .generate(Palette.PaletteAsyncListener { palette ->
 
                         movieBackgroundLayout.setBackgroundColor(
-                                palette?.darkMutedSwatch?.rgb ?:
-                                palette?.darkVibrantSwatch?.rgb ?:
-                                palette?.mutedSwatch?.rgb ?:
-                                R.color.hockeyapp_text_black
+                                palette?.darkMutedSwatch?.rgb ?: palette?.darkVibrantSwatch?.rgb
+                                ?: palette?.mutedSwatch?.rgb ?: R.color.hockeyapp_text_black
                         )
                     })
         }
@@ -77,14 +77,17 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         val intent = intent
         if (intent != null) {
             movie = intent.getParcelableExtra("movie")
-           viewModel.movieSavedCheck(movie!!)
-            viewModel.fetchThrillerUrl(movie?.id!!)
-            viewModel.getSemiliarMovies(movie?.id!!)
+            movie?.id?.let {
+                viewModel.fetchThrillerUrl(it)
+                id =it
+            }
+            viewModel.movieSavedCheck(movie!!)
 
         }
-        viewModel.movieSavedCheck(movie!!)
 
-        adapter = MoviesAdapter(this,R.layout.recommendedmovies_row)
+        adapter = MoviesAdapter(this, R.layout.recommendedmovies_row)
+       Log.d("heelo", id)
+        viewModel.getSemiliarMovies(id)
 
 
         movie_images.setOnClickListener(this)
@@ -101,11 +104,12 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
     }
 
 
-
     private fun addItemOnclick() {
         adapter?.onItemClickedListener = { movie ->
             val intent = Intent(this, ShowMovieDetailsActivity::class.java)
-            intent.putExtra("movie" ,movie)
+            intent.putExtra("movie", movie)
+           intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP)
+
             startActivity(intent)
 
         }
@@ -113,25 +117,25 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
 
 
     private fun handleSemilarMovies(viewState: ShowMovieDetailsViewState) {
-        viewState.let { fetchRecomended->
-            fetchRecomended.semilarMoivesList?.let { adapter?.addMovies(it) }
+        viewState.semilarMoivesList?.let { semilarMovies ->
+            adapter?.addMovies(semilarMovies)
 
             addItemOnclick()
-            Timber.e(fetchRecomended.movies.toString())
             updateRecyclerview()
             adapter?.notifyDataSetChanged()
 
         }
 
     }
-    fun updateRecyclerview(){
-            // Creates a vertical Layout Manager
-        showdetailsrecycler.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+
+    fun updateRecyclerview() {
+        // Creates a vertical Layout Manager
+        showdetailsrecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         showdetailsrecycler.adapter = adapter
         addItemOnclick()
 
 
-        }
+    }
 
     private fun handleThrillerUrl(viewState: ShowMovieDetailsViewState) {
         viewState.let { fetchurl ->
@@ -276,6 +280,7 @@ class ShowMovieDetailsActivity : BaseActivity(), CompoundButton.OnCheckedChangeL
         })
 
     }
+
 
 
 }

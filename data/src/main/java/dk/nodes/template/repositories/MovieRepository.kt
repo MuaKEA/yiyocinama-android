@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import dk.nodes.template.models.JsonResultMovies
 import dk.nodes.template.models.Movie
 import dk.nodes.template.models.ThrillerInfo
 import dk.nodes.template.network.MovieService
+import retrofit2.Response
 import java.lang.NullPointerException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -21,11 +23,18 @@ class MovieRepository @Inject constructor(
 ) {
 
 
+
+    //this api_key needs to be saved away somewere!!
+    var api_key  = "4cb1eeab94f45affe2536f2c684a5c9e"
     private lateinit var currentMovies : ArrayList<Movie>
 
+
+
+
+    // this method get Thriller info from a selected movie
     suspend fun getTrailerinfo(movieid: String): String {
         val trailerList: ArrayList<ThrillerInfo> = ArrayList()
-        val response = api.getMovieThriller(movieid).execute()
+        val response = api.getMovieThriller(movieid,api_key).execute()
 
         if (response.isSuccessful) {
 
@@ -46,12 +55,26 @@ class MovieRepository @Inject constructor(
 
     }
 
+
+
+    /*get the RecommendedMovies, it gets the an movie id randomly from the saved list, if there isnt any,
+    then it calls latest movie instead, this insures that the view is filled with movies, instead of an empty view
+
+    */
     suspend fun getRecommendations(): ArrayList<Movie> {
 
         val movieList: ArrayList<Movie> = getSavedMovies()
+        var id= "";
+        var response : Response<JsonResultMovies>
 
         if (movieList.size > 0) {
-            val response = api.getRecommendations(movieList.random().id!!).execute()
+            response = api.getRecommendations(movieList.random().id.toString(),api_key).execute()
+
+        }else {
+
+             response = api.latestmovies(api_key).execute()
+
+        }
             if (response.isSuccessful) {
                 val movieResponse = response.body()
                 if (movieResponse != null) {
@@ -60,7 +83,7 @@ class MovieRepository @Inject constructor(
                 }
             }
 
-        }
+
 
         return movieList
 
@@ -71,7 +94,7 @@ class MovieRepository @Inject constructor(
 
 
         if (movieList.size > 0) {
-            val response = api.getRecommendations(movieId).execute()
+            val response = api.getRecommendations(movieId,api_key).execute()
             if (response.isSuccessful) {
                 val movieResponse = response.body()
                 if (movieResponse != null) {
@@ -88,7 +111,7 @@ class MovieRepository @Inject constructor(
     suspend fun getCurrentData(moviename: String): ArrayList<Movie> {
         Log.d("shadush","->" +  moviename)
         val movieslist: ArrayList<Movie> = ArrayList()
-        val response = api.getCurrentMovieData(moviename).execute()
+        val response = api.getCurrentMovieData(moviename,api_key).execute()
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
@@ -104,7 +127,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun getPopularMovies(): ArrayList<Movie> {
         val movieslist: ArrayList<Movie> = ArrayList()
-        val response = api.getPolularMovies().execute()
+        val response = api.getPolularMovies(api_key).execute()
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
@@ -119,7 +142,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun getTopRatedMovies(): ArrayList<Movie> {
         val movieslist: ArrayList<Movie> = ArrayList()
-        val response = api.getTopRated().execute()
+        val response = api.getTopRated(api_key).execute()
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
@@ -134,7 +157,7 @@ class MovieRepository @Inject constructor(
 
     suspend fun getNowPlayingMovies(): ArrayList<Movie> {
         val movieslist: ArrayList<Movie> = ArrayList()
-        val response = api.GetNowMoviesData().execute()
+        val response = api.GetNowMoviesData(api_key).execute()
 
         if (response.isSuccessful) {
             val moviesResponse = response.body()
@@ -295,7 +318,7 @@ class MovieRepository @Inject constructor(
     @SuppressLint("UseSparseArrays")
     suspend fun getGenres(): HashMap<Int, String> {
         val genrehashmap = HashMap<Int, String>()
-        val response = api.getGenres().execute()
+        val response = api.getGenres(api_key).execute()
         if (response.isSuccessful) {
             val moviesResponse = response.body()
             if (moviesResponse != null) {
@@ -309,23 +332,25 @@ class MovieRepository @Inject constructor(
     }
 
     suspend fun getSemiliarMovies(movieId: String): ArrayList<Movie> {
-        val movieList: ArrayList<Movie> = getSavedMovies()
-        if (movieList.size > 0) {
-            val response = api.getSimilarMovies(movieId).execute()
+        val movieList= ArrayList<Movie>()
+        val response = api.getSimilarMovies(movieId,api_key).execute()
             if (response.isSuccessful) {
                 val movieResponse = response.body()
                 if (movieResponse != null) {
+
                     movieList.addAll(movieResponse.result)
                     return movieList
                 }
             }
 
-        }
-
         return movieList
 
     }
+
+
+
 }
+
 
 
 

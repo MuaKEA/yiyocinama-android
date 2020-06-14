@@ -22,9 +22,7 @@ import javax.inject.Singleton
         RestModule::class,
         RestRepositoryBinding::class,
         StorageBindingModule::class,
-        DataModule::class,
-        WeatherRest::class
-
+        DataModule::class
     ]
 )
 @Singleton

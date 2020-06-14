@@ -37,10 +37,10 @@ class RestModule {
     @Singleton
     fun provideGson(typeFactory: ItemTypeAdapterFactory, dateDeserializer: DateDeserializer): Gson {
         return GsonBuilder()
-            .registerTypeAdapterFactory(typeFactory)
-            .registerTypeAdapter(Date::class.java, dateDeserializer)
-            .setDateFormat(DateDeserializer.DATE_FORMATS[0])
-            .create()
+                .registerTypeAdapterFactory(typeFactory)
+                .registerTypeAdapter(Date::class.java, dateDeserializer)
+                .setDateFormat(DateDeserializer.DATE_FORMATS[0])
+                .create()
     }
 
     @Provides
@@ -49,6 +49,8 @@ class RestModule {
         return "https://api.themoviedb.org/3/"
     }
 
+
+
     @Provides
     @Singleton
     fun provideGsonConverter(gson: Gson): Converter.Factory {
@@ -56,13 +58,12 @@ class RestModule {
     }
 
     @Provides
-    @Singleton
     fun provideHttpClient(): OkHttpClient {
         val clientBuilder = OkHttpClient.Builder()
-            .connectTimeout(45, TimeUnit.SECONDS)
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .addInterceptor(NMetaInterceptor(BuildConfig.BUILD_TYPE))
+                .connectTimeout(45, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .addInterceptor(NMetaInterceptor(BuildConfig.BUILD_TYPE))
 
         if (BuildConfig.DEBUG) {
             val logging = okhttp3.logging.HttpLoggingInterceptor()
@@ -74,20 +75,21 @@ class RestModule {
     }
 
     @Provides
-    @Singleton
     fun provideRetrofit(
-        client: OkHttpClient,
-        converter: Converter.Factory,
-        @Named("NAME_BASE_URL") baseUrl: String
+            client: OkHttpClient,
+            converter: Converter.Factory,
+            @Named("NAME_BASE_URL") baseUrl: String
     ): Retrofit {
         return Retrofit.Builder()
-            .client(client)
-            .baseUrl(baseUrl)
-            .addConverterFactory(BufferedSourceConverterFactory())
-            .addConverterFactory(converter)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .build()
+                .client(client)
+                .baseUrl(baseUrl)
+                .addConverterFactory(BufferedSourceConverterFactory())
+                .addConverterFactory(converter)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
     }
+
+
 
     @Provides
     @Singleton

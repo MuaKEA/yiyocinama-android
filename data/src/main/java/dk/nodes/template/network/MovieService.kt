@@ -9,31 +9,34 @@ import retrofit2.http.Query
 
 interface MovieService {
 
-    @GET("search/movie?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getCurrentMovieData(@Query("query") movieName: String ): Call<JsonResultMovies>
+    @GET("search/movie")
+    fun getCurrentMovieData(@Query("query") movieName: String , @Query("api_key") apikey: String): Call<JsonResultMovies>
 
-    @GET("movie/{movieId}/videos?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getMovieThriller(@Path("movieId") movieId: String) : Call<ThrillerResualt>
-
-
-    @GET("movie/{movie_id}/recommendations?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getRecommendations(@Path("movie_id") movie_id: String) : Call<JsonResultMovies>
-
-    @GET("genre/movie/list?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getGenres() : Call<GenresResualt>
-
-    @GET("movie/{movie_id}/similar?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getSimilarMovies(@Path("movie_id") movie_id: String) : Call<JsonResultMovies>
+    @GET("movie/{movieId}/videos")
+    fun getMovieThriller(@Path("movieId") movieId: String, @Query("api_key") apikey: String ) : Call<ThrillerResualt>
 
 
-    @GET("movie/popular?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getPolularMovies(): Call<JsonResultMovies>
+    @GET("movie/{movie_id}/recommendations")
+    fun getRecommendations(@Path("movie_id") movie_id: String, @Query("api_key") apikey: String) : Call<JsonResultMovies>
 
-    @GET("movie/top_rated?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun getTopRated(): Call<JsonResultMovies>
+    @GET("genre/movie/list")
+    fun getGenres(@Query("api_key") apikeu: String) : Call<GenresResualt>
 
-    @GET("movie/now_playing?api_key=4cb1eeab94f45affe2536f2c684a5c9e")
-    fun GetNowMoviesData(): Call<JsonResultMovies>
+    @GET("movie/{movie_id}/similar")
+    fun getSimilarMovies(@Path("movie_id") movie_id: String, @Query("api_key") apikey: String) : Call<JsonResultMovies>
+
+
+    @GET("movie/popular")
+    fun getPolularMovies(@Query("api_key") apikey: String): Call<JsonResultMovies>
+
+    @GET("movie/top_rated")
+    fun getTopRated(@Query("api_key") apikey: String): Call<JsonResultMovies>
+
+    @GET("movie/now_playing")
+    fun GetNowMoviesData(@Query("api_key") apikey: String): Call<JsonResultMovies>
+
+    @GET("movie/now_playing")
+    fun latestmovies(@Query("api_key") apikey: String): Call<JsonResultMovies>
 
 }
 
